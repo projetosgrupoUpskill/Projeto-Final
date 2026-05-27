@@ -1,0 +1,20 @@
+.filterWrapper {
+    display: flex;
+    width: auto;
+
+  }
+  
+  .selectBox {
+    background-color: var(--color-background-offset, #f9fafb);
+    color: var(--color-text, #0c0c0c);
+    border: 1px solid var(--color-border, #f9fafb);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .selectBox:hover {
+    border-color: var(--color-primary, #6366F1);
+  }
