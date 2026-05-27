@@ -1,0 +1,58 @@
+.cardBody {
+  padding: 1rem;
+}
+
+.label {
+  display: flex;
+  flex-direction: left;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 10px
+}
+
+.input{
+  margin-top: 0.25rem;
+  border: 1px solid #d1d5db;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  width: 90%; 
+  box-sizing: border-box; 
+}
+
+select {
+  margin-top: 0.25rem;
+  border: 1px solid #d1d5db;
+  padding: 5rem;
+  border-radius: 0.375rem;
+  width: 90%; 
+  box-sizing: border-box; 
+}
+
+.radioGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.radioItem {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem; 
+  cursor: pointer;
+}
+
+.submitButton {
+  width: 100%;
+  background-color: #0f2e22d6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 13px;
+}
+
+.submitButton:hover {
+  background-color: #003366;
+}
