@@ -1,0 +1,102 @@
+.row {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    align-items: center;
+    transition: background-color 0.2s;
+  }
+  
+  .row:hover {
+    background-color: #eff6ff;
+  }
+  
+  .rowEven {
+    background-color: white;
+  }
+  
+  .rowOdd {
+    background-color: #f9fafb;
+  }
+  
+  .description {
+    grid-column: span 5;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .indicator {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 9999px;
+    flex-shrink: 0;
+  }
+  
+  .indicatorIncome {
+    background-color: #22c55e;
+  }
+  
+  .indicatorExpense {
+    background-color: #ef4444;
+  }
+  
+  .descriptionText {
+    font-weight: 500;
+    color: #001f3f;
+  }
+  
+  .date {
+    grid-column: span 3;
+    font-size: 0.8rem;
+    color: #4b5563;
+  }
+  
+  .amount {
+    grid-column: span 2;
+    text-align: right;
+  }
+  
+  .amountValue {
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .amountIncome {
+    color: #16a34a;
+  }
+  
+  .amountExpense {
+    color: #dc2626;
+  }
+  
+  .actions {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .deleteButton {
+    color: #ef4444;
+    background-color: transparent; 
+    border: none; 
+    cursor: pointer; 
+    padding: 0.5rem;
+    border-radius: 0.375rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .deleteButton:hover {
+    color: #b91c1c;
+    background-color: #fef2f2;
+  }
+  
+  .icon {
+    height: 1rem;
+    width: 1rem;
+  }
+  
