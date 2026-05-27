@@ -1,0 +1,65 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0; 
+
+
+    color: #001f3f;
+    margin-bottom: 2rem;
+
+    border-radius: 0; 
+  }
+  
+  .logo {
+    display: flex;
+    align-self: left;
+  }
+  
+  .logoImage {
+    height: 150px; 
+    width: auto; 
+  }
+  
+  .nav {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .navLink {
+    color: #001f3f;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0.5rem; 
+    transition: color 0.2s;
+    border-radius: 10px;
+    border: 10px;
+  }
+  
+  .navLink:hover {
+    color: white;
+    background-color: #0F2E22;
+  }
+
+  .themeToggleBtn {
+    background: transparent !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0e447b; /* Escuro no tema claro */
+    padding: 0.5rem;
+    margin-left: 1rem;
+    border-radius: 50%;
+    border-color: #0e447b;
+    transition: transform 0.2s ease, color 0.3s ease;
+  }
+  
+  .themeToggleBtn:hover {
+    transform: scale(1.1); /* Um efeito subtil ao passar o rato */
+  }
+
+  :global(body.dark) .themeToggleBtn {
+    color: #ebe80a !important;
+    border-color: #ebe80a;
+  }
