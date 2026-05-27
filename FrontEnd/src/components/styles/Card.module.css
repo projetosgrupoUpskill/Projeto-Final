@@ -1,0 +1,22 @@
+.cardContainer {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    width: 100%;
+  }
+  
+  .cardHeader {
+    background-color: #123022; /* O verde escuro padrão */
+    padding: 1.2rem 1.5rem;
+    text-align: center;
+  }
+  
+  .cardTitle {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0;
+  }
+  
