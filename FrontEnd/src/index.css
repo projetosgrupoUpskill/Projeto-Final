@@ -11,8 +11,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -35,7 +35,7 @@
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
-    --border: #2e303a;
+    --border: #e1e2e6;
     --code-bg: #1f2028;
     --accent: #c084fc;
     --accent-bg: rgba(192, 132, 252, 0.15);
@@ -52,6 +52,7 @@
 
 body {
   margin: 0;
+  background-color: #f9fafb;
 }
 
 #root {
@@ -59,7 +60,7 @@ body {
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
+
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -108,4 +109,101 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* ==========================================================
+   --- DARK MODE GERAL --- 
+========================================================== */
+body.dark {
+  --bg: #121212;
+  --card-bg: #1e1e1e;
+  --card-bg-alt: #292929;
+  --text-h: #ffffff;
+  --text-muted: #a3a3a3;
+  --border: #3f3f46;
+
+  background-color: var(--bg);
+  color: var(--text-h);
+}
+
+body.dark,
+body.dark * {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Tudo o que era texto escuro fica branco */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p,
+body.dark span,
+body.dark a,
+body.dark label,
+body.dark b,
+body.dark div {
+  color: var(--text-h);
+}
+
+/* Textos descritivos ficam em cinza claro para contraste */
+body.dark [class*="Desc"],
+body.dark [class*="detail"],
+body.dark [class*="date"] {
+  color: var(--text-muted) !important;
+}
+
+/* Fundos de cartões, listas e página ficam escuros */
+body.dark [class*="card"],
+body.dark [class*="Card"],
+body.dark [class*="container"],
+body.dark header,
+body.dark [class*="settingItem"],
+body.dark [class*="rowEven"] {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark [class*="settingItem"] {
+  background-color: #252424 !important;
+}
+
+/* Fundo alternativo para cabeçalho da tabela e linhas ímpares */
+body.dark [class*="tableHeader"],
+body.dark [class*="rowOdd"] {
+  background-color: var(--card-bg-alt) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark input,
+body.dark select,
+body.dark [class*="searchInput"] {
+  background-color: var(--card-bg-alt) !important;
+  color: var(--text-h) !important;
+  border: 1px solid var(--border) !important;
+  color-scheme: dark;
+}
+
+body.dark [class*="cardTitle"],
+body.dark [class*="cardHeader"] {
+  background-color: #123022 !important;
+  border: #ffff;
+}
+
+body.dark [class*="tableHeader"] {
+  background-color: #3131329d !important;
+  color: white !important;
+}
+
+body.dark [class*="headerDescription"] {
+  color: white !important;
+}
+
+body.dark [class*="filterCard"] {
+  background-color: #1212124d !important;
+}
+
+body.dark [class*="chartSection"] {
+  color: white !important;
 }
