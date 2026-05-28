@@ -1,0 +1,51 @@
+.container {
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.card {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card:last-child {
+  border-bottom: none;
+}
+
+.profileImg {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.name {
+  font-size: 1rem;
+  color: #001f3f;
+}
+
+.detail {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.link {
+  font-size: 0.875rem;
+  color: #001f3f;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
