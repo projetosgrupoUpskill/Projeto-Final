@@ -1,0 +1,163 @@
+.historyContainer {
+  margin-top: 2rem;
+}
+
+.filterCard {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.searchContainer {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+/* Parece que não há este ícone - REVISAR */
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 1.2rem;
+}
+
+.searchInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 42px;
+  font-size: 0.8rem;
+  outline: none;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.searchInput:focus {
+  border-color: #007bff;
+}
+
+.dropdownsContainer {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.dropdownGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.dropdownGroup input[type="date"] {
+  padding: 0 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: #fff;
+  color: #333;
+  outline: none;
+  box-sizing: border-box;
+  height: 42px;
+  font-family: inherit;
+  flex: 1;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.dropdownGroup label,
+.dropdownLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-left: 2px;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+
+/* --- Padronização do Select da Categoria --- */
+.dropdownGroup select {
+  height: 42px;
+  padding: 0 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: #fff;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.dropdownGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.dropdownGroup > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 42px;
+}
+
+.dropdownLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-left: 2px;
+}
+
+.dropdownSelect {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #333;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Novo estilo para o botão Limpar Filtros */
+.clearBtn {
+  padding: 0.6rem 1.5rem;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  height: 42px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.clearBtn:hover {
+  background-color: #dc2626;
+}
+
+/* .global (body.dark) .chartSection{
+  color: #ffffff;
+} */
+
+@media (max-width: 768px) {
+  .dropdownsContainer {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+}
