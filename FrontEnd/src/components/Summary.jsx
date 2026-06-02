@@ -24,6 +24,7 @@ export default function Summary({ balance, income, expense, onCardClick }) {
             marginBottom: "10px",
             color: "var(--text-h)",
             textAlign: "left",
+            fontSize: "1.1rem",
           }}
         >
           Olá, {userName}!

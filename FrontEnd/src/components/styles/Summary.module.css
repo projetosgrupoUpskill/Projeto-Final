@@ -3,6 +3,7 @@
   grid-template-columns: repeat(1, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
+  text-align: left;
 }
 
 .card {
@@ -21,14 +22,16 @@
 }
 
 .cardTitle {
-  font-size: 1rem;
   color: #001f3f;
   margin: 0;
+  font-size: 1.1rem;
+  font-weight: 450;
 }
 
 .value {
   font-size: 1.5rem;
   font-weight: 600;
+  font-size: 1.1rem;
   margin: 0;
 }
 
@@ -79,9 +82,18 @@
   border: 2px solid #a80008;
 }
 
+.incomeCard .cardTitle {
+  color: #00a63e;
+}
+
+.expenseCard .cardTitle {
+  color: #e7000b;
+}
+
 /* Estilos do Ícone para os Cartões */
 .eyeIcon {
   position: absolute;
+  top: 50%;
   bottom: 0.6rem;
   right: 0.6rem;
   transition: 0.2s ease;
