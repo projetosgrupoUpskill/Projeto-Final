@@ -17,7 +17,7 @@
   }
   
   .logoImage {
-    height: 150px; 
+    height: 65px; /* Ajuste a tamanho */
     width: auto; 
   }
   
@@ -30,10 +30,24 @@
     color: #001f3f;
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.9rem; /* Tamanho da fonte reduzido para 0.85rem */
     padding: 0.5rem 0.5rem; 
     transition: color 0.2s;
     border-radius: 10px;
     border: 10px;
+  }
+
+  .loginLink {
+    background-color: var(--color-primary, #0F2E22); /* Escolha a sua cor aqui */
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .loginLink:hover {
+    background-color: #0f2e2270 !important; /* Cor quando passa o rato */
+    color: #ffffff;
   }
   
   .navLink:hover {
