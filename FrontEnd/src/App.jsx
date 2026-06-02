@@ -17,6 +17,8 @@ import { ThemeProvider } from "./context/ThemeContext";
 import Settings from "./pages/Settings";
 import { useContext, useEffect } from "react";
 import Details from "./pages/History";
+import { Login } from "./pages/login";
+import { Signup } from "./pages/Signup";
 
 const queryClient = new QueryClient();
 
@@ -39,7 +41,12 @@ function App() {
 
                 {/* Redirecionamento se a rota não existir */}
                 <Route path="*" element={<Navigate to="/" />} />
+                
               </Route>
+
+              <Route path="login" element={<Login />} />
+              <Route path="cadastro" element={<Signup />} />
+              
             </Routes>
           </Router>
         </PreferencesProvider>
