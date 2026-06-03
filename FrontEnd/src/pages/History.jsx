@@ -117,7 +117,6 @@ const Details = () => {
     <div className={styles.historyContainer}>
       {/* Gráfico Detalhado */}
       <section className={styles.chartSection}>
-        <h2 style={{ marginBottom: "1rem" }}>Fluxo por Categoria</h2>
         <ExpenseChartsHub transactions={filteredTransactions} />
       </section>
 
