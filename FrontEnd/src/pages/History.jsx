@@ -5,7 +5,6 @@ import TransactionList from "../components/TransactionList";
 import CategoryFilter from "../components/CategoryFilter";
 import DateRangePicker from "../components/DateRangePicker";
 import styles from "../components/styles/History.module.css";
-import ExpenseChart from "../components/ExpenseChart";
 import ExpenseChartsHub from "../components/ExpenseChartsHub.jsx";
 
 const prepareStackedData = (transactions, categories) => { 
