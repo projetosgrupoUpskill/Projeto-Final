@@ -6,6 +6,7 @@ import CategoryFilter from "../components/CategoryFilter";
 import DateRangePicker from "../components/DateRangePicker";
 import styles from "../components/styles/History.module.css";
 import ExpenseChart from "../components/ExpenseChart";
+import ExpenseChartsHub from "../components/ExpenseChartsHub.jsx";
 
 const prepareStackedData = (transactions, categories) => { 
   const totals = transactions.reduce((acc, curr) => { 
@@ -118,9 +119,7 @@ const Details = () => {
       {/* Gráfico Detalhado */}
       <section className={styles.chartSection}>
         <h2 style={{ marginBottom: "1rem" }}>Fluxo por Categoria</h2>
-        <ExpenseChart
-          data={prepareStackedData(filteredTransactions, categories)}
-        />
+        <ExpenseChartsHub transactions={filteredTransactions} />
       </section>
 
       <br />
