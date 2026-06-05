@@ -65,8 +65,8 @@ export default function ExpensePieChart({ transactions }) {
 
   const data = Object.entries(
     transactions
-      .filter((t) => t.type === "expense")
       .reduce((acumulador, transacao) => {
+        const amount = Math.abs(transacao.amount);
         if (acumulador[transacao.category]) {
           acumulador[transacao.category] += transacao.amount;
         } else {
