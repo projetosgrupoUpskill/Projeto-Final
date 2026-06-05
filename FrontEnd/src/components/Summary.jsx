@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import styles from "./styles/Summary.module.css";
-import { FiEye } from "react-icons/fi";
+import { FiEye, FiTrendingDown, FiTrendingUp } from "react-icons/fi";
 
-export default function Summary({ balance, income, expense, onCardClick }) {
+export default function Summary({ balance, income, expense }) {
   const { currency, userName } = useContext(PreferencesContext);
 
   const formatCurrency = (value) => {
@@ -48,7 +48,6 @@ export default function Summary({ balance, income, expense, onCardClick }) {
           size={18}
           strokeWidth={1.5}
           className={styles.eyeIcon}
-          title="Remover Filtros"
         />
       </div>
 
@@ -63,11 +62,10 @@ export default function Summary({ balance, income, expense, onCardClick }) {
         <p className={`${styles.value} ${styles.incomeValue}`}>
           {formatCurrency(income)}
         </p>
-        <FiEye
+        <FiTrendingUp
           size={18}
           strokeWidth={1.5}
           className={styles.eyeIcon}
-          title="Filtrar Receitas"
         />
       </div>
 
@@ -82,11 +80,10 @@ export default function Summary({ balance, income, expense, onCardClick }) {
         <p className={`${styles.value} ${styles.expenseValue}`}>
           {formatCurrency(expense)}
         </p>
-        <FiEye
+        <FiTrendingDown
           size={18}
           strokeWidth={1.5}
           className={styles.eyeIcon}
-          title="Filtrar Despesas"
         />
       </div>
     </div>

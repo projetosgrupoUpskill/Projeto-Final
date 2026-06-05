@@ -45,41 +45,23 @@
 
 /* Estilos Base (Light Mode) para os Cartões */
 .balanceCard {
-  cursor: pointer;
   position: relative;
   background-color: white;
   border: 2px solid #001f3f;
 }
 
-.balanceCard:hover {
-  background-color: #f3f4f6;
-  border: 2px solid #003d7a;
-}
-
 .incomeCard {
-  cursor: pointer;
   position: relative;
   background-color: #00a63e1a; 
   border: 2px solid #00a63e;
   color: #00a63e;
 }
 
-.incomeCard:hover {
-  background-color: #00a63e33;
-  border: 2px solid #007a2e;
-}
-
 .expenseCard {
-  cursor: pointer;
   position: relative;
   background-color: #e7000b1a;
   border: 2px solid #e7000b;
   color: #e7000b;
-}
-
-.expenseCard:hover {
-  background-color: #e7000b33;
-  border: 2px solid #a80008;
 }
 
 .incomeCard .cardTitle {
