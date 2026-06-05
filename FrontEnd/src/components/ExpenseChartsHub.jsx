@@ -12,7 +12,7 @@ const TABS = [
 
 export default function ExpenseChartsHub({ transactions }) {
   const [activeTab, setActiveTab] = useState("fluxo");
-  const { theme } = useContext(ThemeContext); // <-- Consome o seu tema ("light" ou "dark")
+  const { theme } = useContext(ThemeContext); 
 
   const isDark = theme === "dark";
 
@@ -32,7 +32,8 @@ export default function ExpenseChartsHub({ transactions }) {
       }}
     >
       {/* Abas */}
-      <div style={{ display: "flex", borderBottom: isDark ? "1px solid #3f3f46" : "1px solid #e5e4e7" }}>        {TABS.map((tab) => {
+      <div style={{ display: "flex", borderBottom: isDark ? "1px solid #3f3f46" : "1px solid #e5e4e7" }}>       
+        {TABS.map((tab) => {
           const isActive = tab.id === activeTab;
           return (
             <button
