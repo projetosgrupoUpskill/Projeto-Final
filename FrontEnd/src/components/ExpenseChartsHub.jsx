@@ -19,8 +19,11 @@ export default function ExpenseChartsHub({ transactions }) {
         borderRadius: 16,
         boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
         fontFamily: "sans-serif",
-        width:  '50%',
-        margin: "32px auto",
+        width:  '100%',
+        margin: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
       }}
     >
       {/* Abas */}
@@ -54,7 +57,7 @@ export default function ExpenseChartsHub({ transactions }) {
       </div>
 
       {/* Área reservada para os gráficos filhos */}
-      <div style={{ padding: 24, minHeight: 200, height: 320 }}>
+      <div style={{ padding: 24, flex: 1, display: 'flex', flexDirection: 'column',minHeight: 300 }}>
           {activeTab === "fluxo" ? <ExpenseLineChart transactions={transactions} /> : <ExpensePieChart transactions={transactions}/>}
       </div>
     </div>
