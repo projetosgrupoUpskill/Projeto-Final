@@ -9,43 +9,59 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+const nomesMeses = [
+  "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+  "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+];
+
 export default function ExpenseLineChart({ transactions }) {
   const data = transactions.reduce((acumulador, transacao) => {
-    const dia = transacao.date.slice(0, 10); // "2024-03"
+/*     const dia = transacao.date.slice(0, 10); // "2024-03"
+ */
+    const date = new Date(transacao.date);
+    const key = `${date.getFullYear()}-${date.getMonth()}`;
 
-    if (!acumulador[dia]) {
-      acumulador[dia] = { dia, despesas: 0, receitas: 0 };
+    if (!acumulador[key]) {
+      acumulador[key] = { mes: `${nomesMeses[date.getMonth()]} ${date.getFullYear()}`, despesas: 0, receitas: 0 };
     }
 
     if (transacao.type === "expense") {
-      acumulador[dia].despesas += Math.abs(transacao.amount);
+      acumulador[key].despesas += Math.abs(transacao.amount);
     } else {
-      acumulador[dia].receitas += transacao.amount;
+      acumulador[key].receitas += transacao.amount;
     }
 
     return acumulador;
   }, {});
 
-  const chartData = Object.values(data);
+  const chartData = Object.values(data).sort((a, b) => a.order - b.order);
+
+  // Verifica se existe pelo menos uma despesa ou receita na lista filtrada
+  const temDespesas = chartData.some((d) => d.despesas > 0);
+  const temReceitas = chartData.some((d) => d.receitas > 0); 
 
   return (
-    <ResponsiveContainer width="100%" height={280}>
+    <ResponsiveContainer width="100%" height='300'>
       <LineChart
         data={chartData}
         margin={{ top: 5, right: 16, left: 0, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="dia" />
+        <XAxis dataKey="mes" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line
+        {temDespesas && (
+          <Line
           type="monotone"
           dataKey="despesas"
           stroke="#ef4444"
           dot={{ r: 4 }}
           activeDot={{ r: 6 }}
         />
+        )}
+      
+        {temReceitas && (
         <Line
           type="monotone"
           dataKey="receitas"
@@ -53,6 +69,7 @@ export default function ExpenseLineChart({ transactions }) {
           dot={{ r: 4 }}
           activeDot={{ r: 6 }}
         />
+        )}
       </LineChart>
     </ResponsiveContainer>
   );
