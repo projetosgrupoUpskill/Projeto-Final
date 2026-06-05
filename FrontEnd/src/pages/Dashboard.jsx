@@ -56,7 +56,7 @@ const Dashboard = () => {
             <div className={styles.gridTwoColumns}>
                 <div className={styles.listColumn}>
                     <TransactionList
-                        transactions={filteredTransactions}
+                        transactions={transactions}
                         onDelete={(id) => deleteMutation.mutate(id)} 
                     />
                 </div>
