@@ -38,7 +38,7 @@
   }
 
   .loginLink {
-    background-color: var(--color-primary, #0F2E22); /* Escolha a sua cor aqui */
+    background-color: var(--color-primary, #20674c); /* Escolha a sua cor aqui */
     color: #ffffff;
     padding: 8px 16px;
     border-radius: 8px;
@@ -46,7 +46,7 @@
   }
 
   .loginLink:hover {
-    background-color: #0f2e2270 !important; /* Cor quando passa o rato */
+    background-color: #6C9485 !important; /* Cor quando passa o rato */
     color: #ffffff;
   }
   
@@ -77,3 +77,73 @@
     color: #ebe80a !important;
     border-color: #ebe80a;
   }
+
+  /* ... Mantenha TODAS as suas regras originais aqui (.header, .logo, .nav, .navLink, etc.) ... */
+
+/* Estilo padrão do botão sandwich - Escondido em computadores */
+.menuBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #001f3f;
+  padding: 0.5rem;
+  z-index: 1001; /* Garante que fica acima do menu quando aberto */
+}
+
+:global(body.dark) .menuBtn {
+  color: #ffffff;
+}
+
+/* =======================================================
+   REGRAS APLICADAS APENAS QUANDO A TELA DIMINUIR (MÓVEL)
+======================================================= */
+@media (max-width: 768px) {
+  .menuBtn {
+    display: block; /* O botão sandwich aparece apenas aqui */
+  }
+
+  .nav {
+    display: none; /* Esconde a barra horizontal original */
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 260px; /* Largura da barra lateral */
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 5rem 1.5rem 2rem 1.5rem;
+    gap: 1.25rem;
+    z-index: 1000;
+    box-sizing: border-box;
+  }
+
+  /* Quando clicar no botão e o estado isMenuOpen for verdadeiro, esta classe ativa */
+  .nav.navOpen {
+    display: flex; /* Mostra os links empilhados verticalmente */
+  }
+
+  /* Ajustes visuais nos links dentro do menu sanduíche */
+  .navLink {
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 1rem;
+  }
+
+  .loginLink {
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .themeToggleBtn {
+    margin-left: 1rem;
+    align-self: flex-start; /* Alinha o sol/lua à esquerda na lista vertical */
+  }
+
+  :global(body.dark) .nav {
+    background-color: #16171d; /* Fundo escuro adaptivo caso use Dark Mode */
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.4);
+  }
+}

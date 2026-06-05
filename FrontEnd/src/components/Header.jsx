@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import styles from "./styles/Header.module.css";
 import logo_atualizada from "../assets/logo_atualizada.svg";
 import logo_dark_atualizada from "../assets/logo_dark_atualizada.svg";
-import { useContext } from "react";
+import { useContext, useState } from "react"; 
 import { ThemeContext } from "../context/ThemeContext";
-import { FiSun, FiMoon } from "react-icons/fi"; // <-- Importe os ícones
+import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi"; // <-- Importe os ícones
 
 
 export default function Header() {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className={styles.header}>
@@ -21,8 +22,13 @@ export default function Header() {
         />
       </div>
 
-      {/* Links */}
-      <nav className={styles.nav}>
+      {/* Botão de Menu para telas menores */}
+      <button className={styles.menuBtn} onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Menu">
+        {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+      </button>
+
+      {/* Links de navegação com classe condicional baseada no estado */}
+      <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
         <Link to="/" className={styles.navLink}>
           Painel
         </Link>
