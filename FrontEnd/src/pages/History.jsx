@@ -106,7 +106,7 @@ const Details = () => {
   filter.activeCategory !== null ||
   filter.type !== "all" ||
   filter.periodType !== "all";
-  
+
   const {
     data: transactions = [],
     isLoading,
