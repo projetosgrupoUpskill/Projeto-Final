@@ -3,70 +3,60 @@ import { useState } from "react";
 import { getTransactions, deleteTransaction } from "../api";
 import Summary from "../components/Summary";
 import TransactionList from "../components/TransactionList";
-import AddTransaction from "./AddTransaction"; 
+import AddTransaction from "./AddTransaction";
 import styles from "../App.module.css";
 
 const Dashboard = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    const [typeFilter, setTypeFilter] = useState("all");
+  const {
+    data: transactions = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["transactions"],
+    queryFn: getTransactions,
+  });
 
-    const { data: transactions = [], isLoading, isError } = useQuery({
-        queryKey: ["transactions"],
-        queryFn: getTransactions,
-    });
+  const deleteMutation = useMutation({
+    mutationFn: deleteTransaction,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["transactions"] }),
+  });
 
-    const deleteMutation = useMutation({
-        mutationFn: deleteTransaction,
-        onSuccess: () => queryClient.invalidateQueries({queryKey:['transactions']}),
-    });
+  if (isLoading) return <p style={{ color: "white" }}>A carregar...</p>;
+  if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
 
-    if (isLoading) return <p style={{ color: "white" }}>A carregar...</p>;
-    if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
+  const income = transactions
+    .filter((t) => t.amount > 0)
+    .reduce((sum, t) => sum + t.amount, 0);
 
+  const expense = transactions
+    .filter((t) => t.amount < 0)
+    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
-    const income = transactions
-        .filter((t) => t.amount > 0)
-        .reduce((sum, t) => sum + t.amount, 0);
+  const balance = income - expense;
 
-    const expense = transactions
-        .filter((t) => t.amount < 0)
-        .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+  const lastFiveTransactions = transactions.slice(0, 5).reverse();
 
-    const balance = income - expense;
+  return (
+    <>
+      <Summary balance={balance} income={income} expense={expense} />
 
-    // Filtro para que os usuários vejam apenas as transações 
-    // solicitadas quando clicarem no cartão de receitas no componente Summary.
-    const filteredTransactions = transactions.filter(t => {
-        if (typeFilter === "all") return true;
-        if (typeFilter === "income" && t.amount > 0) return true; 
-        if (typeFilter === "expense" && t.amount < 0) return true;
-        return false;
-    });
+      <div className={styles.gridTwoColumns}>
+        <div className={styles.listColumn}>
+          <TransactionList
+            transactions={lastFiveTransactions}
+            onDelete={(id) => deleteMutation.mutate(id)}
+          />
+        </div>
 
-    return (
-        <>
-            <Summary 
-                balance={balance}
-                income={income}
-                expense={expense}
-                onCardClick={(type) => setTypeFilter(type)}
-            />
-
-            <div className={styles.gridTwoColumns}>
-                <div className={styles.listColumn}>
-                    <TransactionList
-                        transactions={transactions}
-                        onDelete={(id) => deleteMutation.mutate(id)} 
-                    />
-                </div>
-
-                <div className={styles.formColumn}>
-                    <AddTransaction />
-                </div>
-            </div>
-        </>
-    );
+        <div className={styles.formColumn}>
+          <AddTransaction />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Dashboard;
