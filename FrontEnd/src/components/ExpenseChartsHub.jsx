@@ -2,6 +2,8 @@ import { useState } from "react";
 import { LineChart, Line } from "recharts";
 import ExpenseLineChart from "./ExpenseLineChart.jsx";
 import ExpensePieChart from "./ExpensePieChart.jsx";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const TABS = [
   { id: "fluxo", label: "Fluxo Financeiro" },
@@ -10,12 +12,15 @@ const TABS = [
 
 export default function ExpenseChartsHub({ transactions }) {
   const [activeTab, setActiveTab] = useState("fluxo");
+  const { theme } = useContext(ThemeContext); // <-- Consome o seu tema ("light" ou "dark")
 
+  const isDark = theme === "dark";
 
   return (
     <div
       style={{
-        background: "#ffffff",
+        background: isDark ? "#1e1e1e" : "#ffffff", 
+        border: isDark ? "1px solid #3f3f46" : "1px solid #e5e4e7",
         borderRadius: 16,
         boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
         fontFamily: "sans-serif",
@@ -27,8 +32,7 @@ export default function ExpenseChartsHub({ transactions }) {
       }}
     >
       {/* Abas */}
-      <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb" }}>
-        {TABS.map((tab) => {
+      <div style={{ display: "flex", borderBottom: isDark ? "1px solid #3f3f46" : "1px solid #e5e4e7" }}>        {TABS.map((tab) => {
           const isActive = tab.id === activeTab;
           return (
             <button
@@ -40,13 +44,15 @@ export default function ExpenseChartsHub({ transactions }) {
                 background: "none",
                 border: "none",
                 borderBottom: isActive
-                  ? "2px solid #111827"
+                  ? `2px solid ${isDark ? "#ffffff" : "#08060d"}`
                   : "2px solid transparent",
                 marginBottom: -1,
                 cursor: "pointer",
                 fontSize: 15,
                 fontWeight: isActive ? 600 : 400,
-                color: isActive ? "#111827" : "#9ca3af",
+                color: isActive 
+                  ? (isDark ? "#ffffff" : "#08060d") 
+                  : (isDark ? "#9ca3af" : "#6b6375"),
                 transition: "color 0.2s, border-color 0.2s",
               }}
             >
