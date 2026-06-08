@@ -37,7 +37,9 @@ const Dashboard = () => {
 
   const balance = income - expense;
 
-  const lastFiveTransactions = transactions.slice(0, 5).reverse();
+  const lastFiveTransactions = [...transactions]
+  .sort ((a, b) => new Date (b.date) - new Date (a.date))
+  .slice(0, 5);
 
   return (
     <>
