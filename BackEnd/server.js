@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/users", userRoutes);
-app.use("c/ategories", caregoriesRoutes);
+app.use("/categories", categoriesRoutes);
 app.use("/expense-limits", expenseLimitsRoutes);
 app.use("/chat", chatRoutes);
 
