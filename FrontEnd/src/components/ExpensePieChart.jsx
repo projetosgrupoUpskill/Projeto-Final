@@ -42,6 +42,9 @@ const LegendItem = ({ entry }) => {
         color: entry.color,
         opacity: isSelected ? 1 : 0.2,
         transition: "opacity 0.3s ease",
+        listStyle: "none",
+        alignItems: "left",
+        fontSize: 14,
       }}
     >
       {l}
@@ -51,7 +54,7 @@ const LegendItem = ({ entry }) => {
 
 const LegendContent = ({ payload }) => {
   return (
-    <ul>
+    <ul style={{ paddingTop: "16px", margin: 0, padding: 0, paddingTop: "16px" }}>
       {payload?.map((entry, index) => (
         <LegendItem key={`item-${index}`} entry={entry} />
       ))}
@@ -104,9 +107,8 @@ export default function ExpensePieChart({ transactions }) {
         <Legend
           iconSize={10}
           width={120}
-          height={140}
           layout="vertical"
-          verticalAlign="middle"
+          verticalAlign="top"
           align="right"
           content={LegendContent}
         />
