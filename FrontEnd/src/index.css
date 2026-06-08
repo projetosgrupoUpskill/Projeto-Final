@@ -115,7 +115,7 @@ code {
    --- DARK MODE GERAL --- 
 ========================================================== */
 body.dark {
-  --bg: #121212;
+  --bg: #1E1E1E;
   --card-bg: #1e1e1e;
   --card-bg-alt: #292929;
   --text-h: #ffffff;
