@@ -2,9 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
-import transactionRoutes from "./routes/transactionRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import chatRoutes from "./routes/chatRoutes.js";
+import transactionsRoutes from "./routes/transactionsRoutes.js";
+/* import userRoutes from "./routes/userRoutes.js"; */
+import categoriesRoutes from "./routes/categoriesRoutes.js";
+import expenseLimitsRoutes from "./routes/expenseLimitsRoutes.js";
+/* import chatRoutes from "./routes/chatRoutes.js"; */
 
 dotenv.config();
 
@@ -17,11 +19,11 @@ app.use(express.json());
 
 // Rotas
 app.use("/auth", authRoutes);
-app.use("/transactions", transactionRoutes);
-app.use("/users", userRoutes);
+app.use("/transactions", transactionsRoutes);
+/* app.use("/users", userRoutes); */
 app.use("/categories", categoriesRoutes);
 app.use("/expense-limits", expenseLimitsRoutes);
-app.use("/chat", chatRoutes);
+/* app.use("/chat", chatRoutes ); */
 
 // Rota de teste - revisar arquivo
 app.get("/", (req, res) => {

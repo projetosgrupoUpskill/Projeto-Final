@@ -1,6 +1,6 @@
 import { getAllCategories } from "../services/categoriesService.js";
 
-export async function getCategories(req, res) {
+export default async function getCategories(req, res) {
   try {
     const categories = await getAllCategories();
 

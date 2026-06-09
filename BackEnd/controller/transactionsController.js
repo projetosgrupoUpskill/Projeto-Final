@@ -1,4 +1,4 @@
-import { getAllTransactions, createTransaction, updateTransaction, deleteTransaction } from "../services/transactionService.js";
+import { getAllTransactions, createTransaction, updateTransaction, deleteTransaction } from "../services/transactionsService.js";
 
 export async function getTransactions(req, res) {
     try {

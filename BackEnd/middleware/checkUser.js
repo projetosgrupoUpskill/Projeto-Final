@@ -1,4 +1,4 @@
-import * as registerService from "../services/registerService.js";
+/* import * as registerService from "../services/registerService.js"; */
 
 export const checkEmailExists = async (req, res, next) => {
     try {

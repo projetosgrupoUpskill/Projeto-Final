@@ -5,7 +5,7 @@ import {
   createLimitHandler,
   updateLimitHandler,
   deleteLimitHandler
-} from "../controllers/expenseLimitsController.js";
+} from "../controller/expenseLimitsController.js";
 import auth  from "../middleware/auth.js";
 
 const router = express.Router();
