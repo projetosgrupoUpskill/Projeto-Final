@@ -50,6 +50,7 @@ const Dashboard = () => {
           <TransactionList
             transactions={lastFiveTransactions}
             onDelete={(id) => deleteMutation.mutate(id)}
+            showPagination={false}
           />
         </div>
 
