@@ -33,6 +33,10 @@ export async function createLimitHandler(req, res) {
   try {
     const { amount_limit, period, category_id } = req.body;
 
+    if (!amount_limit || !period || !category_id) {
+      return res.status(400).json({ message: "Campos obrigatórios em falta" });
+    }
+
     const insertId = await createLimit({
       amount_limit,
       period,
@@ -56,6 +60,12 @@ export async function createLimitHandler(req, res) {
 
 export async function updateLimitHandler(req, res) {
   try {
+    const { amount_limit, period } = req.body;
+
+    if (!amount_limit || !period) {
+      return res.status(400).json({ message: "Campos obrigatórios em falta" });
+    }
+    
     const affectedRows = await updateLimit(
       req.params.id,
       req.user.id,
