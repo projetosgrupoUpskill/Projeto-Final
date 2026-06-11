@@ -29,14 +29,19 @@ export async function addTransaction(req, res) {
 
 export async function editTransaction(req, res) {
     try {
-        const { id } = req.params;
         const { title, amount, type, transaction_date, category_id, currency_id } = req.body;
 
         if (!title || !amount || !type || !transaction_date || !category_id) {
             return res.status(400).json({ message: "Campos obrigatórios em falta" });
         }
 
-        await updateTransaction(id, title, amount, type, transaction_date, category_id, currency_id || 1);
+        const affectedRows = await updateTransaction(req.params.id, req.user.id, {
+        title, amount, type, transaction_date, category_id, currency_id: currency_id || 1 });
+
+        if (affectedRows === 0) {
+            return res.status(404).json({ message: "Transação não encontrada" });
+        }
+
         return res.json({ message: "Transação atualizada com sucesso" });
 
     } catch (error) {
@@ -46,8 +51,12 @@ export async function editTransaction(req, res) {
 
 export async function removeTransaction(req, res) {
     try {
-        const { id } = req.params;
-        await deleteTransaction(id);
+        const affectedRows = await deleteTransaction(req.params.id, req.user.id);
+
+        if (affectedRows === 0) {
+            return res.status(404).json({ message: "Transação não encontrada" });
+        }
+
         return res.json({ message: "Transação apagada com sucesso" });
     } catch (error) {
         return res.status(500).json({ message: "Erro interno" });
