@@ -4,11 +4,15 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createTransaction, getCategories } from "../api";
 import Card from "../components/Card";
 
+const MAX_CHARS = 50;
+const MAX_AMOUNT = 1000000;
+
 export default function AddTransaction({ onAdd }) {
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState("")
     const [type, setType] = useState("expense")
     const [category, setCategory] = useState("outro")
+    const [errors, setErrors] = useState({});
     const queryClient = useQueryClient();
 
     const { data: categories = [] } = useQuery({
@@ -24,6 +28,7 @@ export default function AddTransaction({ onAdd }) {
           setDescription("");
           setAmount("");
           setCategory("outro");
+          setErrors({});
 
         },
         onError: () => {
@@ -31,9 +36,47 @@ export default function AddTransaction({ onAdd }) {
         }
       });
 
+      const validateDescription = (value) => {
+        if(!value || value.trim() === "") return "A descrição é obrigatória.";
+        if (value.trim().length < 3) return "A descrição deve ter pelo menos 3 caracteres.";
+        return null;
+        }
+
+        const handleDescriptionChange = (e) => {
+            const value = e.target.value;
+            if (value.length > MAX_CHARS) return;
+            setDescription(value);
+            
+            const error = validateDescription(value);
+            setErrors((prev) => ({ ...prev, description: error }));
+        }
+
+        const handleAmountChange = (e) => {
+            const value = e.target.value;
+
+            if (/\.\d{3,}$/.test(value)) return; // ← só bloqueia 3+ casas decimais 
+            if (parseFloat(value) > MAX_AMOUNT) return; // bloqueia valor excessivo
+            setAmount(value);
+
+            const error = !value || parseFloat(value) <= 0 ? "Valor é obrigatório." : null;
+            setErrors((prev) => ({ ...prev, amount: error }));
+        }
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!description || !amount) return;
+
+        const trimmed = description.trim();
+        const descError = validateDescription(trimmed);
+        const amountError = !amount || parseFloat(amount) <= 0 ? "Valor é obrigatório." : null;
+
+        if (descError || amountError) {
+            setErrors({
+                description: descError,
+                amount: amountError
+            });
+                return
+        };
     
         const numericValue = parseFloat(amount);
         
@@ -46,6 +89,9 @@ export default function AddTransaction({ onAdd }) {
           category: category || "outro"
         });
       };
+
+      const charsLeft = MAX_CHARS - description.length;
+      const atLimit = charsLeft === 0;
 
     return (
         <div className={styles.card}>
@@ -60,10 +106,20 @@ export default function AddTransaction({ onAdd }) {
                             type="text"
                             placeholder="Ex: Salário, Renda, Supermercado..."
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className={styles.input}
-                            required
+                            onChange={handleDescriptionChange}
+                            className={`${styles.input} ${errors.description || atLimit ? styles.inputError : ""}`}
                         />
+                        <div className={styles.inputMeta}>
+                        {atLimit
+                                    ? <span className={styles.errorMsg}></span>
+                                    : errors.description
+                                        ? <span className={styles.errorMsg}>{errors.description}</span>
+                                        : <span />
+                                }
+                                <span className={atLimit ? styles.charsWarning : styles.charsCount}>
+                                    {charsLeft}/{MAX_CHARS}
+                                </span>
+                            </div>
                     </div>
 
                     <div className={styles.formGroup}>
@@ -74,10 +130,16 @@ export default function AddTransaction({ onAdd }) {
                             min="0.01"
                             placeholder="0.00"
                             value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            className={styles.input}
+                            onChange={handleAmountChange}
+                            className={`${styles.input} ${errors.amount ? styles.inputError : ""}`}
                             required
                         />
+                        <div className={styles.inputMeta}>
+                            {errors.amount
+                                ? <span className={styles.errorMsg}>{errors.amount}</span>
+                                : <span />
+                            }
+                        </div>
                     </div>
 
                     <div className={styles.formGroup}>

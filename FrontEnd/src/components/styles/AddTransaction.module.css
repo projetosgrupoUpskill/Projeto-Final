@@ -56,3 +56,38 @@ select {
 .submitButton:hover {
   background-color: #003366;
 }
+
+/* Adicionar estas classes ao AddTransaction.module.css existente */
+
+.inputError {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+.inputMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  min-height: 18px;
+}
+
+.errorMsg {
+  font-size: 0.65rem;
+  color: #ef4444;
+  width: 100%;          /* ← ocupa toda a largura */
+  text-align: center;   /* ← centra o texto */
+}
+
+.charsCount {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin-left: auto;
+}
+
+.charsWarning {
+  font-size: 0.78rem;
+  color: #f97316;
+  font-weight: 600;
+  margin-left: auto;
+}
