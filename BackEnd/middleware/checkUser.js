@@ -15,6 +15,7 @@ export const checkEmailExists = async (req, res, next) => {
       return res.status(404).json({ error: "Email não encontrado" });
     }
 
+    req.foundUser = users[0]; // Armazena o usuário encontrado para uso posterior
     next();
 
   } catch (err) {
