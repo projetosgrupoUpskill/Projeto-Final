@@ -30,7 +30,7 @@ CREATE TABLE users (
 
 CREATE TABLE transactions (
     id 					INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    title 				VARCHAR(255) NOT NULL,
+    title 				VARCHAR(50) NOT NULL,
     amount 				DECIMAL(10 , 2 ) NOT NULL,
     type 				ENUM('income', 'expense') NOT NULL,
     transaction_date 	DATE NOT NULL,
