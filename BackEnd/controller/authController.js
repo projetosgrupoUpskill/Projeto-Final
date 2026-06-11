@@ -1,20 +1,10 @@
 import jwt from "jsonwebtoken";
-import { findUserByEmail, comparePassword } from "../services/authService.js";
+import { createUser, comparePassword } from "../services/authService.js";
 
 export async function login(req, res) {
   try {
-    const { email, password } = req.body;
-
-    // verifica se email existe
-    const [users] = await findUserByEmail(email);
-
-    if (users.length === 0) {
-      return res.status(401).json({
-        message: "Credenciais inválidas"
-      });
-    }
-
-    const user = users[0];
+    const user = req.foundUser; //(populado pelo middleware checkEmailExists)
+    const { password } = req.body;
 
     // verifica se pass é correta
     const isValid = await comparePassword(password, user.password);
@@ -38,5 +28,21 @@ export async function login(req, res) {
     return res.status(500).json({
       message: "Erro interno"
     });
+  }
+}
+
+export async function register(req, res) {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Campos obrigatórios em falta" });
+    }
+
+    const id = await createUser(name, email, password);
+    return res.status(201).json({ id, message: "Utilizador criado com sucesso" });
+
+  } catch (error) {
+    return res.status(500).json({ message: "Erro interno" });
   }
 }
