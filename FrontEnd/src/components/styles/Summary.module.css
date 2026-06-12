@@ -13,10 +13,6 @@
   border: 1px solid #e5e7eb;
 }
 
-.balanceCard {
-  border: 2px solid #001f3f;
-}
-
 .cardHeader {
   padding-bottom: 0.75rem;
 }
@@ -137,30 +133,3 @@
   color: #babdc2 !important;
 }
 
-:global(body.dark) .incomeCard .eyeIcon {
-  color: #4ade80 !important ;
-}
-
-:global(body.dark) .expenseCard .eyeIcon {
-  color: #f87171 !important ;
-}
-
-/* =======================================================
-   DARK MODE - HOVER DOS CARDS
-======================================================= */
-:global(body.dark) .balanceCard:hover {
-  background-color: rgba(173, 178, 180, 0.65) !important;
-  border-color: #ffffff !important;
-}
-
-:global(body.dark) .incomeCard:hover {
-  background-color: rgba(74, 222, 128, 0.28) !important;
-  border-color: #4ade80 !important;
-  border-width: 2px !important;
-}
-
-:global(body.dark) .expenseCard:hover {
-  background-color: rgba(248, 113, 113, 0.28) !important;
-  border-color: #f87171 !important;
-  border-width: 2px !important;
-}
