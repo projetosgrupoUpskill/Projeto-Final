@@ -17,12 +17,12 @@ export default function AddTransaction() {
         },
     });
 
-    const handleSubmit = ({ description, amount, category }) => {
+    const handleSubmit = ({ description, amount, category, date }) => {
         mutation.mutate({
             description,
             amount,
             category,
-            date: new Date().toISOString(),
+            date,
         });
     };
 
