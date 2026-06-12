@@ -19,10 +19,12 @@ export function Signup() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     if (formData.password !== formData.confirmPassword) {
       setError("As senhas não coincidem.");
@@ -39,7 +41,8 @@ export function Signup() {
     try {
       await register(formData.name, formData.email, formData.password);
 
-      navigate("/register");
+        setSuccess("Conta criada com sucesso! Redirecionando para o login...");
+        setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       setError(error.message || "Erro ao criar conta. Tente novamente.");
     } finally {
@@ -71,6 +74,7 @@ export function Signup() {
       }
     >
       <form className={styles.form} onSubmit={handleSubmit}>
+      {success && <p style={{ color: "green", marginBottom: "1rem" }}>{success}</p>}
         <div className={styles.formGroup}>
           <label htmlFor="name" className={styles.label}>
             Nome Completo
