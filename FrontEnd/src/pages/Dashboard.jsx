@@ -51,6 +51,7 @@ const Dashboard = () => {
             transactions={lastFiveTransactions}
             onDelete={(id) => deleteMutation.mutate(id)}
             showPagination={false}
+            title="Últimas Transações"
           />
         </div>
 
