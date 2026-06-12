@@ -13,6 +13,7 @@ export default function TransactionList({
   categoryFilterComponent,
   dateFilterComponent,
   showPagination = true,
+  title = "Lista de Transações",
 }) {
   const { theme } = useContext(ThemeContext);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +35,7 @@ export default function TransactionList({
 
   return (
     <div className={styles.container}>
-      <Card title="Lista de Transacções">
+      <Card title={title}>
         {sortedTransactions.length === 0 ? (
           <div className={styles.emptyState}>
             <p className={styles.emptyText}>Ainda não há transacções.</p>
