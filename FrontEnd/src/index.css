@@ -207,3 +207,9 @@ body.dark [class*="filterCard"] {
 body.dark [class*="chartSection"] {
   color: white !important;
 }
+
+body.dark [class*="confirmModal"],
+body.dark [class*="modal"] {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+}
