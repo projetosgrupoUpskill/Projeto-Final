@@ -11,6 +11,13 @@ export const createTransaction = (data) =>
     body: JSON.stringify(data),
   }).then((res) => res.json());
 
+export const updateTransaction = (id, data) =>
+  fetch(`http://localhost:3001/api/transactions/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  }).then((res) => res.json());
+
 export const deleteTransaction = (id) =>
     fetch(`${API_URL}/api/transactions/${id}`, { method: "DELETE" })
         .then((res) => res.json());
