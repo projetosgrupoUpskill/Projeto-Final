@@ -3,7 +3,7 @@ import styles from "./styles/TransactionItem.module.css";
 import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import { useState } from "react";
-import EditTransactionModal from "../pages/EditTransactionModal";
+import EditTransactionModal from "../components/EditTransactionModal";
 import { createPortal } from "react-dom";
 
 export default function TransactionItem({ transaction, onDelete, isEven }) {
