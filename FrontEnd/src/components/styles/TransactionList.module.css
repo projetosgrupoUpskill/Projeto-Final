@@ -31,6 +31,22 @@
   grid-column: span 2;
 }
 
+.submitButton {
+  width: 20%;
+  margin: 25px;
+  background-color: #1A7A5E;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.submitButton:hover {
+  background-color: #0f2e22d6;
+}
+
 .headerAmount {
   grid-column: span 2;
   text-align: right;

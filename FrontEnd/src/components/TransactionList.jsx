@@ -85,6 +85,7 @@ export default function TransactionList({
               }}
             >
               <button
+              className={styles.submitButton}
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
                 style={{
@@ -101,11 +102,13 @@ export default function TransactionList({
               </span>
 
               <button
+                className={styles.submitButton}
                 onClick={() =>
                   setCurrentPage((p) => Math.min(p + 1, totalPages))
                 }
                 disabled={currentPage === totalPages}
                 style={{
+                  
                   padding: "6px 12px",
                   cursor:
                     currentPage === totalPages ? "not-allowed" : "pointer",
