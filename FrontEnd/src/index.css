@@ -274,3 +274,12 @@ body.dark [class*="chatMessages"]::-webkit-scrollbar-thumb {
 body.dark [class*="chatMessages"]::-webkit-scrollbar-thumb:hover {
   background: #52525b;
 }
+
+/* Cor das transações */
+body.dark [class*="amountIncome"] {
+  color: #2ebf63 !important;
+}
+
+body.dark [class*="amountExpense"] {
+  color: #fa7f7f !important;
+}
