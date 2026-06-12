@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateTransaction } from "../api";
-import TransactionForm from "../components/TransactionForm";
+import TransactionForm from "./TransactionForm";
 import modalStyles from "../components/styles/EditTransactionModal.module.css";
 
 export default function EditTransactionModal({ transaction, onClose }) {
