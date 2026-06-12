@@ -1,247 +1,177 @@
 .historyContainer {
   margin-top: 2rem;
-}
-
-.topSection {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  align-items: stretch;
-  width: 100%;
-}
-
-.chartSection {
   display: flex;
-  justify-content: left;
-  align-items: center;
-  min-height: 320px;
-}
-
-@media (max-width: 900px) {
-  .topSection {
-    grid-template-columns: 1fr;
-  }
-}
-
-.filterCard {
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 16px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e0e0e0;
-  box-sizing: border-box;
-  width: 100%;
-  overflow: auto;
-  height: 100%;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .filterTitle {
   font-size: 1rem;
   font-weight: 600;
-  text-align: left;
+  color: #111827;
+  margin: 0 0 1.25rem 0;
+  text-align: left;  /* ← adiciona */
+}
+
+/* Gráfico ocupa a linha toda no topo */
+.chartSection {
+  width: 100%;
+  min-height: 320px;
+}
+
+/* Lista + Filtros lado a lado */
+.bottomSection {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── Filtros ── */
+.filterCard {
+  background-color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  width: 100%;
+  position: sticky;
+  top: 1rem;
+}
+
+.filterTitle {
+  font-size: 1rem;
+  font-weight: 600;
   color: #111827;
   margin: 0 0 1.25rem 0;
 }
-
 
 .filterSection {
   margin-bottom: 1rem;
   text-align: left;
 }
 
-.searchContainer {
-  position: relative;
-  margin-bottom: 1.5rem;
-  width: 100%;
-}
-
-/* Parece que não há este ícone - REVISAR */
-.searchIcon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
-  font-size: 1.2rem;
-}
-
 .searchInput {
   width: 100%;
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  height: 42px;
-  font-size: 0.8rem;
+  height: 38px;
+  font-size: 0.85rem;
   outline: none;
   background-color: #fff;
   color: #333;
-  transition: border-color 0.2s ease-in-out;
+  transition: border-color 0.2s;
 }
 
 .searchInput:focus {
-  border-color: #007bff;
+  border-color: #15803d;
 }
 
+.searchContainer {
+  width: 100%;
+}
+
+/* Cada filtro empilhado verticalmente */
 .dropdownsContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: flex-end;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  text-align: left;
 }
 
 .dropdownGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  text-align: left;
-}
-
-.dropdownGroup input[type="date"] {
-  padding: 0 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  background-color: #fff;
-  color: #333;
-  outline: none;
-  box-sizing: border-box;
-  height: 42px;
-  font-family: inherit;
-  flex: 1;
-  transition: border-color 0.2s ease-in-out;
-}
-
-.dropdownGroup label,
-.dropdownLabel {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #555;
-  margin-left: 2px;
-  line-height: 1;
-  margin-bottom: 0.2rem;
-}
-
-/* --- Padronização do Select da Categoria --- */
-.dropdownGroup select {
-  height: 42px;
-  padding: 0 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  background-color: #fff;
-  color: #333;
-  width: 100%;
-  box-sizing: border-box;
-  outline: none;
-}
-
-.dropdownGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  text-align: left;
-}
-
-.dropdownGroup > div {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  height: 42px;
+  gap: 0.35rem;
 }
 
 .dropdownLabel {
-  font-size: 0.85rem;
-  text-align: left;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #555;
-  margin-left: 2px;
+  text-align: left;  
 }
 
+.dropdownGroup select,
 .dropdownSelect {
-  padding: 0.6rem;
+  height: 38px;
+  padding: 0 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.85rem;
   background-color: #fff;
   color: #333;
-  outline: none;
   width: 100%;
   box-sizing: border-box;
+  outline: none;
 }
 
-/* Botão Aplicar Filtros - largura total */
+.dropdownGroup select:focus,
+.dropdownSelect:focus {
+  border-color: #15803d;
+}
+
 .applyBtn {
   width: 100%;
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1rem;
   background-color: #15803d;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  font-size: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-/* Novo estilo para o botão Limpar Filtros */
 .clearBtn {
-  padding: 0.6rem 1.5rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
   background-color: #ef4444;
   color: #ffffff;
   border: none;
   border-radius: 6px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
-  height: 42px;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s;
 }
 
 .clearBtn:hover {
   background-color: #dc2626;
 }
 
-/* Container animado/suave para as caixas de data personalizadas */
 .customDateWrapper {
-  margin-top: 1.2rem;
-  padding-top: 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 1px dashed #e5e7eb;
-  text-align: left;
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
 .customDateWrapper :global(input[type="date"]) {
-  height: 42px;
+  height: 38px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 0 0.8rem;
+  border-radius: 6px;
+  padding: 0 0.75rem;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   outline: none;
   box-sizing: border-box;
+  width: 100%;
 }
 
-/* .global (body.dark) .chartSection{
-  color: #ffffff;
-} */
-
-@media (max-width: 1024px) {
-  .topSection {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-@media (max-width: 768px) {
-  .dropdownsContainer {
+/* ── Responsivo ── */
+@media (max-width: 900px) {
+  .bottomSection {
     grid-template-columns: 1fr;
-    align-items: stretch;
+  }
+
+  .filterCard {
+    position: static;
   }
 }
