@@ -57,7 +57,7 @@ export function Login() {
           </label>
 
           <input
-            id="email"x
+            id="email"
             name="email"
             type="email"
             placeholder="seu@email.com"
