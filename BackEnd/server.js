@@ -18,12 +18,12 @@ app.use(cors());
 app.use(express.json());
 
 // Rotas
-app.use("/auth", authRoutes);
-app.use("/transactions", transactionsRoutes);
-/* app.use("/users", userRoutes); */
-app.use("/categories", categoriesRoutes);
-app.use("/expense-limits", expenseLimitsRoutes);
-/* app.use("/chat", chatRoutes ); */
+app.use("/api/auth",            authRoutes);
+app.use("/api/transactions",    transactionsRoutes);
+/* app.use("/api/users", userRoutes); */
+app.use("/api/categories",      categoriesRoutes);
+app.use("/api/expense-limits",  expenseLimitsRoutes);
+/* app.use("/api/chat", chatRoutes ); */
 
 // Rota de teste - revisar arquivo
 app.get("/", (req, res) => {
