@@ -213,3 +213,64 @@ body.dark [class*="modal"] {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
 }
+
+body.dark [class*="chatWidget"] {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark [class*="chatMessages"] {
+  background-color: var(--card-bg-alt) !important;
+}
+
+body.dark [class*="chatBubble"]:not([class*="chatBubbleUser"]) {
+  background-color: #1a3a2a !important;
+  color: #d1fae5 !important;
+}
+
+body.dark [class*="chatBubbleUser"] {
+  color: white !important;
+}
+
+body.dark [class*="chatInputArea"] {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark [class*="chatInputArea"] input {
+  background-color: var(--card-bg-alt) !important;
+  color: var(--text-h) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark [class*="suggestions"] {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark [class*="suggestionChip"] {
+  background-color: var(--card-bg-alt) !important;
+  color: var(--text-h) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark [class*="suggestionChip"]:hover {
+  background-color: #1a3a2a !important;
+}
+
+body.dark [class*="chatMessages"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+body.dark [class*="chatMessages"]::-webkit-scrollbar-track {
+  background: var(--card-bg-alt);
+}
+
+body.dark [class*="chatMessages"]::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 3px;
+}
+
+body.dark [class*="chatMessages"]::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
