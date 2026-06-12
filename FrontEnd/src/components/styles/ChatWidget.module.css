@@ -1,0 +1,139 @@
+.chatWidget {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  width: 320px;
+  height: 420px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #d1e8dd;
+  box-shadow: 0 8px 24px rgba(18, 48, 34, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.chatHeader {
+  background: linear-gradient(135deg, #1a4a33, #2d7a52);
+  padding: 0.3rem;
+  text-align: center;
+  color: #ffffff;
+}
+
+.chatHeader h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+.chatHeader p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.chatMessages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background-color: #f7faf9;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.chatBubbleUser {
+  background-color: #2d7a52;
+  color: white;
+  border-radius: 12px 12px 0 12px;
+  padding: 10px 14px;
+  max-width: 75%;
+  font-size: 14px;
+  align-self: flex-end;
+}
+
+.chatBubble {
+  background-color: #e4f2eb;
+  border-radius: 12px 12px 12px 0;
+  padding: 10px 14px;
+  max-width: 80%;
+  font-size: 14px;
+  color: #123022;
+}
+
+.chatInputArea {
+  padding: 12px;
+  border-top: 1px solid #d1e8dd;
+  display: flex;
+  gap: 8px;
+  background-color: #ffffff;
+}
+
+.chatInputArea input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #d1e8dd;
+  outline: none;
+  font-size: 14px;
+  background-color: #f7faf9;
+  color: #123022;
+}
+
+.chatInputArea input:focus {
+  border-color: #2d7a52;
+}
+
+.chatInputArea button {
+  background: linear-gradient(135deg, #1a4a33, #2d7a52);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: opacity 0.2s;
+}
+
+.chatInputArea button:hover {
+  opacity: 0.85;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px;
+  border-top: 1px solid #d1e8dd;
+  background-color: #ffffff;
+}
+
+.suggestionChip {
+  background-color: #e4f2eb;
+  color: #123022;
+  border: 1px solid #b6ddc8;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.suggestionChip:hover {
+  background-color: #c8e6d5;
+}
+
+.chatBubbleUser {
+  background-color: #2d7a52;
+  color: white;
+  border-radius: 12px 12px 0 12px;
+  padding: 10px 14px;
+  max-width: 80%;
+  font-size: 14px;
+  align-self: flex-end;
+  margin-left: auto;
+}
