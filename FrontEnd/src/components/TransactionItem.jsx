@@ -1,12 +1,15 @@
-import { FiTrash } from "react-icons/fi";
+import { FiTrash, FiEdit2 } from "react-icons/fi";
 import styles from "./styles/TransactionItem.module.css";
 import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
+import { useState } from "react";
+import EditTransactionModal from "../pages/EditTransactionModal";
 
 export default function TransactionItem({ transaction, onDelete, isEven }) {
 
     const isIncome = transaction.amount > 0;
     const { currency } = useContext(PreferencesContext);
+    const [isEditing, setIsEditing] = useState(false);
 
     const formatCurrency = (amount) => {
         const locale = currency === 'BRL' ? 'pt-BR' : 'pt-PT'
@@ -20,6 +23,7 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
     };
 
     return (
+        <>
         <div className={`${styles.row} ${isEven ? styles.rowEven : styles.rowOdd}`}>
             {/* Descrição */}
             <div className={styles.description}>
@@ -52,6 +56,13 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
             {/* Ações */}
             <div className={styles.actions}>
                 <button
+                        className={styles.editButton}
+                        onClick={() => setIsEditing(true)}
+                        title="Editar transação"
+                    >
+                        <FiEdit2 className={styles.icon} />
+                </button>
+                <button
                     className={styles.deleteButton}
                     onClick={() => onDelete(transaction.id)}
                 >
@@ -59,5 +70,12 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
                 </button>
             </div>
         </div>
+        {isEditing && (
+            <EditTransactionModal
+                transaction={transaction}
+                onClose={() => setIsEditing(false)}
+            />
+        )}
+        </>
     );
 }
