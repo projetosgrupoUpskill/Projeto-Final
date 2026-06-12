@@ -71,7 +71,7 @@ export default function TransactionForm({ initialValues = {}, onSubmit, onCancel
             description: trimmed,
             amount: finalAmount,
             category: category || "outro",
-            date: new Date(date).toISOString(),
+            date: new Date(`${date}T${new Date().toTimeString().slice(0, 8)}`).toISOString(),
         });
     };
 
