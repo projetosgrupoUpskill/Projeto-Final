@@ -31,7 +31,7 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
             <div className={styles.description}>
                 {transaction.category ? (
                     <img
-                    src={`http://localhost:3001/api/categories/${transaction.category}/icon`} //apanhamos os ícones fornecidos pela API aqui
+                    src={`http://localhost:3000/api/categories/${transaction.category}/icon`} //apanhamos os ícones fornecidos pela API aqui
                     alt={transaction.category}
                     width={20}
                     style={{ width: "20px", height: "20px", marginRight: "12px", objectFit: "contain" }}
