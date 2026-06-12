@@ -4,12 +4,14 @@ import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import { useState } from "react";
 import EditTransactionModal from "../pages/EditTransactionModal";
+import { createPortal } from "react-dom";
 
 export default function TransactionItem({ transaction, onDelete, isEven }) {
 
     const isIncome = transaction.amount > 0;
     const { currency } = useContext(PreferencesContext);
     const [isEditing, setIsEditing] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const formatCurrency = (amount) => {
         const locale = currency === 'BRL' ? 'pt-BR' : 'pt-PT'
@@ -64,7 +66,8 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
                 </button>
                 <button
                     className={styles.deleteButton}
-                    onClick={() => onDelete(transaction.id)}
+                    onClick={() => setIsDeleting(true)}
+                    title="Eliminar Transação"
                 >
                     <FiTrash className={styles.icon} />
                 </button>
@@ -75,6 +78,26 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
                 transaction={transaction}
                 onClose={() => setIsEditing(false)}
             />
+        )}
+        {isDeleting && createPortal(
+            <div className={styles.overlay} onClick={(e) => { if (e.target === e.currentTarget) setIsDeleting(false); }}>
+                <div className={styles.confirmModal}>
+                    <h3 className={styles.confirmTitle}>Eliminar transação</h3>
+                    <p className={styles.confirmText}>
+                        Tens a certeza que queres eliminar <strong>{transaction.description}</strong>? 
+                    </p>
+                    <p className={styles.confirmText}>Esta ação não pode ser desfeita.</p>
+                    <div className={styles.confirmActions}>
+                        <button className={styles.cancelConfirmBtn} onClick={() => setIsDeleting(false)}>
+                            Cancelar
+                        </button>
+                        <button className={styles.deleteConfirmBtn} onClick={() => { onDelete(transaction.id); setIsDeleting(false); }}>
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>,
+            document.body
         )}
         </>
     );
