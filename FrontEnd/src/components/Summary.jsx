@@ -34,7 +34,6 @@ export default function Summary({ balance, income, expense }) {
       {/* Card de Saldo */}
       <div
         className={`${styles.card} ${styles.balanceCard}`}
-        onClick={() => onCardClick("all")}
       >
         <div className={styles.cardHeader}>
           <h3 className={styles.cardTitle}>Saldo Atual</h3>
@@ -54,7 +53,6 @@ export default function Summary({ balance, income, expense }) {
       {/* Card de Receitas */}
       <div
         className={`${styles.card} ${styles.incomeCard}`}
-        onClick={() => onCardClick("income")}
       >
         <div className={styles.cardHeader}>
           <h3 className={styles.cardTitle}>Total de Receitas</h3>
@@ -72,7 +70,6 @@ export default function Summary({ balance, income, expense }) {
       {/* Card de Despesas */}
       <div
         className={`${styles.card} ${styles.expenseCard}`}
-        onClick={() => onCardClick("expense")}
       >
         <div className={styles.cardHeader}>
           <h3 className={styles.cardTitle}>Total de Despesas</h3>
