@@ -19,10 +19,15 @@ import { useContext, useEffect } from "react";
 import Details from "./pages/History";
 import { Login } from "./pages/login";
 import { Signup } from "./pages/Signup";
+import ChatbotButton from "./components/ChatbotButton";
+import ChatWidget from "./components/ChatWidget";
+import { useState } from "react";
 
 const queryClient = new QueryClient();
 
 function App() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
@@ -48,6 +53,12 @@ function App() {
               <Route path="cadastro" element={<Signup />} />
               
             </Routes>
+            {/* Chatbot - Disponível em todas as páginas */}
+            {isChatOpen && <ChatWidget />}
+            <ChatbotButton
+              isOpen={isChatOpen}
+              onClick={() => setIsChatOpen(!isChatOpen)}
+            />
           </Router>
         </PreferencesProvider>
       </ThemeProvider>
