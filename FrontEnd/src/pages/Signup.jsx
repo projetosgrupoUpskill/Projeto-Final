@@ -1,6 +1,7 @@
 import { AuthLayout } from "../components/AuthLayout";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 import styles from "../components/styles/authForm.module.css";
 
@@ -52,6 +53,9 @@ export function Signup() {
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+    if (error) {
+      setError("");
+    }
   };
 
   return (
@@ -67,8 +71,6 @@ export function Signup() {
       }
     >
       <form className={styles.form} onSubmit={handleSubmit}>
-          {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
-          
         <div className={styles.formGroup}>
           <label htmlFor="name" className={styles.label}>
             Nome Completo
@@ -155,6 +157,8 @@ export function Signup() {
           </label>
         </div>
 
+        {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
+        
         <button type="submit" className={styles.button} disabled={isLoading}>
           {isLoading ? "Criando conta..." : "Criar Conta"}
         </button>
