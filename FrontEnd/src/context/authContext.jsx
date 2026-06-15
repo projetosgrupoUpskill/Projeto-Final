@@ -5,12 +5,14 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
-
+  const [userName, setUserName] = useState(() => localStorage.getItem("name") || "");
+  
   const login = async (email, password) => {
     const data = await apiLogin(email, password);
     localStorage.setItem("token", data.token);
     localStorage.setItem("name", data.name);
     setToken(data.token);
+    setUserName(data.name);
   };
 
   const register = async (name, email, password) => {
@@ -21,6 +23,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("name");
     setToken(null);
+    setUserName("");
   };
 
   useEffect(() => {
@@ -36,13 +39,13 @@ export function AuthProvider({ children }) {
         logout();
         window.location.href = "/login";
       }
-    }, 5000); // verifica a cada 30 segundos
+    }, 30000); // verifica a cada 30 segundos
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, login, register, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ token, login, register, logout, isAuthenticated: !!token, userName }}>
       {children}
     </AuthContext.Provider>
   );
