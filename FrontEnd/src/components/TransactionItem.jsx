@@ -8,7 +8,7 @@ import { createPortal } from "react-dom";
 
 export default function TransactionItem({ transaction, onDelete, isEven }) {
 
-    const isIncome = transaction.amount > 0;
+    const isIncome = transaction.type === "income";
     const { currency } = useContext(PreferencesContext);
     const [isEditing, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -29,29 +29,26 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
         <div className={`${styles.row} ${isEven ? styles.rowEven : styles.rowOdd}`}>
             {/* Descrição */}
             <div className={styles.description}>
-                {transaction.category ? (
-                    <img
-                    src={`http://localhost:3000/api/categories/${transaction.category}/icon`} //apanhamos os ícones fornecidos pela API aqui
-                    alt={transaction.category}
-                    width={20}
-                    style={{ width: "20px", height: "20px", marginRight: "12px", objectFit: "contain" }}
+            {transaction.categoryIcon ? (
+                <span
+                    dangerouslySetInnerHTML={{ __html: transaction.categoryIcon }}
+                    style={{ width: 20, height: 20, marginRight: 12, color: transaction.categoryColor, display: "flex", flexShrink: 0 }}
                 />
-                ) : (
-
-                    <div className={`${styles.indicator} ${isIncome ? styles.indicatorIncome : styles.indicatorExpense}`} />
-                )}
-                <span className={styles.descriptionText}>{transaction.description}</span>
+            ) : (
+                <div className={`${styles.indicator} ${isIncome ? styles.indicatorIncome : styles.indicatorExpense}`} />
+            )}
+                <span className={styles.descriptionText}>{transaction.title}</span>
             </div>
 
             {/* Data */}
             <div className={styles.date}>
-                {new Date(transaction.date).toLocaleDateString("pt-PT")}
+                {new Date(transaction.transaction_date).toLocaleDateString("pt-PT")}
             </div>
 
             {/* Valor */}
             <div className={styles.amount}>
                 <span className={`${styles.amountValue} ${isIncome ? styles.amountIncome : styles.amountExpense}`}>
-                    {formatCurrency(transaction.amount)}
+                    {formatCurrency(isIncome ? transaction.amount : -transaction.amount)}
                 </span>
             </div>
 
@@ -84,7 +81,7 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
                 <div className={styles.confirmModal}>
                     <h3 className={styles.confirmTitle}>Eliminar transação</h3>
                     <p className={styles.confirmText}>
-                        Tens a certeza que queres eliminar <strong>{transaction.description}</strong>? 
+                        Tens a certeza que queres eliminar <strong>{transaction.title}</strong>? 
                     </p>
                     <p className={styles.confirmText}>Esta ação não pode ser desfeita.</p>
                     <div className={styles.confirmActions}>

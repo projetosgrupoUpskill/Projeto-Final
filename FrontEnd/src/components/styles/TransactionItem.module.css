@@ -161,7 +161,7 @@
 .confirmText + .confirmText {
   margin-top: 0.5rem;
   font-size: 0.8rem;
-  color: #e3e6eb;
+  color: #59616ad0;
 }
 
 .confirmActions {
@@ -200,4 +200,44 @@
 
 .deleteConfirmBtn:hover {
   background: #dc2626;
+}
+
+@media (max-width: 458px) {
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    gap: 8px;
+  }
+
+  .description {
+    grid-column: unset;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .descriptionText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .date {
+    grid-column: unset;
+    font-size: 0.72rem;
+    color: #9ca3af;
+    white-space: nowrap;
+  }
+
+  .amount {
+    grid-column: unset;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .actions {
+    grid-column: unset;
+    justify-content: flex-end;
+    gap: 2px;
+  }
 }
