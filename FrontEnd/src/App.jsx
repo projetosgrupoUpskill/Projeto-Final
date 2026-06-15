@@ -21,12 +21,19 @@ import ChatbotButton from "./components/ChatbotButton";
 import ChatWidget from "./components/ChatWidget";
 import LandingPage from "./pages/LandingPage";
 
+
 const queryClient = new QueryClient();
 
 // Proteção para rotas que precisam de autenticação
 function PrivateRoute({ children }) {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/" />; // ALTERADO: era "/landing" / "/login"
+}
+
+// ADICIONADO: decide o que mostrar em "/"
+function HomeRoute() {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Navigate to="/painel" /> : <LandingPage />;
 }
 
 function App() {
@@ -39,30 +46,54 @@ function App() {
           <AuthProvider>
             <Router>
               <Routes>
-                <Route path="/landing" element={<LandingPage />} />
+                <Route element={<MainLayout />}> {/* ALTERADO: removido path="/" e PrivateRoute aqui */}
+                {/* ALTERADO: "/" agora decide entre LandingPage e redirect para /painel */}
+                <Route path="/" element={<HomeRoute />} />
+
                 {/* O MainLayout contém o Header, Navbar e Footer */}
-                <Route
-                  path="/"
-                  element={
-                    <PrivateRoute>
-                      <MainLayout />
-                    </PrivateRoute>
-                  }
-                >
-                  {/* Painel - Página Principal */}
-                  <Route index element={<Dashboard />} />
-                  <Route path="adicionar" element={<AddTransaction />} />
-                  <Route path="details" element={<Details />} />
+                
+                  <Route
+                    path="painel" // ALTERADO: era "index" em "/"
+                    element={
+                      <PrivateRoute>
+                        <Dashboard />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="adicionar"
+                    element={
+                      <PrivateRoute>
+                        <AddTransaction />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="details"
+                    element={
+                      <PrivateRoute>
+                        <Details />
+                      </PrivateRoute>
+                    }
+                  />
+                  {/* ALTERADO: "about" acessível com ou sem login */}
                   <Route path="about" element={<ContactCard />} />
-                  <Route path="settings" element={<Settings />} />
-                  {/* Redirecionamento se a rota não existir */}
-                  <Route path="*" element={<Navigate to="/" />} />
+                  <Route
+                    path="settings"
+                    element={
+                      <PrivateRoute>
+                        <Settings />
+                      </PrivateRoute>
+                    }
+                  />
                 </Route>
 
                 <Route path="login" element={<Login />} />
                 <Route path="cadastro" element={<Signup />} />
+
+                {/* ALTERADO: redireciona para "/" em vez de "/landing" */}
+                <Route path="*" element={<Navigate to="/" />} />
               </Routes>
-              {/* Chatbot - Disponível em todas as páginas */}
               {isChatOpen && <ChatWidget />}
               <ChatbotButton
                 isOpen={isChatOpen}
