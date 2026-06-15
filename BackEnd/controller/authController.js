@@ -22,7 +22,7 @@ export async function login(req, res) {
       { expiresIn: "1h" }
     );
 
-    return res.json({ token });
+    return res.json({ token, name: user.name });
 
   } catch (error) {
     return res.status(500).json({
