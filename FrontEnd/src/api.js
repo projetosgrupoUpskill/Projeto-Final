@@ -10,8 +10,8 @@ function authHeaders() {
     ...(token && { Authorization: `Bearer ${token}` }),
   };
 }
-// implementação futura 
-/* async function handleResponse(res) {
+
+async function handleResponse(res) {
   const data = await res.json();
   if (!res.ok) {
     if (res.status === 401 && data.message !== "Credenciais inválidas") {
@@ -22,14 +22,8 @@ function authHeaders() {
     throw new Error(data.message || data.error || "Erro desconhecido");
   }
   return data;
-} */
-
-async function handleResponse(res) {
-  const data = await res.json();
-  if (!res.ok)
-    throw new Error(data.message || data.error || "Erro desconhecido");
-  return data;
 }
+
 
 export const login = (email, password) =>
   fetch(`${API_URL}/api/auth/login`, {
