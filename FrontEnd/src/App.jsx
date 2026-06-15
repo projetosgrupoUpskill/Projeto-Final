@@ -19,6 +19,7 @@ import { Login } from "./pages/login";
 import { Signup } from "./pages/Signup";
 import ChatbotButton from "./components/ChatbotButton";
 import ChatWidget from "./components/ChatWidget";
+import LandingPage from "./pages/LandingPage";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ function App() {
           <AuthProvider>
             <Router>
               <Routes>
+                <Route path="/landing" element={<LandingPage />} />
                 {/* O MainLayout contém o Header, Navbar e Footer */}
                 <Route
                   path="/"
