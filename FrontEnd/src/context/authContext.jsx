@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { login as apiLogin, register as apiRegister } from "../api";
 
 const AuthContext = createContext(null);
@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const data = await apiLogin(email, password);
     localStorage.setItem("token", data.token);
+    localStorage.setItem("name", data.name);
     setToken(data.token);
   };
 
@@ -18,8 +19,27 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("name");
     setToken(null);
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      // Verifica se o token expirou
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const expiry = payload.exp * 1000; // converte para ms
+
+      if (Date.now() > expiry) {
+        logout();
+        window.location.href = "/login";
+      }
+    }, 5000); // verifica a cada 30 segundos
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ token, login, register, logout, isAuthenticated: !!token }}>
