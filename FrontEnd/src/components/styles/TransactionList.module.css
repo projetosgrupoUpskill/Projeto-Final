@@ -79,3 +79,9 @@
 .darkScroll {
   color-scheme: dark;
 }
+
+@media (max-width: 768px) {
+  .tableHeader {
+    display: none;
+  }
+}
