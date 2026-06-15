@@ -20,9 +20,9 @@ export default function AddTransaction() {
     const handleSubmit = ({ description, amount, category, date, type }) => {
         mutation.mutate({
             title: description,
-            amount: Number(amount),
+            amount: Math.abs(Number(amount)),
             type: type,
-            transaction_date: date.split("T")[0],
+            transaction_date: new Date(date).toISOString().slice(0, 19).replace("T", " "),
             category_id: category,
             currency_id: 1,
         });
