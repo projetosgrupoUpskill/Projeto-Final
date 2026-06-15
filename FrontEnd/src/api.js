@@ -1,3 +1,5 @@
+import categoryIcons from "./utils/categoryIcons";
+
 const API_URL = "http://localhost:3000";
 export default API_URL;
 
@@ -8,6 +10,19 @@ function authHeaders() {
     ...(token && { Authorization: `Bearer ${token}` }),
   };
 }
+// implementação futura 
+/* async function handleResponse(res) {
+  const data = await res.json();
+  if (!res.ok) {
+    if (res.status === 401 && data.message !== "Credenciais inválidas") {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+      return;
+    }
+    throw new Error(data.message || data.error || "Erro desconhecido");
+  }
+  return data;
+} */
 
 async function handleResponse(res) {
   const data = await res.json();
@@ -33,7 +48,16 @@ export const register = (name, email, password) =>
 export const getTransactions = () =>
   fetch(`${API_URL}/api/transactions`, {
     headers: authHeaders(),
-  }).then(handleResponse);
+  })
+    .then(handleResponse)
+    .then((data) => {
+      const list = Array.isArray(data) ? data : data.transactions;
+      return list.map((t) => ({
+        ...t,
+        categoryIcon: categoryIcons[t.category_slug] || null,
+        categoryColor: t.category_color || "#6B7280",
+      }));
+    });
 
 export const createTransaction = (data) =>
   fetch(`${API_URL}/api/transactions`, {
@@ -58,7 +82,16 @@ export const deleteTransaction = (id) =>
 export const getCategories = () =>
   fetch(`${API_URL}/api/categories`, {
     headers: authHeaders(),
-  }).then(handleResponse);
+  })
+    .then(handleResponse)
+    .then((data) => {
+      const list = Array.isArray(data) ? data : data.categories;
+      return list.map((category) => ({
+        ...category,
+        label: category.name,
+        icon: categoryIcons[category.slug] || null,
+      }));
+    });
 
 export const getLimits = () =>
   fetch(`${API_URL}/api/expense-limits`, {
