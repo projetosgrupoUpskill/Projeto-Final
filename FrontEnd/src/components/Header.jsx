@@ -49,9 +49,6 @@ export default function Header() {
             <Link to="/details" className={styles.navLink}>
               Detalhes
             </Link>
-            <Link to="/about" className={styles.navLink}>
-              Sobre Nós
-            </Link>
             <Link to="/settings" className={styles.navLink}>
               Definições
             </Link>

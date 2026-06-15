@@ -1,7 +1,7 @@
 import Card from "../components/Card";
 import styles from "../components/styles/Contact.module.css";
 
-const contacts = [
+export const contacts = [
   {
     id: 1,
     profileImg: "https://avatars.githubusercontent.com/u/203020275?v=4",
