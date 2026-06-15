@@ -2,7 +2,14 @@ import pool from "../db.js";
 
 export async function getAllTransactions(user_id) {
     const [rows] = await pool.execute(
-        "SELECT * FROM transactions WHERE user_id = ?",
+        `SELECT 
+            t.*,
+            c.name  AS category_name,
+            c.slug  AS category_slug,
+            c.color AS category_color
+        FROM transactions t
+        JOIN category c ON t.category_id = c.id
+        WHERE t.user_id = ?`,
         [user_id]
     );
     return rows;
