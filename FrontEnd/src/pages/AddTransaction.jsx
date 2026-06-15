@@ -17,12 +17,14 @@ export default function AddTransaction() {
         },
     });
 
-    const handleSubmit = ({ description, amount, category, date }) => {
+    const handleSubmit = ({ description, amount, category, date, type }) => {
         mutation.mutate({
-            description,
-            amount,
-            category,
-            date,
+            title: description,
+            amount: Number(amount),
+            type: type,
+            transaction_date: date.split("T")[0],
+            category_id: category,
+            currency_id: 1,
         });
     };
 
