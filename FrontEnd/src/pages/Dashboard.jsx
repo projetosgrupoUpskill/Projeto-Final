@@ -28,17 +28,17 @@ const Dashboard = () => {
   if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
 
   const income = transactions
-    .filter((t) => t.amount > 0)
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter((t) => t.type === "income")
+    .reduce((sum, t) => sum + Number(t.amount), 0);
 
   const expense = transactions
-    .filter((t) => t.amount < 0)
-    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+    .filter((t) => t.type === "expense")
+    .reduce((sum, t) => sum + Number(t.amount), 0);
 
   const balance = income - expense;
 
   const lastFiveTransactions = [...transactions]
-  .sort ((a, b) => new Date (b.date) - new Date (a.date))
+  .sort ((a, b) => new Date (b.transaction_date) - new Date (a.transaction_date))
   .slice(0, 5);
 
   return (
