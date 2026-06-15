@@ -10,8 +10,6 @@ const ITEMS_PER_PAGE = 8;
 export default function TransactionList({
   transactions,
   onDelete,
-  categoryFilterComponent,
-  dateFilterComponent,
   showPagination = true,
   title = "Lista de Transações",
 }) {
@@ -23,7 +21,7 @@ export default function TransactionList({
   }, [transactions]);
 
   const sortedTransactions = [...transactions].sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
+    return new Date(b.transaction_date) - new Date(a.transaction_date);
   });
 
   const totalPages = Math.ceil(sortedTransactions.length / ITEMS_PER_PAGE);
