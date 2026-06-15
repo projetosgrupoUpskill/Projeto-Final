@@ -2,9 +2,11 @@ import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import styles from "./styles/Summary.module.css";
 import { FiEye, FiTrendingDown, FiTrendingUp } from "react-icons/fi";
+import { useAuth } from "../context/AuthContext";
 
 export default function Summary({ balance, income, expense }) {
-  const { currency, userName } = useContext(PreferencesContext);
+  const { currency} = useContext(PreferencesContext);
+  const { userName } = useAuth();
 
   const formatCurrency = (value) => {
     const locale = currency === 'BRL' ? 'pt-BR' : 'pt-PT'
