@@ -91,16 +91,18 @@ const Details = () => {
   if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
 
   const filteredTransactions = transactions.filter((t) => {
-    if (filter.activeCategory && filter.activeCategory !== "all" && t.category !== filter.activeCategory) return false;
-    if (filter.type === "income" && t.amount <= 0) return false;
-    if (filter.type === "expense" && t.amount >= 0) return false;
-    if (t.date) {
-      const transactionDate = t.date.split("T")[0];
-      if (filter.startDate && transactionDate < filter.startDate) return false;
-      if (filter.endDate && transactionDate > filter.endDate) return false;
+    if (filter.activeCategory && filter.activeCategory !== "all" && t.category_slug !== filter.activeCategory) return false;
+    if (filter.type === "income" && t.type !== "income") return false;
+    if (filter.type === "expense" && t.type !== "expense") return false;
+if (t.transaction_date) {
+      const transactionDate = new Date(t.transaction_date);
+      const start = filter.startDate ? new Date(filter.startDate) : null;
+      const end = filter.endDate ? new Date(filter.endDate) : null;
+      if (start && transactionDate < start) return false;
+      if (end && transactionDate > end) return false;
     }
     if (filter.search) {
-      const description = t.description?.toLowerCase() || t.title?.toLowerCase() || "";
+      const description = t.title?.toLowerCase() || "";
       if (!description.includes(filter.search.toLowerCase())) return false;
     }
     return true;
