@@ -15,7 +15,7 @@ import jwt from "jsonwebtoken";
     req.user = decoded;
     next();
   } catch {
-    return res.sendStatus(403);
+    return res.status(401).json({ message: "Token inválido ou expirado" });
   }
 }
 
