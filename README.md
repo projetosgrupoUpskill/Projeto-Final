@@ -1,12 +1,9 @@
 # 💰 Money Hub — Expense Tracker
 
-Aplicação web de gestão financeira pessoal desenvolvida com React, Node.js e MySQL.
-
----
-
-## 📋 Descrição
-
 O **Money Hub** permite ao utilizador registar, visualizar e gerir as suas transações financeiras de forma simples e intuitiva. A aplicação inclui autenticação segura, gráficos interativos, filtros avançados e suporte a dark mode.
+
+## Link do projeto: 
+https://github.com/projetosgrupoUpskill/Projeto-Final
 
 ---
 
