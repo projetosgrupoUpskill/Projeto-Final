@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "./styles/Header.module.css";
 import logo_atualizada from "../assets/logo_atualizada.svg";
 import logo_dark_atualizada from "../assets/logo_dark_atualizada.svg";
@@ -12,6 +12,10 @@ export default function Header() {
   const { isAuthenticated, logout } = useAuth(); // ALTERADO: adicionado isAuthenticated
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const linkClass = (path) =>
+    `${styles.navLink} ${location.pathname === path ? styles.navLinkActive : ""}`;
 
   const handleLogout = () => {
     logout();
@@ -43,13 +47,13 @@ export default function Header() {
         {/* ADICIONADO: bloco condicional */}
         {isAuthenticated ? (
           <>
-            <Link to="/painel" className={styles.navLink}>
+            <Link to="/painel" className={linkClass("/painel")}>
               Painel
             </Link>
-            <Link to="/details" className={styles.navLink}>
+            <Link to="/details" className={linkClass("/details")}>
               Detalhes
             </Link>
-            <Link to="/settings" className={styles.navLink}>
+            <Link to="/settings" className={linkClass("/settings")}>
               Definições
             </Link>
             <button
@@ -61,10 +65,10 @@ export default function Header() {
           </>
         ) : (
           <>
-            <Link to="/" className={styles.navLink}>
+            <Link to="/" className={linkClass("/")}>
               Home
             </Link>
-            <Link to="/about" className={styles.navLink}>
+            <Link to="/about" className={linkClass("/about")}>
               Sobre Nós
             </Link>
             <Link
@@ -91,3 +95,4 @@ export default function Header() {
     </header>
   );
 }
+

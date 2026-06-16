@@ -38,6 +38,12 @@
     border: 10px;
   }
 
+  .navLinkActive {
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: underline;
+  }
+
   .loginLink {
     background-color: var(--color-primary, #20674c); 
     color: #ffffff;
@@ -54,6 +60,12 @@
   .navLink:hover {
     color: white;
     background-color: #0F2E22;
+  }
+
+  .navLinkActive:hover {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
   }
 
   .themeToggleBtn {
