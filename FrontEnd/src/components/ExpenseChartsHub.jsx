@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LineChart, Line } from "recharts";
 import ExpenseLineChart from "./ExpenseLineChart.jsx";
-import ExpensePieChart from "./ExpensePieChart.jsx";
+import ExpenseBarChart from "./ExpenseBarChart.jsx";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
