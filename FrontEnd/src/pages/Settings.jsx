@@ -5,7 +5,7 @@ import styles from "../components/styles/Settings.module.css";
 import Card from "../components/Card";
 
 export default function Settings() {
-  const { currency, setCurrency, userName, setUserName } =
+  const { currency, setCurrency } =
     useContext(PreferencesContext);
     const { theme, toggleTheme } = useContext(ThemeContext);
 
@@ -44,21 +44,6 @@ export default function Settings() {
             <option value="GBP">GBP - Libra (£)</option>
             <option value="BRL">BRL - Real (R$)</option>
           </select>
-        </div>
-
-        {/* Nome do Utilizador */}
-        <div className={styles.settingItem}>
-          <div className={styles.settingText}>
-            <h3 className={styles.settingTitle}>Nome de Utilizador</h3>
-            <p className={styles.settingDesc}>Como devemos te chamar?</p>
-          </div>
-          <input
-            className={styles.input}
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder="Digite o teu nome..."
-          />
         </div>
 
       </ Card>
