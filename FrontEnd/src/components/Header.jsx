@@ -31,7 +31,7 @@ export default function Header() {
 
       {/* Botão de Menu para telas menores */}
       <button
-        className={styles.menuBtn}
+        className={`${styles.menuBtn} ${isMenuOpen ? styles.menuBtnOpen : ""}`}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Menu"
       >
@@ -67,7 +67,10 @@ export default function Header() {
             <Link to="/about" className={styles.navLink}>
               Sobre Nós
             </Link>
-            <Link to="/login" className={`${styles.navLink} ${styles.loginLink}`}>
+            <Link
+              to="/login"
+              className={`${styles.navLink} ${styles.loginLink}`}
+            >
               Login
             </Link>
           </>

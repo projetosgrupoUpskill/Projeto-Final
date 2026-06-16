@@ -31,7 +31,7 @@
     color: #001f3f;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9rem; /* Tamanho da fonte reduzido para 0.85rem */
+    font-size: 0.9rem; 
     padding: 0.5rem 0.5rem; 
     transition: color 0.2s;
     border-radius: 10px;
@@ -39,7 +39,7 @@
   }
 
   .loginLink {
-    background-color: var(--color-primary, #20674c); /* Escolha a sua cor aqui */
+    background-color: var(--color-primary, #20674c); 
     color: #ffffff;
     padding: 8px 16px;
     border-radius: 8px;
@@ -47,7 +47,7 @@
   }
 
   .loginLink:hover {
-    background-color: #6C9485 !important; /* Cor quando passa o rato */
+    background-color: #6C9485 !important; 
     color: #ffffff;
   }
   
@@ -62,7 +62,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #0e447b; /* Escuro no tema claro */
+    color: #0e447b; 
     padding: 0.5rem;
     margin-left: 1rem;
     border-radius: 50%;
@@ -71,7 +71,7 @@
   }
   
   .themeToggleBtn:hover {
-    transform: scale(1.1); /* Um efeito subtil ao passar o rato */
+    transform: scale(1.1); 
   }
 
   :global(body.dark) .themeToggleBtn {
@@ -79,9 +79,7 @@
     border-color: #ebe80a;
   }
 
-  /* ... Mantenha TODAS as suas regras originais aqui (.header, .logo, .nav, .navLink, etc.) ... */
 
-/* Estilo padrão do botão sandwich - Escondido em computadores */
 .menuBtn {
   display: none;
   background: transparent;
@@ -89,28 +87,33 @@
   cursor: pointer;
   color: #001f3f;
   padding: 0.5rem;
-  z-index: 1001; /* Garante que fica acima do menu quando aberto */
+  z-index: 1001;
 }
+
+.menuBtnOpen {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1005;
+  }
 
 :global(body.dark) .menuBtn {
   color: #ffffff;
 }
 
-/* =======================================================
-   REGRAS APLICADAS APENAS QUANDO A TELA DIMINUIR (MÓVEL)
-======================================================= */
+
 @media (max-width: 768px) {
   .menuBtn {
-    display: block; /* O botão sandwich aparece apenas aqui */
+    display: block;
   }
 
   .nav {
-    display: none; /* Esconde a barra horizontal original */
+    display: none; 
     flex-direction: column;
     position: fixed;
     top: 0;
     right: 0;
-    width: 260px; /* Largura da barra lateral */
+    width: 260px; 
     height: 100vh;
     background-color: #ffffff;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
@@ -120,17 +123,22 @@
     box-sizing: border-box;
   }
 
-  /* Quando clicar no botão e o estado isMenuOpen for verdadeiro, esta classe ativa */
   .nav.navOpen {
-    display: flex; /* Mostra os links empilhados verticalmente */
+    display: flex; 
   }
 
-  /* Ajustes visuais nos links dentro do menu sanduíche */
   .navLink {
     width: 100%;
     text-align: left;
     padding: 0.6rem 1rem;
   }
+
+  .navLink:hover {
+    background-color: #f3f4f6;
+    width: 180px;
+    color: #001f3f;
+    border-radius: 8px;
+}
 
   .loginLink {
     text-align: center;
@@ -140,11 +148,16 @@
 
   .themeToggleBtn {
     margin-left: 1rem;
-    align-self: flex-start; /* Alinha o sol/lua à esquerda na lista vertical */
+    align-self: flex-start; 
   }
 
   :global(body.dark) .nav {
-    background-color: #16171d; /* Fundo escuro adaptivo caso use Dark Mode */
+    background-color: #16171d;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.4);
   }
+}
+
+:global(body.dark) .navLink:hover {
+    background-color: #292929;
+    color: #ffffff;
 }
