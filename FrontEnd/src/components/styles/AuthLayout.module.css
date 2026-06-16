@@ -6,7 +6,7 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  align-items: flex-start;      /* ← trocar center por flex-start */
+  align-items: flex-start;     
   justify-content: center;
   background: linear-gradient(135deg, #0F2E22 0%, #1a4d3a 100%);
   padding: 5rem 1rem;
