@@ -187,7 +187,6 @@ body.dark [class*="searchInput"] {
 
 body.dark [class*="cardTitle"],
 body.dark [class*="cardHeader"] {
-  background-color: #123022 !important;
   border: #ffff;
 }
 
