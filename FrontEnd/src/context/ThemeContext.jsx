@@ -5,10 +5,12 @@ export const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
  
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "light"; // Se não existir valor guardado, usa 'light' como default
+    const saved = localStorage.getItem("theme");
+    const resolved = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    if (resolved === "dark") document.body.classList.add("dark");
+    return resolved;
   });
 
-  // 2. Escrever no localStorage sempre que o tema muda
   useEffect(() => {
     localStorage.setItem("theme", theme);
 
