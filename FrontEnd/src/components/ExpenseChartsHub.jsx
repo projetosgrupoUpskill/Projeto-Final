@@ -65,7 +65,7 @@ export default function ExpenseChartsHub({ transactions }) {
 
       {/* Área reservada para os gráficos filhos */}
       <div style={{ padding: 24, flex: 1, display: 'flex', flexDirection: 'column',minHeight: 300 }}>
-          {activeTab === "fluxo" ? <ExpenseLineChart transactions={transactions} /> : <ExpensePieChart transactions={transactions}/>}
+          {activeTab === "fluxo" ? <ExpenseLineChart transactions={transactions} /> : <ExpenseBarChart transactions={transactions}/>}
       </div>
     </div>
   );
