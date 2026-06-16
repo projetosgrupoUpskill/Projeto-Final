@@ -52,7 +52,7 @@ export default function ExpenseLineChart({ transactions }) {
     };
 
   const data = transactions.reduce((acumulador, transacao) => {
-    const date = new Date(transacao.date);
+    const date = new Date(transacao.transaction_date.split("T")[0] + "T00:00:00"); // Garantir que é tratado como UTC 
     const key = `${date.getFullYear()}-${date.getMonth()}`;
 
     if (!acumulador[key]) {
@@ -66,9 +66,9 @@ export default function ExpenseLineChart({ transactions }) {
     }
 
     if (transacao.type === "expense") {
-      acumulador[key].despesas += Math.abs(transacao.amount);
+      acumulador[key].despesas += Math.abs(Number(transacao.amount));
     } else {
-      acumulador[key].receitas += transacao.amount;
+      acumulador[key].receitas += Number(transacao.amount);
     }
 
     return acumulador;
@@ -80,6 +80,23 @@ export default function ExpenseLineChart({ transactions }) {
   const temReceitas = chartData.some((d) => d.receitas > 0);
   
   return (
+    <div style={{ position: "relative" }}>
+        {chartData.length === 0 && (
+            <div style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 10,
+                fontSize: 15,
+                color: "var(--color-text-secondary, #6b7280)",
+                background: "rgba(255,255,255,0.6)", 
+                borderRadius: 8,
+            }}>
+                Sem transações para mostrar.
+            </div>
+        )}
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={chartData} margin={{ top: 5, right: 16, left: 0, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
@@ -98,5 +115,6 @@ export default function ExpenseLineChart({ transactions }) {
         )}
       </LineChart>
     </ResponsiveContainer>
+    </div>
   );
 }
