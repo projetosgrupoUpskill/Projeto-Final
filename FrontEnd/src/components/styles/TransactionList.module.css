@@ -80,6 +80,29 @@
   color-scheme: dark;
 }
 
+.viewAll {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px 4px;
+}
+
+.viewAllLink {
+  font-size: 13px;
+  font-weight: 500;
+  color: #36413e;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+  margin-bottom: 5px;
+}
+
+.viewAllLink:hover {
+  opacity: 1;
+}
+
 @media (max-width: 768px) {
   .tableHeader {
     display: none;

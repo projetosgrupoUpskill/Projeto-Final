@@ -4,6 +4,7 @@ import Card from "./Card.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 import { useContext } from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -12,6 +13,7 @@ export default function TransactionList({
   onDelete,
   showPagination = true,
   title = "Lista de Transações",
+  viewAllLink,
 }) {
   const { theme } = useContext(ThemeContext);
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,7 +63,6 @@ export default function TransactionList({
               className={`${styles.scrollArea} ${theme === "dark" ? styles.scrollAreaDark : styles.scrollAreaLight}`}
             >
               {paginatedTransactions.map((t, index) => (
-                
                 <TransactionItem
                   key={t.id}
                   transaction={t}
@@ -73,51 +74,58 @@ export default function TransactionList({
 
             {/* Paginação */}
             {showPagination && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 8,
-                padding: "16px 0",
-              }}
-            >
-              <button
-              className={styles.submitButton}
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
+              <div
                 style={{
-                  padding: "6px 12px",
-                  cursor: currentPage === 1 ? "not-allowed" : "pointer",
-                  opacity: currentPage === 1 ? 0.4 : 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "16px 0",
                 }}
               >
-                ← Anterior
-              </button>
+                <button
+                  className={styles.submitButton}
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  disabled={currentPage === 1}
+                  style={{
+                    padding: "6px 12px",
+                    cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                    opacity: currentPage === 1 ? 0.4 : 1,
+                  }}
+                >
+                  ← Anterior
+                </button>
 
-              <span style={{ fontSize: 14 }}>
-                Página {currentPage} de {totalPages}
-              </span>
+                <span style={{ fontSize: 14 }}>
+                  Página {currentPage} de {totalPages}
+                </span>
 
-              <button
-                className={styles.submitButton}
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(p + 1, totalPages))
-                }
-                disabled={currentPage === totalPages}
-                style={{
-                  
-                  padding: "6px 12px",
-                  cursor:
-                    currentPage === totalPages ? "not-allowed" : "pointer",
-                  opacity: currentPage === totalPages ? 0.4 : 1,
-                }}
-              >
-                Próxima →
-              </button>
-            </div>
+                <button
+                  className={styles.submitButton}
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(p + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  style={{
+                    padding: "6px 12px",
+                    cursor:
+                      currentPage === totalPages ? "not-allowed" : "pointer",
+                    opacity: currentPage === totalPages ? 0.4 : 1,
+                  }}
+                >
+                  Próxima →
+                </button>
+              </div>
             )}
           </>
+        )}
+
+        {viewAllLink && (
+          <div className={styles.viewAll}>
+            <Link to={viewAllLink} className={styles.viewAllLink}>
+              <strong>Ver todas as transações</strong> <span style={{ fontSize: 16 }}>→</span>
+            </Link>
+          </div>
         )}
       </Card>
     </div>

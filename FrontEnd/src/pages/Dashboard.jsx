@@ -52,6 +52,7 @@ const Dashboard = () => {
             onDelete={(id) => deleteMutation.mutate(id)}
             showPagination={false}
             title="Últimas Transações"
+            viewAllLink="/details"
           />
         </div>
 
