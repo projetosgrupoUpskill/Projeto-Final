@@ -5,13 +5,13 @@ import {
   Navigate,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import MainLayout from "./layouts/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import AddTransaction from "./pages/AddTransaction";
 import ContactCard from "./pages/Contact";
 import { PreferencesProvider } from "./context/PreferencesContext";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider, ThemeContext } from "./context/ThemeContext";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Settings from "./pages/Settings";
 import Details from "./pages/History";
@@ -21,6 +21,23 @@ import ChatbotButton from "./components/ChatbotButton";
 import ChatWidget from "./components/ChatWidget";
 import LandingPage from "./pages/LandingPage";
 import { Toaster } from "react-hot-toast";
+
+function ThemedToaster() {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+  return (
+    <Toaster
+      position="top-right"
+      toastOptions={{
+        style: {
+          background: isDark ? "#292929" : "#ffffff",
+          color: isDark ? "#f3f4f6" : "#111827",
+          border: isDark ? "1px solid #3f3f46" : "1px solid #e5e7eb",
+        },
+      }}
+    />
+  );
+}
 
 const queryClient = new QueryClient();
 
@@ -45,7 +62,7 @@ function App() {
         <PreferencesProvider>
           <AuthProvider>
             <Router>
-              <Toaster position="top-right" />
+              <ThemedToaster />
               <Routes>
                 <Route element={<MainLayout />}>
                   {" "}
