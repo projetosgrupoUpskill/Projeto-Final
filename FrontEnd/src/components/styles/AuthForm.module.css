@@ -236,11 +236,10 @@
   cursor: pointer;
 }
 
-.dark .forgotPassword a {
-  color: #10b981;
-}
-
-.dark .forgotPassword button {
+:global(.dark) .forgotPassword a,
+:global(.dark) .forgotPassword button,
+:global(.dark) .modalTrigger,
+:global(.dark) .link {
   color: #10b981;
 }
 

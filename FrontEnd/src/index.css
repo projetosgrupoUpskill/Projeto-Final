@@ -208,7 +208,7 @@ body.dark [class*="chartSection"] {
 }
 
 body.dark [class*="confirmModal"],
-body.dark [class*="modal"] {
+body.dark [class*="modalContent"] {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
 }
@@ -282,3 +282,4 @@ body.dark [class*="amountIncome"] {
 body.dark [class*="amountExpense"] {
   color: #fa7f7f !important;
 }
+
