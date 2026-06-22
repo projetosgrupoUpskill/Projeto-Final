@@ -6,7 +6,7 @@ import { useState } from "react";
 import EditTransactionModal from "../components/EditTransactionModal";
 import { createPortal } from "react-dom";
 
-export default function TransactionItem({ transaction, onDelete, isEven }) {
+export default function TransactionItem({ transaction, onDelete, isEven, showActions = true }) {
 
     const isIncome = transaction.type === "income";
     const { currency } = useContext(PreferencesContext);
@@ -28,7 +28,7 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
         <>
         <div className={`${styles.row} ${isEven ? styles.rowEven : styles.rowOdd}`}>
             {/* Descrição */}
-            <div className={styles.description}>
+            <div className={`${styles.description} ${!showActions ? styles.descriptionNoActions : ""}`}>
             {transaction.categoryIcon ? (
                 <span
                     dangerouslySetInnerHTML={{ __html: transaction.categoryIcon }}
@@ -46,29 +46,31 @@ export default function TransactionItem({ transaction, onDelete, isEven }) {
             </div>
 
             {/* Valor */}
-            <div className={styles.amount}>
+            <div className={`${styles.amount} ${!showActions ? styles.amountNoActions : ""}`}>
                 <span className={`${styles.amountValue} ${isIncome ? styles.amountIncome : styles.amountExpense}`}>
                     {formatCurrency(isIncome ? transaction.amount : -transaction.amount)}
                 </span>
             </div>
 
             {/* Ações */}
-            <div className={styles.actions}>
-                <button
-                        className={styles.editButton}
-                        onClick={() => setIsEditing(true)}
-                        title="Editar transação"
+            {showActions && (
+                <div className={styles.actions}>
+                    <button
+                            className={styles.editButton}
+                            onClick={() => setIsEditing(true)}
+                            title="Editar transação"
+                        >
+                            <FiEdit2 className={styles.icon} />
+                    </button>
+                    <button
+                        className={styles.deleteButton}
+                        onClick={() => setIsDeleting(true)}
+                        title="Eliminar Transação"
                     >
-                        <FiEdit2 className={styles.icon} />
-                </button>
-                <button
-                    className={styles.deleteButton}
-                    onClick={() => setIsDeleting(true)}
-                    title="Eliminar Transação"
-                >
-                    <FiTrash className={styles.icon} />
-                </button>
-            </div>
+                        <FiTrash className={styles.icon} />
+                    </button>
+                </div>
+            )}
         </div>
         {isEditing && (
             <EditTransactionModal

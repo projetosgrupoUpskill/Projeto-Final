@@ -4,7 +4,7 @@ import styles from "./styles/Summary.module.css";
 import { FiEye, FiTrendingDown, FiTrendingUp } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 
-export default function Summary({ balance, income, expense }) {
+export default function Summary({ balance, income, expense, showGreeting = true }) {
   const { currency} = useContext(PreferencesContext);
   const { userName } = useAuth();
 
@@ -19,7 +19,7 @@ export default function Summary({ balance, income, expense }) {
 
   return (
     <div className={styles.summaryGrid}>
-      {userName && (
+      {showGreeting && userName && (
         <h2
           style={{
             gridColumn: "1 / -1",

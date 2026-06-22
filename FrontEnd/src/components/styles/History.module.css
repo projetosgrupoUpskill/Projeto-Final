@@ -5,26 +5,19 @@
   gap: 1.5rem;
 }
 
-.filterTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 1.25rem 0;
-  text-align: left;  /* ← adiciona */
-}
-
-/* Gráfico ocupa a linha toda no topo */
-.chartSection {
-  width: 100%;
-  min-height: 320px;
-}
-
 /* Lista + Filtros lado a lado */
 .bottomSection {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 1.5rem;
   align-items: start;
+}
+
+/* Acordeão de Adicionar Transação + Lista de Transações, empilhados */
+.transactionsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* ── Filtros ── */
@@ -45,6 +38,7 @@
   font-weight: 600;
   color: #111827;
   margin: 0 0 1.25rem 0;
+  text-align: left;
 }
 
 .filterSection {

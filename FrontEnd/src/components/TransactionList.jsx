@@ -12,6 +12,7 @@ export default function TransactionList({
   transactions,
   onDelete,
   showPagination = true,
+  showActions = true,
   title = "Lista de Transações",
   viewAllLink,
 }) {
@@ -28,14 +29,13 @@ export default function TransactionList({
 
   const totalPages = Math.ceil(sortedTransactions.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedTransactions = sortedTransactions.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE,
-  );
+  const paginatedTransactions = showPagination
+    ? sortedTransactions.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+    : sortedTransactions;
 
   return (
     <div className={styles.container}>
-      <Card title={title}>
+      <Card title={title} >
         {sortedTransactions.length === 0 ? (
           <div className={styles.emptyState}>
             <p className={styles.emptyText}>Ainda não há transacções.</p>
@@ -44,19 +44,23 @@ export default function TransactionList({
           <>
             <div className={styles.tableHeader}>
               <div
-                className={`${styles.headerCell} ${styles.headerDescription}`}
+                className={`${styles.headerCell} ${styles.headerDescription} ${!showActions ? styles.headerDescriptionNoActions : ""}`}
               >
                 Descrição
               </div>
               <div className={`${styles.headerCell} ${styles.headerDate}`}>
                 Data
               </div>
-              <div className={`${styles.headerCell} ${styles.headerAmount}`}>
+              <div
+                className={`${styles.headerCell} ${styles.headerAmount} ${!showActions ? styles.headerAmountNoActions : ""}`}
+              >
                 Valor
               </div>
-              <div className={`${styles.headerCell} ${styles.headerActions}`}>
-                Ações
-              </div>
+              {showActions && (
+                <div className={`${styles.headerCell} ${styles.headerActions}`}>
+                  Ações
+                </div>
+              )}
             </div>
 
             <div
@@ -68,6 +72,7 @@ export default function TransactionList({
                   transaction={t}
                   onDelete={onDelete}
                   isEven={index % 2 === 0}
+                  showActions={showActions}
                 />
               ))}
             </div>
@@ -123,7 +128,7 @@ export default function TransactionList({
         {viewAllLink && (
           <div className={styles.viewAll}>
             <Link to={viewAllLink} className={styles.viewAllLink}>
-              <strong>Ver todas as transações</strong> <span style={{ fontSize: 16 }}>→</span>
+              <strong>Ver e gerir todas as transações</strong> <span style={{ fontSize: 16 }}>→</span>
             </Link>
           </div>
         )}

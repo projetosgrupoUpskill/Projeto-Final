@@ -1,105 +1,253 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  
-  .formGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  
-  .label {
-    text-align: left;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-  }
-  
-  .input {
-    padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 0.875rem;
-  }
-  
-  .input:focus {
-    outline: none;
-    border-color: #0F2E22;
-    box-shadow: 0 0 0 3px rgba(15, 46, 34, 0.1);
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
 
-  .checkboxGroup {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .checkbox {
-    width: 1rem;
-    height: 1rem;
-    accent-color: #0F2E22;
-  }
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
 
-  .checkboxLabel {
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
+.label {
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
 
-  .checkboxLabel a {
-    color: #0F2E22;
-  }
-  
-  .button {
-    font-size: 15px;
-    padding: 0.875rem;
-    background: #0F2E22;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-  
-  .button:disabled {
-    opacity: 0.6;
-  }
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
 
-  .link {
-    color: #0F2E22;
-    font-weight: 600;
-    text-decoration: none;
-    margin-left: 8px;
-  }
-  
-  .link:hover {
-    text-decoration: underline;
-  }
+.input:focus {
+  outline: none;
+  border-color: #0F2E22;
+  box-shadow: 0 0 0 3px rgba(15, 46, 34, 0.1);
+}
 
-  .link {
-    color: #0F2E22;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  
-  .link:hover {
-    text-decoration: underline;
-  }
+.passwordField {
+  position: relative;
+  width: 100%;
+}
 
-  .forgotPassword {
-    text-align: right;
-    font-size: 0.875rem;
-  }
+.passwordInput {
+  padding-right: 2.75rem;
+}
 
-  .forgotPassword a {
-    color: #0F2E22;
-    text-decoration: none;
-  }
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+}
 
-  .dark .forgotPassword a {
-    color: #10b981;
-  }
+.passwordToggle:hover {
+  color: #374151;
+}
 
-  .forgotPassword a:hover {
-    text-decoration: underline;
-  }
+.checkboxGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #0F2E22;
+}
+
+.checkboxLabel {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.checkboxLabel a {
+  color: #0F2E22;
+}
+
+.modalTrigger {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: #0F2E22;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modalTrigger:hover {
+  text-decoration: underline;
+}
+
+/* ── Modal de Termos/Privacidade ── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modalContent {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.modalTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0F2E22;
+  margin: 0 0 1rem 0;
+}
+
+.modalBody {
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modalCloseBtn {
+  margin-top: 1.25rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: #0F2E22;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.modalCloseBtn:hover {
+  opacity: 0.9;
+}
+
+/* Linha com botão de ação principal + botão de fechar, lado a lado */
+.modalActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.modalActions button {
+  flex: 1;
+  margin: 0;
+}
+
+.modalCloseBtnDanger {
+  padding: 0.75rem;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.modalCloseBtnDanger:hover {
+  background: #dc2626;
+}
+
+.button {
+  font-size: 15px;
+  padding: 0.875rem;
+  background: #0F2E22;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.button:disabled {
+  opacity: 0.6;
+}
+
+.link {
+  color: #0F2E22;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 8px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link {
+  color: #0F2E22;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.forgotPassword {
+  text-align: right;
+  font-size: 0.875rem;
+}
+
+.forgotPassword a {
+  color: #0F2E22;
+  text-decoration: none;
+}
+
+.forgotPassword button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: #0F2E22;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dark .forgotPassword a {
+  color: #10b981;
+}
+
+.dark .forgotPassword button {
+  color: #10b981;
+}
+
+.forgotPassword a:hover {
+  text-decoration: underline;
+}
+
+.forgotPassword button:hover {
+  text-decoration: underline;
+}

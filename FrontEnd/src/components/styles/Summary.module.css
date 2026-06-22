@@ -39,7 +39,6 @@
   color: #dc2626;
 }
 
-/* Estilos Base (Light Mode) para os Cartões */
 .balanceCard {
   position: relative;
   background-color: white;
@@ -68,7 +67,7 @@
   color: #e7000b;
 }
 
-/* Estilos do Ícone para os Cartões */
+/* Ícone para os Cartões */
 .eyeIcon {
   position: absolute;
   top: 50%;

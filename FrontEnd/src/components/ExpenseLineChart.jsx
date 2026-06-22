@@ -4,6 +4,7 @@ import {
 } from "recharts";
 import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const nomesMeses = [
   "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
@@ -41,6 +42,8 @@ const TooltipCustomizado = ({ active, payload, formatCurrency }) => {
 
 export default function ExpenseLineChart({ transactions }) {
   const { currency } = useContext(PreferencesContext);
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
 
     const formatCurrency = (amount) => {
         const locale = currency === 'BRL' ? 'pt-BR' : 'pt-PT'
@@ -51,17 +54,42 @@ export default function ExpenseLineChart({ transactions }) {
         }).format(amount);
     };
 
+  const distinctMonths = new Set(
+    transactions.map((transacao) => {
+      const date = new Date(transacao.transaction_date.split("T")[0] + "T00:00:00");
+      return `${date.getFullYear()}-${date.getMonth()}`;
+    })
+  );
+
+  const agruparPorDia = distinctMonths.size <= 1;
+
   const data = transactions.reduce((acumulador, transacao) => {
-    const date = new Date(transacao.transaction_date.split("T")[0] + "T00:00:00"); // Garantir que é tratado como UTC 
-    const key = `${date.getFullYear()}-${date.getMonth()}`;
+    const date = new Date(transacao.transaction_date.split("T")[0] + "T00:00:00"); 
+
+    let key, label, labelCompleto, order;
+
+    if (agruparPorDia) {
+      const dia = String(date.getDate()).padStart(2, "0");
+      const mes = String(date.getMonth() + 1).padStart(2, "0");
+
+      key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+      label = `${dia}/${mes}`;
+      labelCompleto = `${date.getDate()} de ${nomesCompletosMeses[date.getMonth()]} de ${date.getFullYear()}`;
+      order = date.getTime();
+    } else {
+      key = `${date.getFullYear()}-${date.getMonth()}`;
+      label = `${nomesMeses[date.getMonth()]} ${date.getFullYear()}`;
+      labelCompleto = `${nomesCompletosMeses[date.getMonth()]} ${date.getFullYear()}`;
+      order = date.getFullYear() * 12 + date.getMonth();
+    }
 
     if (!acumulador[key]) {
       acumulador[key] = {
-        mes: `${nomesMeses[date.getMonth()]} ${date.getFullYear()}`,
-        mesCompleto: `${nomesCompletosMeses[date.getMonth()]} ${date.getFullYear()}`,
+        mes: label,
+        mesCompleto: labelCompleto,
         despesas: 0,
         receitas: 0,
-        order: date.getFullYear() * 12 + date.getMonth(),
+        order,
       };
     }
 
@@ -80,7 +108,7 @@ export default function ExpenseLineChart({ transactions }) {
   const temReceitas = chartData.some((d) => d.receitas > 0);
   
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", height: "100%" }}>
         {chartData.length === 0 && (
             <div style={{
                 position: "absolute",
@@ -90,21 +118,20 @@ export default function ExpenseLineChart({ transactions }) {
                 justifyContent: "center",
                 zIndex: 10,
                 fontSize: 15,
-                color: "var(--color-text-secondary, #6b7280)",
-                background: "rgba(255,255,255,0.6)", 
+                color: isDark ? "#9ca3af" : "#6b7280",
+                background: isDark ? "rgba(30, 30, 30, 0.75)" : "rgba(255,255,255,0.6)",
                 borderRadius: 8,
             }}>
-                Sem transações para mostrar.
+                Ainda não há transações para mostrar.
             </div>
         )}
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={chartData} margin={{ top: 5, right: 16, left: 0, bottom: 5 }}>
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={chartData} margin={{ top: 0, right: 16, left: 0, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="mes" />
+        <XAxis dataKey="mes" tickMargin={14} />
         <YAxis />
-        {/* ✅ currency passado como prop para o tooltip */}
         <Tooltip content={<TooltipCustomizado formatCurrency={formatCurrency} />} />
-        <Legend />
+        <Legend wrapperStyle={{ paddingTop: 16 }}/>
         {temDespesas && (
           <Line type="monotone" dataKey="despesas" stroke="#ef4444"
             dot={{ r: 4, fill: "#ef4444" }} activeDot={{ r: 6 }} />

@@ -51,7 +51,7 @@ export default function Header() {
               Painel
             </Link>
             <Link to="/details" className={linkClass("/details")}>
-              Detalhes
+              Transações
             </Link>
             <Link to="/settings" className={linkClass("/settings")}>
               Definições

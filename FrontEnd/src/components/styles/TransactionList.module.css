@@ -58,6 +58,14 @@
   margin-right: 15px;
 }
 
+.headerDescriptionNoActions {
+  grid-column: span 7;
+}
+
+.headerAmountNoActions {
+  grid-column: span 3;
+}
+
 .scrollArea {
   max-height: 600px;
   overflow-y: auto;
