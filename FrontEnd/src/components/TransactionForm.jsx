@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "../api";
+import { ThemeContext } from "../context/ThemeContext";
 import styles from "./styles/TransactionForm.module.css";
 
 const MAX_CHARS = 50;
@@ -15,6 +16,9 @@ export default function TransactionForm({
     submitLabel = "Adicionar",
     isPending = false,
 }) {
+    const { theme } = useContext(ThemeContext);
+    const isDark = theme === "dark";
+
     const defaults = {
         description: "",
         amount: "",
@@ -100,6 +104,15 @@ export default function TransactionForm({
     const charsLeft = MAX_CHARS - description.length;
     const atLimit = charsLeft === 0;
 
+    const isDirty =
+        description !== defaults.description ||
+        amount !== defaults.amount ||
+        type !== defaults.type ||
+        String(category) !== String(defaults.category) || //o select devolve uma string, enquanto o que vem da BD é um numero, para a comparação dar correta é necessario normalizar os dois lados
+        date !== defaults.date;
+
+    const isSubmitDisabled = isPending || Boolean(onCancel) && !isDirty;
+
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.formGroup}>
@@ -160,51 +173,53 @@ export default function TransactionForm({
                 </div>
             </div>
 
-            <div className={styles.formGroup}>
-                <label className={styles.label}>Categoria</label>
-                <select
-                    value={category}
-                    onChange={(e) => {
-                        setCategory(e.target.value);
-                        setErrors((prev) => ({ ...prev, category: null }));
-                    }}
-                    className={styles.input}
-                >
-                    <option value="">Selecione uma categoria</option>
-                    {categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.label || cat.name}
-                        </option>
-                    ))}
-                </select>
-                {errors.category && (
-                    <span className={styles.errorMsg}>{errors.category}</span>
-                )}
-            </div>
+            <div className={styles.categoryTypeRow}>
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Categoria</label>
+                    <select
+                        value={category}
+                        onChange={(e) => {
+                            setCategory(e.target.value);
+                            setErrors((prev) => ({ ...prev, category: null }));
+                        }}
+                        className={styles.input}
+                    >
+                        <option value="">Selecione uma categoria</option>
+                        {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                                {cat.label || cat.name}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.category && (
+                        <span className={styles.errorMsg}>{errors.category}</span>
+                    )}
+                </div>
 
-            <div className={styles.formGroup}>
-                <label className={styles.label}>Tipo</label>
-                <div className={styles.radioGroup}>
-                    <label className={styles.radioItem}>
-                        <input
-                            type="radio"
-                            name="transaction-type"
-                            value="income"
-                            checked={type === "income"}
-                            onChange={(e) => setType(e.target.value)}
-                        />
-                        <span className={styles.radioLabel}>Receita</span>
-                    </label>
-                    <label className={styles.radioItem}>
-                        <input
-                            type="radio"
-                            name="transaction-type"
-                            value="expense"
-                            checked={type === "expense"}
-                            onChange={(e) => setType(e.target.value)}
-                        />
-                        <span className={styles.radioLabel}>Despesa</span>
-                    </label>
+                <div className={`${styles.formGroup} ${styles.typeFieldCentered}`}>
+                    <label className={styles.label}>Tipo</label>
+                    <div className={`${styles.radioGroup} ${styles.radioGroupCentered}`}>
+                        <label className={styles.radioItem}>
+                            <input
+                                type="radio"
+                                name="transaction-type"
+                                value="income"
+                                checked={type === "income"}
+                                onChange={(e) => setType(e.target.value)}
+                            />
+                            <span className={styles.radioLabel}>Receita</span>
+                        </label>
+                        <label className={styles.radioItem}>
+                            <input
+                                type="radio"
+                                name="transaction-type"
+                                value="expense"
+                                checked={type === "expense"}
+                                onChange={(e) => setType(e.target.value)}
+                            />
+                            <span className={styles.radioLabel}>Despesa</span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -220,8 +235,8 @@ export default function TransactionForm({
                 )}
                 <button
                     type="submit"
-                    className={styles.submitButton}
-                    disabled={isPending}
+                    className={`${styles.submitButton} ${isDark ? styles.submitButtonDark : ""}`}
+                    disabled={isSubmitDisabled}
                 >
                     {isPending ? "A guardar..." : submitLabel}
                 </button>
