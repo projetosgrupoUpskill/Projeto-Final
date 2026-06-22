@@ -15,7 +15,11 @@ export async function addTransaction(req, res) {
         const { title, amount, type, transaction_date, category_id, currency_id } = req.body;
         const user_id = req.user.id;
 
-        if (!title || !amount || !type || !transaction_date || !category_id) {
+
+       /*         if (!title || !amount || !type || !transaction_date || !category_id) {
+            Verificar if correto conforme nosso projeto - validação para não aceitar 0 + explicação
+ */
+        if (!title || amount == null || !type || !transaction_date || !category_id) {
             return res.status(400).json({ message: "Campos obrigatórios em falta" });
         }
 
