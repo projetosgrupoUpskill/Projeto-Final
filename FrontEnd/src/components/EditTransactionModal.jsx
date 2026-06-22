@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateTransaction } from "../api";
 import TransactionForm from "./TransactionForm";
 import modalStyles from "./styles/EditTransactionModal.module.css";
+import toast from "react-hot-toast";
 
 export default function EditTransactionModal({ transaction, onClose }) {
   const queryClient = useQueryClient();
@@ -12,10 +13,11 @@ export default function EditTransactionModal({ transaction, onClose }) {
     mutationFn: ({ id, data }) => updateTransaction(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      toast.success ("Transação editada com sucesso!")
       onClose();
     },
     onError: () => {
-      alert("Erro ao editar transação. Tente novamente.");
+      toast.error("Erro ao editar transação. Tente novamente.");
     },
   });
 

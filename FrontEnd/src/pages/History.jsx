@@ -6,6 +6,7 @@ import CategoryFilter from "../components/CategoryFilter";
 import DateRangePicker from "../components/DateRangePicker";
 import styles from "../components/styles/History.module.css";
 import ExpenseChartsHub from "../components/ExpenseChartsHub.jsx";
+import toast from "react-hot-toast";
 
 const initialState = {
   search: "",
@@ -28,26 +29,31 @@ function filtersReducer(state, action) {
       return { ...state, type: action.payload };
     case "SET_PERIOD_TYPE":
       const period = action.payload;
-      if (period === "all") return { ...state, periodType: period, startDate: "", endDate: "" };
+      if (period === "all")
+        return { ...state, periodType: period, startDate: "", endDate: "" };
 
       let start;
       if (period === "week") {
-        const d = new Date(); d.setDate(d.getDate() - 7);
+        const d = new Date();
+        d.setDate(d.getDate() - 7);
         start = d.toISOString().split("T")[0];
         return { ...state, periodType: period, startDate: start, endDate: "" };
       }
       if (period === "month") {
-        const d = new Date(); d.setMonth(d.getMonth() - 1);
+        const d = new Date();
+        d.setMonth(d.getMonth() - 1);
         start = d.toISOString().split("T")[0];
         return { ...state, periodType: period, startDate: start, endDate: "" };
       }
       if (period === "3months") {
-        const d = new Date(); d.setMonth(d.getMonth() - 3);
+        const d = new Date();
+        d.setMonth(d.getMonth() - 3);
         start = d.toISOString().split("T")[0];
         return { ...state, periodType: period, startDate: start, endDate: "" };
       }
       if (period === "6months") {
-        const d = new Date(); d.setMonth(d.getMonth() - 6);
+        const d = new Date();
+        d.setMonth(d.getMonth() - 6);
         start = d.toISOString().split("T")[0];
         return { ...state, periodType: period, startDate: start, endDate: "" };
       }
@@ -72,7 +78,11 @@ const Details = () => {
     filter.type !== "all" ||
     filter.periodType !== "all";
 
-  const { data: transactions = [], isLoading, isError } = useQuery({
+  const {
+    data: transactions = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["transactions"],
     queryFn: getTransactions,
   });
@@ -84,17 +94,28 @@ const Details = () => {
 
   const deleteMutation = useMutation({
     mutationFn: deleteTransaction,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["transactions"] }),
+    onSuccess: (data) => {
+      (queryClient.invalidateQueries({ queryKey: ["transactions"] }),
+        toast.success(data?.message || "Transação eliminada com sucesso!"));
+    },
+    onError: () => {
+      toast.error("Erro ao eliminar transação. Tente novamente.");
+    },
   });
 
   if (isLoading) return <p style={{ color: "white" }}>A carregar...</p>;
   if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
 
   const filteredTransactions = transactions.filter((t) => {
-    if (filter.activeCategory && filter.activeCategory !== "all" && t.category_slug !== filter.activeCategory) return false;
+    if (
+      filter.activeCategory &&
+      filter.activeCategory !== "all" &&
+      t.category_slug !== filter.activeCategory
+    )
+      return false;
     if (filter.type === "income" && t.type !== "income") return false;
     if (filter.type === "expense" && t.type !== "expense") return false;
-if (t.transaction_date) {
+    if (t.transaction_date) {
       const transactionDate = new Date(t.transaction_date);
       const start = filter.startDate ? new Date(filter.startDate) : null;
       const end = filter.endDate ? new Date(filter.endDate) : null;
@@ -110,7 +131,6 @@ if (t.transaction_date) {
 
   return (
     <div className={styles.historyContainer}>
-
       {/* Gráfico no topo, largura total */}
       <section className={styles.chartSection}>
         <ExpenseChartsHub transactions={filteredTransactions} />
@@ -118,7 +138,6 @@ if (t.transaction_date) {
 
       {/* Filtros à esquerda, lista à direita */}
       <div className={styles.bottomSection}>
-
         {/* ── Filtros ── */}
         <div className={styles.filterCard}>
           <h3 className={styles.filterTitle}>Filtros</h3>
@@ -131,18 +150,21 @@ if (t.transaction_date) {
                 className={styles.searchInput}
                 placeholder="Buscar..."
                 value={filter.search}
-                onChange={(e) => dispatch({ type: "SET_SEARCH", payload: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ type: "SET_SEARCH", payload: e.target.value })
+                }
               />
             </div>
           </div>
 
           <div className={styles.dropdownsContainer}>
-
             <div className={styles.dropdownGroup}>
               <label className={styles.dropdownLabel}>Tipo</label>
               <select
                 value={filter.type}
-                onChange={(e) => dispatch({ type: "SET_TYPE", payload: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ type: "SET_TYPE", payload: e.target.value })
+                }
               >
                 <option value="all">Todas as Transações</option>
                 <option value="income">Apenas Entradas</option>
@@ -155,7 +177,9 @@ if (t.transaction_date) {
               <CategoryFilter
                 categories={categories}
                 activeCategory={filter.activeCategory}
-                onCategoryChange={(cat) => dispatch({ type: "SET_CATEGORY", category: cat })}
+                onCategoryChange={(cat) =>
+                  dispatch({ type: "SET_CATEGORY", category: cat })
+                }
               />
             </div>
 
@@ -164,7 +188,9 @@ if (t.transaction_date) {
               <select
                 className={styles.dropdownSelect}
                 value={filter.periodType}
-                onChange={(e) => dispatch({ type: "SET_PERIOD_TYPE", payload: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ type: "SET_PERIOD_TYPE", payload: e.target.value })
+                }
               >
                 <option value="all">Todo o histórico</option>
                 <option value="week">Última semana</option>
@@ -177,11 +203,15 @@ if (t.transaction_date) {
 
             {filter.periodType === "custom" && (
               <div className={styles.customDateWrapper}>
-                <label className={styles.dropdownLabel}>Intervalo de datas</label>
+                <label className={styles.dropdownLabel}>
+                  Intervalo de datas
+                </label>
                 <DateRangePicker
                   startDate={filter.startDate}
                   endDate={filter.endDate}
-                  onDateChange={(start, end) => dispatch({ type: "SET_DATE_RANGE", start, end })}
+                  onDateChange={(start, end) =>
+                    dispatch({ type: "SET_DATE_RANGE", start, end })
+                  }
                 />
               </div>
             )}
@@ -195,7 +225,6 @@ if (t.transaction_date) {
                 {hasActiveFilters ? "Limpar Filtros" : "Nenhum filtro ativo"}
               </button>
             </div>
-
           </div>
         </div>
 
@@ -204,7 +233,6 @@ if (t.transaction_date) {
           transactions={filteredTransactions}
           onDelete={(id) => deleteMutation.mutate(id)}
         />
-
       </div>
     </div>
   );

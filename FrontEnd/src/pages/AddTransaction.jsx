@@ -3,6 +3,7 @@ import { createTransaction } from "../api";
 import Card from "../components/Card";
 import TransactionForm from "../components/TransactionForm";
 import styles from "../components/styles/AddTransaction.module.css";
+import toast from "react-hot-toast";
 
 export default function AddTransaction() {
     const queryClient = useQueryClient();
@@ -11,9 +12,10 @@ export default function AddTransaction() {
         mutationFn: createTransaction,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["transactions"] });
+            toast.success ("Transação criada com sucesso!")
         },
         onError: () => {
-            alert("Erro ao adicionar transação. Tente novamente.");
+            toast.error("Erro ao adicionar transação. Tente novamente.");
         },
     });
 

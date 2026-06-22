@@ -20,7 +20,7 @@ import { Signup } from "./pages/Signup";
 import ChatbotButton from "./components/ChatbotButton";
 import ChatWidget from "./components/ChatWidget";
 import LandingPage from "./pages/LandingPage";
-
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
@@ -45,13 +45,14 @@ function App() {
         <PreferencesProvider>
           <AuthProvider>
             <Router>
+              <Toaster position="top-right" />
               <Routes>
-                <Route element={<MainLayout />}> {/* ALTERADO: removido path="/" e PrivateRoute aqui */}
-                {/* ALTERADO: "/" agora decide entre LandingPage e redirect para /painel */}
-                <Route path="/" element={<HomeRoute />} />
-
-                {/* O MainLayout contém o Header, Navbar e Footer */}
-                
+                <Route element={<MainLayout />}>
+                  {" "}
+                  {/* ALTERADO: removido path="/" e PrivateRoute aqui */}
+                  {/* ALTERADO: "/" agora decide entre LandingPage e redirect para /painel */}
+                  <Route path="/" element={<HomeRoute />} />
+                  {/* O MainLayout contém o Header, Navbar e Footer */}
                   <Route
                     path="painel" // ALTERADO: era "index" em "/"
                     element={
