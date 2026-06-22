@@ -1,11 +1,13 @@
 import { useReducer } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getTransactions, deleteTransaction, getCategories } from "../api";
+import { getTransactionTotals } from "../utils/transactionsTotals";
 import TransactionList from "../components/TransactionList";
 import CategoryFilter from "../components/CategoryFilter";
 import DateRangePicker from "../components/DateRangePicker";
+import Summary from "../components/Summary";
+import AddTransaction from "../pages/AddTransaction";
 import styles from "../components/styles/History.module.css";
-import ExpenseChartsHub from "../components/ExpenseChartsHub.jsx";
 import toast from "react-hot-toast";
 
 const initialState = {
@@ -106,6 +108,8 @@ const Details = () => {
   if (isLoading) return <p style={{ color: "white" }}>A carregar...</p>;
   if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
 
+  const { income, expense, balance } = getTransactionTotals(transactions);
+
   const filteredTransactions = transactions.filter((t) => {
     if (
       filter.activeCategory &&
@@ -131,10 +135,12 @@ const Details = () => {
 
   return (
     <div className={styles.historyContainer}>
-      {/* Gráfico no topo, largura total */}
-      <section className={styles.chartSection}>
-        <ExpenseChartsHub transactions={filteredTransactions} />
-      </section>
+      <Summary
+        balance={balance}
+        income={income}
+        expense={expense}
+        showGreeting={false}
+      />
 
       {/* Filtros à esquerda, lista à direita */}
       <div className={styles.bottomSection}>
@@ -228,11 +234,15 @@ const Details = () => {
           </div>
         </div>
 
-        {/* ── Lista ── */}
-        <TransactionList
-          transactions={filteredTransactions}
-          onDelete={(id) => deleteMutation.mutate(id)}
-        />
+        <div className={styles.transactionsColumn}>
+          <AddTransaction />
+
+          {/* ── Lista ── */}
+          <TransactionList
+            transactions={filteredTransactions}
+            onDelete={(id) => deleteMutation.mutate(id)}
+          />
+        </div>
       </div>
     </div>
   );
