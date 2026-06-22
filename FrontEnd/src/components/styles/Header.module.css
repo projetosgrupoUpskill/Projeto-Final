@@ -141,12 +141,6 @@
     display: flex; 
   }
 
-  .navLink {
-    width: 100%;
-    text-align: left;
-    padding: 0.6rem 1rem;
-  }
-
   .navLink:hover {
     background-color: #f3f4f6;
     width: 180px;
@@ -169,6 +163,11 @@
     background-color: #16171d;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.4);
   }
+}
+
+:global(body.dark) .loginLink {
+    background-color: #1E1E1E;
+    color: #4fb38c;
 }
 
 :global(body.dark) .navLink:hover {
