@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getTransactions, deleteTransaction } from "../api";
-import { getTransactionTotals } from "../utils/TransactionTotals.js";
-import Summary from "../components/Summary";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getTransactions } from "../api";
+import { getTransactionTotals } from "../utils/transactionsTotals.js";
+import Summary from "../components/Summary.jsx";
 import TransactionList from "../components/TransactionList";
 import ExpenseLineChart from "../components/ExpenseLineChart";
 import ExpenseBarChart from "../components/ExpenseBarChart";
