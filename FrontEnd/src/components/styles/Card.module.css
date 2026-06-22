@@ -8,9 +8,12 @@
   }
   
   .cardHeader {
-    background-color: #123022; /* O verde escuro padrão */
+    background-color: #123022; 
     padding: 1.2rem 1.5rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   
   .cardTitle {
@@ -19,4 +22,3 @@
     color: #ffffff;
     margin: 0;
   }
-  

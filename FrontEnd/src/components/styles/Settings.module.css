@@ -34,7 +34,6 @@
     margin: 0;
 }
 
-/* --- Campos de Input e Select --- */
 .select,
 .input {
     height: 38px;
@@ -46,7 +45,6 @@
     color: #333;
     outline: none;
     min-width: 400px;
-    /* Largura base para se alinharam bem */
     max-width: 430px;
     font-family: inherit;
 }
@@ -54,12 +52,8 @@
 .input:focus,
 .select:focus {
     border-color: #6366f1;
-    /* Cor focada num tom azul/roxo */
 }
 
-/* ==========================================================
-     INTERRUPTOR (TOGGLE SWITCH) Baseado na sua Imagem
-  ========================================================== */
 .toggleSwitch {
     width: 50px;
     height: 28px;
@@ -75,7 +69,6 @@
     flex-shrink: 0;
 }
 
-/* A Bolinha branca do interruptor */
 .toggleSwitch::after {
     content: "";
     position: absolute;
@@ -89,10 +82,9 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Estado LIGADO (Cores fiéis à imagem partilhada) */
 .toggleSwitch[data-active="true"] {
     background-color: #1A7A5E;
-    /* Azul/roxo (Active) */
+
 }
 
 .toggleSwitch[data-active="true"]::after {
@@ -114,6 +106,5 @@
 
     .toggleSwitch {
         align-self: flex-end;
-        /* Coloca o interruptor à direita no telemóvel também */
     }
 }

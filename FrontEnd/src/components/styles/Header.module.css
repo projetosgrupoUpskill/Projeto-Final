@@ -18,7 +18,7 @@
   }
   
   .logoImage {
-    height: 65px; /* Ajuste a tamanho */
+    height: 65px; 
     width: auto; 
   }
   
@@ -39,27 +39,29 @@
   }
 
   .navLinkActive {
-    font-weight: 700;
-    font-size: 1rem;
-    text-decoration: underline;
+    font-weight:0.9rem;
+    background-color: #20674c;
+    color: #F9FAFB;
   }
 
   .loginLink {
-    background-color: var(--color-primary, #20674c); 
-    color: #ffffff;
+    border: 1px solid #20674c;
+    color: #20674c;
+    background-color: #F9FAFB;
+    font-weight: 500;
     padding: 8px 16px;
     border-radius: 8px;
     transition: background-color 0.3s ease;
   }
 
   .loginLink:hover {
-    background-color: #6C9485 !important; 
+    background-color: #20674c !important; 
     color: #ffffff;
   }
   
   .navLink:hover {
     color: white;
-    background-color: #0F2E22;
+    background-color: #133022;
   }
 
   .navLinkActive:hover {
