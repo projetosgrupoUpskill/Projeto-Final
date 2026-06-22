@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import styles from "../components/styles/authForm.module.css";
 import { AuthLayout } from "../components/AuthLayout";
+import { createPortal } from "react-dom";
+import PasswordInput from "../components/PasswordInput";
 
 export function Login() {
   const navigate = useNavigate();
@@ -14,6 +16,10 @@ export function Login() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetSent, setResetSent] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +41,17 @@ export function Login() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const closeForgotPassword = () => {
+    setShowForgotPassword(false);
+    setResetSent(false);
+    setResetEmail("");
+  };
+
+  const handleForgotPasswordSubmit = (e) => {
+    e.preventDefault();
+    setResetSent(true);
   };
 
   return (
@@ -73,12 +90,9 @@ export function Login() {
             Senha
           </label>
 
-          <input
+          <PasswordInput
             id="password"
             name="password"
-            type="password"
-            placeholder="••••••••"
-            className={styles.input}
             value={formData.password}
             onChange={handleChange}
             required
@@ -86,13 +100,78 @@ export function Login() {
         </div>
 
         <div className={styles.forgotPassword}>
-          <a href="#">Esqueceu a senha?</a>
+          <button type="button" onClick={() => setShowForgotPassword(true)}>
+            Esqueceu a senha?
+          </button>
         </div>
 
         <button type="submit" className={styles.button} disabled={isLoading}>
           {isLoading ? "Entrando..." : "Entrar"}
         </button>
       </form>
+
+      {showForgotPassword && createPortal(
+        <div
+          className={styles.modalOverlay}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeForgotPassword();
+          }}
+        >
+          <div className={styles.modalContent}>
+            <h3 className={styles.modalTitle}>Recuperar Senha</h3>
+
+            {resetSent ? (
+              <div className={styles.modalBody}>
+                <p>
+                  Se o email <strong>{resetEmail}</strong> estiver associado a uma conta,
+                  vai receber um link para redefinir a sua senha em breve.
+                </p>
+              </div>
+            ) : (
+              <form
+                id="forgotPasswordForm"
+                onSubmit={handleForgotPasswordSubmit}
+                className={styles.modalBody}
+              >
+                <p>
+                  Indique o email da sua conta. Vamos enviar um link para você redefinir
+                  a sua senha.
+                </p>
+                <div className={styles.formGroup}>
+                  <label htmlFor="resetEmail" className={styles.label}>
+                    Email
+                  </label>
+                  <input
+                    id="resetEmail"
+                    type="email"
+                    placeholder="seu@email.com"
+                    className={styles.input}
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </form>
+            )}
+
+            <div className={styles.modalActions}>
+              {!resetSent && (
+                <button type="submit" form="forgotPasswordForm" className={styles.button}>
+                  Enviar link de recuperação
+                </button>
+              )}
+              <button
+                type="button"
+                className={styles.modalCloseBtnDanger}
+                onClick={closeForgotPassword}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </AuthLayout>
   );
 }
