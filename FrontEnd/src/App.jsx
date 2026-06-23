@@ -12,7 +12,8 @@ import AddTransaction from "./pages/AddTransaction";
 import ContactCard from "./pages/Contact";
 import { PreferencesProvider } from "./context/PreferencesContext";
 import { ThemeProvider, ThemeContext } from "./context/ThemeContext";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
+import useAuth  from "./context/AuthContext";
 import Settings from "./pages/Settings";
 import Details from "./pages/History";
 import { Login } from "./pages/login";
@@ -44,13 +45,29 @@ const queryClient = new QueryClient();
 // Proteção para rotas que precisam de autenticação
 function PrivateRoute({ children }) {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/" />; // ALTERADO: era "/landing" / "/login"
+  return isAuthenticated ? children : <Navigate to="/" />;
 }
 
 // ADICIONADO: decide o que mostrar em "/"
 function HomeRoute() {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <Navigate to="/painel" /> : <LandingPage />;
+}
+
+// Apenas mostra IA pra quem está logado
+function ChatbotGate({ isChatOpen, setIsChatOpen }) {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) return null;
+
+  return (
+    <>
+      {isChatOpen && <ChatWidget />}
+      <ChatbotButton
+        isOpen={isChatOpen}
+        onClick={() => setIsChatOpen(!isChatOpen)}
+      />
+    </>
+  );
 }
 
 function App() {
@@ -112,10 +129,9 @@ function App() {
                 {/* ALTERADO: redireciona para "/" em vez de "/landing" */}
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
-              {isChatOpen && <ChatWidget />}
-              <ChatbotButton
-                isOpen={isChatOpen}
-                onClick={() => setIsChatOpen(!isChatOpen)}
+              <ChatbotGate
+                isChatOpen={isChatOpen}
+                setIsChatOpen={setIsChatOpen}
               />
             </Router>
           </AuthProvider>
