@@ -1,5 +1,5 @@
 import styles from "./styles/ChatWidget.module.css";
-import useAuth from "../context/authContext";
+import useAuth from "../context/AuthContext";
 import { useState, useEffect } from "react";
 
 const suggestions = [
@@ -135,10 +135,6 @@ export default function ChatWidget() {
 
   return (
     <div className={styles.chatWidget}>
-      <div className={styles.chatHeader}>
-        <h3>Assistente</h3>
-        <p>Como posso ajudar?</p>
-      </div>
 
       <div className={styles.chatMessages}>
         {messages.map((msg, i) => (
