@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import styles from "./styles/Summary.module.css";
 import { FiEye, FiTrendingDown, FiTrendingUp } from "react-icons/fi";
-import { useAuth } from "../context/AuthContext";
+import  useAuth from "../context/AuthContext";
 
 export default function Summary({ balance, income, expense, showGreeting = true }) {
   const { currency} = useContext(PreferencesContext);

@@ -1,4 +1,4 @@
-import { useAuth } from "../context/AuthContext";
+import useAuth  from "../context/AuthContext";
 import { FiGithub } from "react-icons/fi";
 import { contacts } from "../pages/Contact"; // ADICIONADO
 import styles from "./styles/Footer.module.css";

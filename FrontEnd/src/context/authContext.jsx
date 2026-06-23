@@ -1,7 +1,14 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { login as apiLogin, register as apiRegister } from "../api";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext({
+  token: null,
+  isAuthenticated: false,
+  userName: "",
+  login: async () => {},
+  logout: () => {},
+  register: async () => {},
+});
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
@@ -51,6 +58,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-export function useAuth() {
+export default function useAuth() {
   return useContext(AuthContext);
 }

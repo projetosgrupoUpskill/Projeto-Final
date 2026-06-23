@@ -4,7 +4,7 @@ import logo_atualizada from "../assets/logo_atualizada.svg";
 import logo_dark_atualizada from "../assets/logo_dark_atualizada.svg";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
-import { useAuth } from "../context/AuthContext"; // ADICIONADO
+import  useAuth  from "../context/AuthContext"; // ADICIONADO
 import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
 
 export default function Header() {
