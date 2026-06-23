@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getTransactions, deleteTransaction, getCategories } from "../api";
 import { getTransactionTotals } from "../utils/transactionsTotals";
@@ -6,7 +6,7 @@ import TransactionList from "../components/TransactionList";
 import CategoryFilter from "../components/CategoryFilter";
 import DateRangePicker from "../components/DateRangePicker";
 import Summary from "../components/Summary";
-import AddTransaction from "../pages/AddTransaction";
+import AddTransaction from "./AddTransaction";
 import styles from "../components/styles/History.module.css";
 import toast from "react-hot-toast";
 
@@ -29,7 +29,7 @@ function filtersReducer(state, action) {
       return { ...state, activeCategory: action.category };
     case "SET_TYPE":
       return { ...state, type: action.payload };
-    case "SET_PERIOD_TYPE":
+    case "SET_PERIOD_TYPE": {
       const period = action.payload;
       if (period === "all")
         return { ...state, periodType: period, startDate: "", endDate: "" };
@@ -61,6 +61,7 @@ function filtersReducer(state, action) {
       }
       if (period === "custom") return { ...state, periodType: period };
       return state;
+    }
     case "RESET":
       return initialState;
     default:
@@ -97,29 +98,32 @@ const Details = () => {
   const deleteMutation = useMutation({
     mutationFn: deleteTransaction,
     onSuccess: (data) => {
-      (queryClient.invalidateQueries({ queryKey: ["transactions"] }),
-        toast.success(data?.message || "Transação eliminada com sucesso!"));
+    queryClient.invalidateQueries({ queryKey: ["transactions"] });
+        toast.success(data?.message || "Transação eliminada com sucesso!");
     },
     onError: () => {
       toast.error("Erro ao eliminar transação. Tente novamente.");
     },
   });
 
-  if (isLoading) return <p style={{ color: "white" }}>A carregar...</p>;
-  if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
+  const { income, expense, balance } = useMemo (
+    () => getTransactionTotals(transactions),
+    [transactions]
+  );
 
-  const { income, expense, balance } = getTransactionTotals(transactions);
-
-  const filteredTransactions = transactions.filter((t) => {
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter((t) => {
     if (
       filter.activeCategory &&
       filter.activeCategory !== "all" &&
       t.category_slug !== filter.activeCategory
     )
       return false;
+
     if (filter.type === "income" && t.type !== "income") return false;
     if (filter.type === "expense" && t.type !== "expense") return false;
-    if (t.transaction_date) {
+    if (filter.startDate || filter.endDate) {
+      if (!t.transaction_date) return false;
       const transactionDate = new Date(t.transaction_date);
       const start = filter.startDate ? new Date(filter.startDate) : null;
       const end = filter.endDate ? new Date(filter.endDate) : null;
@@ -132,6 +136,10 @@ const Details = () => {
     }
     return true;
   });
+}, [transactions, filter]);
+
+  if (isLoading) return <p style={{ color: "white" }}>A carregar...</p>;
+  if (isError) return <p style={{ color: "red" }}>Erro ao ligar à API.</p>;
 
   return (
     <div className={styles.historyContainer}>
