@@ -1,6 +1,6 @@
 import styles from "./styles/ChatWidget.module.css";
 import useAuth from "../context/AuthContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const suggestions = [
   "Resumo do mês",
@@ -17,6 +17,12 @@ export default function ChatWidget() {
   ]);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+}, [messages]);
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -65,9 +71,6 @@ export default function ChatWidget() {
         body: JSON.stringify({ message: text, history }),
       });
 
-      // Adiciona bolha do bot vazia para ir preenchendo
-      setMessages((prev) => [...prev, { from: "bot", text: "" }]);
-
       // Lê o stream
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -76,51 +79,38 @@ export default function ChatWidget() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-
-        const chunk = decoder.decode(value);
-        fullText += chunk;
-
-        // Atualiza a última bolha do bot com o texto acumulado
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { from: "bot", text: fullText };
-          return updated;
-        });
+        fullText += decoder.decode(value);
       }
 
       // Quando o stream termina, processa o JSON completo
       const parsed = JSON.parse(fullText);
 
       if (parsed.action === "REPORT") {
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = {
+        setMessages((prev) => [
+          ...prev,
+          {
             from: "bot",
             text: parsed.report.message,
-            report: parsed.report, // guardamos o report para o botão PDF
-          };
-          return updated;
-        });
+            report: parsed.report,
+          },
+        ]);
       } else if (parsed.action === "SUGGESTION") {
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = {
+        setMessages((prev) => [
+          ...prev,
+          {
             from: "bot",
             text: parsed.suggestion.message,
             items: parsed.suggestion.items,
-          };
-          return updated;
-        });
+          },
+        ]);
       } else {
-        // CHAT — já está correto, só atualiza com o message limpo
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = {
+        setMessages((prev) => [
+          ...prev,
+          {
             from: "bot",
             text: parsed.message,
-          };
-          return updated;
-        });
+          },
+        ]);
       }
     } catch (err) {
       console.error("Erro ao enviar mensagem:", err);
@@ -135,7 +125,6 @@ export default function ChatWidget() {
 
   return (
     <div className={styles.chatWidget}>
-
       <div className={styles.chatMessages}>
         {messages.map((msg, i) => (
           <div
@@ -157,14 +146,25 @@ export default function ChatWidget() {
 
             {/* Botão de download PDF do REPORT */}
             {msg.report && (
-              <button onClick={() => console.log("gerar PDF", msg.report)}>
+              <div>
+              <button className={styles.pdfBtn}onClick={() => console.log("gerar PDF", msg.report)}>
                 Download PDF
               </button>
+              </div>
             )}
           </div>
         ))}
 
-        {isLoading && <div className={styles.chatBubble}>A escrever...</div>}
+        {isLoading && (
+          <div className={styles.chatBubble}>
+            <span className={styles.typingDots}>
+              <span>.</span>
+              <span>.</span>
+              <span>.</span>
+            </span>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Sugestões */}

@@ -118,3 +118,48 @@
   align-self: flex-end;
   margin-left: auto;
 }
+
+.typingDots span {
+  animation: blink 1.4s infinite;
+  font-size: 1.5rem;
+}
+
+.typingDots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typingDots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.pdfBtn {
+  display: block;   
+  margin: 1rem auto 0;    
+  width: 60%;
+  
+  background-color: #2c8563;
+  color: white;
+  font-size: 13px;
+  
+  padding: 8px 16px;      
+  border: none;           
+  border-radius: 8px;
+  
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease; 
+}
+
+.pdfBtn:hover {
+  background-color: #1a533d;
+}
