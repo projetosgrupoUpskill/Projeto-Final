@@ -3,8 +3,8 @@ import pool from "../db.js";
 
 export const sendMessage = async (req, res) => {
   const { message, history } = req.body;
-  const userId = req.user.id; 
-  
+  const userId = req.user.id;
+
   if (!message?.trim()) {
     return res.status(400).json({ error: "Mensagem não pode estar vazia" });
   }
@@ -28,6 +28,10 @@ ${JSON.stringify({ transactions }, null, 2)}
 USER MESSAGE:
 ${message}
     `.trim();
+
+    console.log("Nº de transações:", transactions.length);
+    console.log("Nº de mensagens no histórico:", history.length);
+    console.log("Tamanho do contexto (chars):", messageWithContext.length);
 
     // Configurar headers para streaming
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
