@@ -117,7 +117,7 @@ export async function sendMessageStream(history, userMessage, onChunk) {
     }));
 
   const response = await ai.models.generateContentStream({
-    model: MODELS,
+    model: 'gemini-2.0-flash',
     config: {
       systemInstruction: SYSTEM_PROMPT,
       responseMimeType: "application/json",
