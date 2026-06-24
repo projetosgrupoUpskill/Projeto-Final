@@ -21,7 +21,7 @@ export default function ChatWidget() {
   useEffect(() => {
     const loadHistory = async () => {
       try {
-        const res = await fetch("http://localhost:3000/chat/history", {
+        const res = await fetch("http://localhost:3000/api/chat/history", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -56,7 +56,7 @@ export default function ChatWidget() {
     }));
 
     try {
-      const res = await fetch("http://localhost:3000/chat", {
+      const res = await fetch("http://localhost:3000/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
