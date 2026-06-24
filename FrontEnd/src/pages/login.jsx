@@ -28,7 +28,7 @@ export function Login() {
 
     try {
       await login(formData.email, formData.password);
-      navigate("/");
+      navigate("/painel");
     } catch (error) {
       setError(error.message || "Erro ao fazer login. Tente novamente.");
     } finally {
