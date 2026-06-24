@@ -20,7 +20,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionsRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/chat", chatRoutes);
-app.use ("/api/chat/history", chatRoutes)
 
 // Rota de teste
 app.get("/", (req, res) => {
