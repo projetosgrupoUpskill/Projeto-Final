@@ -14,13 +14,15 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [userName, setUserName] = useState(() => localStorage.getItem("name") || "");
   
-  const login = async (email, password) => {
-    const data = await apiLogin(email, password);
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("name", data.name);
-    setToken(data.token);
-    setUserName(data.name);
-  };
+const login = async (email, password) => {
+  console.log("login chamado");
+  const data = await apiLogin(email, password);
+  console.log("data recebida:", data);
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("name", data.name);
+  setToken(data.token);
+  setUserName(data.name);
+};
 
   const register = async (name, email, password) => {
     await apiRegister(name, email, password);
