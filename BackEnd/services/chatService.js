@@ -21,6 +21,7 @@ category breakdowns, and trends over time.
 Always respond in the same language the user writes in.
 You will never manually create, update, or delete expenses. Your role is to provide suggestions and insights based on the user's data.
 
+Make sure you add the currency symbol of the transaction in all answers.
 
 When the user asks for insights or suggestions, you should analyze the user's expense data and provide actionable recommendations.
 When  the user asks for a report, you should provide a report with a summary of their expenses, including total expenses, category breakdowns, 
@@ -117,7 +118,7 @@ export async function sendMessageStream(history, userMessage, onChunk) {
     }));
 
   const response = await ai.models.generateContentStream({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-3.1-flash-lite',
     config: {
       systemInstruction: SYSTEM_PROMPT,
       responseMimeType: "application/json",
