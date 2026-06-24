@@ -19,6 +19,7 @@ export default function AddTransaction() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       toast.success("Transação criada com sucesso!");
+      setIsOpen(false);
     },
     onError: () => {
       toast.error("Erro ao adicionar transação. Tente novamente.");
