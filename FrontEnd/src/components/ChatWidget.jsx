@@ -1,6 +1,9 @@
 import styles from "./styles/ChatWidget.module.css";
 import useAuth from "../context/AuthContext";
 import { useState, useEffect, useRef } from "react";
+import { FiTrash2, FiMessageCircle } from "react-icons/fi";
+import { clearChatHistory } from "../api";
+import ConfirmModal from "./ConfirmModal";
 
 const suggestions = [
   "Resumo do mês",
@@ -9,20 +12,21 @@ const suggestions = [
   "Dicas financeiras",
 ];
 
+const GREETING = { from: "bot", text: "Olá! Como posso ajudar? 👋" };
+
 export default function ChatWidget() {
   const { token } = useAuth();
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([
-    { from: "bot", text: "Olá! Como posso ajudar? 👋" },
-  ]);
+  const [messages, setMessages] = useState([GREETING]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
 
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-}, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -46,6 +50,17 @@ export default function ChatWidget() {
 
     loadHistory();
   }, []);
+
+  const handleClearHistory = async () => {
+    try {
+      await clearChatHistory();
+      setMessages([GREETING]);
+    } catch (err) {
+      console.error("Erro ao limpar histórico:", err);
+    } finally {
+      setIsClearing(false);
+    }
+  };
 
   const handleSend = async (text) => {
     if (!text.trim()) return;
@@ -124,7 +139,28 @@ export default function ChatWidget() {
   };
 
   return (
+    <>
     <div className={styles.chatWidget}>
+
+      <div className={styles.chatHeader}>
+        <div className={styles.chatHeaderInfo}>
+          <div className={styles.chatHeaderAvatar}>
+            <FiMessageCircle size={14} />
+          </div>
+          <div className={styles.chatHeaderText}>
+            <span className={styles.chatHeaderTitle}>Assistente</span>
+          </div>
+        </div>
+        <button
+          className={styles.clearHistoryBtn}
+          onClick={() => setIsClearing(true)}
+          title="Limpar histórico"
+          aria-label="Limpar histórico"
+        >
+          <FiTrash2 size={14} />
+        </button>
+      </div>
+
       <div className={styles.chatMessages}>
         {messages.map((msg, i) => (
           <div
@@ -147,9 +183,9 @@ export default function ChatWidget() {
             {/* Botão de download PDF do REPORT */}
             {msg.report && (
               <div>
-              <button className={styles.pdfBtn}onClick={() => console.log("gerar PDF", msg.report)}>
-                Download PDF
-              </button>
+                <button className={styles.pdfBtn} onClick={() => console.log("gerar PDF", msg.report)}>
+                  Download PDF
+                </button>
               </div>
             )}
           </div>
@@ -191,5 +227,16 @@ export default function ChatWidget() {
         <button onClick={() => handleSend(input)}>➤</button>
       </div>
     </div>
+
+        <ConfirmModal
+          isOpen={isClearing}
+          title="Limpar histórico"
+          message="Tens a certeza que queres limpar todo o histórico do chat?"
+          subMessage="Esta ação não pode ser desfeita."
+          confirmLabel="Limpar"
+          onConfirm={handleClearHistory}
+          onCancel={() => setIsClearing(false)}
+        />
+        </>
   );
 }
