@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 
 const MODELS = [
@@ -31,21 +31,6 @@ This format will be used by the frontend to generate reports and visualizations 
 If the user asks about topics unrelated to finance, respond with action CHAT and politely explain you can only help with financial topics
 
 You'll also provide suggestions for optimizing their spending habits and identifying areas where they can save money.
-
-DATA FORMAT:
-The user's expense data will be provided in the following format:
-{
-  "transactions": [
-    {
-      "id": 1,
-      "title": "Supermercado",
-      "amount": 45.50,
-      "type": "expense",
-      "category": "Alimentação",
-      "transaction_date": "2024-05-15"
-    }
-  ]
-}
 
 
 AVAILABLE ACTIONS:
@@ -110,7 +95,10 @@ object in the following format:
 export async function sendMessageStream(history, userMessage, onChunk) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
+  const MAX_HISTORY = 5;
+
   const historyContents = history
+    .slice(-MAX_HISTORY)
     .filter((msg) => msg.content?.trim())
     .map((msg) => ({
       role: msg.role === "bot" ? "model" : "user",
@@ -118,7 +106,7 @@ export async function sendMessageStream(history, userMessage, onChunk) {
     }));
 
   const response = await ai.models.generateContentStream({
-    model: 'gemini-3.1-flash-lite',
+    model: "gemini-3.1-flash-lite",
     config: {
       systemInstruction: SYSTEM_PROMPT,
       responseMimeType: "application/json",
@@ -127,23 +115,20 @@ export async function sendMessageStream(history, userMessage, onChunk) {
     },
 
     contents: [
-        ...historyContents,
-        {role: "user", parts: [{text: userMessage}]},
-    ]
+      ...historyContents,
+      { role: "user", parts: [{ text: userMessage }] },
+    ],
   });
 
   let fullText = ""; //começa vazio, para acumular
-  
+
   for await (const chunk of response) {
     const text = chunk.text;
     if (text) {
-        fullText += text //acumulador do texto da resposta
-        onChunk(text); //envia chunks para o FE mostrar
+      fullText += text; //acumulador do texto da resposta
+      onChunk(text); //envia chunks para o FE mostrar
     }
   }
 
   return JSON.parse(fullText); //faz o parse no final da mensagem
-
 }
-
-
