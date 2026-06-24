@@ -40,7 +40,7 @@ ${message}
     let fullText = "";
 
     await chatService.sendMessageStream(
-      history || [],
+      history || [].slice(-5),
       messageWithContext,
       (chunk) => {
         fullText += chunk;
