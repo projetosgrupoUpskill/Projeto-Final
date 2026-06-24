@@ -40,7 +40,7 @@ ${message}
     let fullText = "";
 
     await chatService.sendMessageStream(
-      history || [].slice(-5),
+      (history || []).slice(-5),
       messageWithContext,
       (chunk) => {
         fullText += chunk;
@@ -77,5 +77,17 @@ export const getHistory = async (req, res) => {
     res.json({ history });
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar histórico" });
+  }
+};
+
+export const clearHistory = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    await pool.query("DELETE FROM chat_history WHERE user_id = ?", [userId]);
+    res.json({ message: "Histórico eliminado com sucesso" });
+  } catch (error) {
+    console.error("Erro ao limpar histórico:", error);
+    res.status(500).json({ error: "Erro ao limpar histórico" });
   }
 };
