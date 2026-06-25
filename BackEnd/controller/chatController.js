@@ -12,21 +12,10 @@ export const sendMessage = async (req, res) => {
 
   try {
     const transactions = await getAllTransactions(userId);
-
     const totals = summarizeTransactions(transactions);
-    
-    // Injetar os dados no contexto da mensagem
-    const messageWithContext = `
-USER DATA:
-${JSON.stringify({ transactions, totals }, null, 2)}
-
-USER MESSAGE:
-${message}
-    `.trim();
 
     console.log("Nº de transações:", transactions.length);
     console.log("Nº de mensagens no histórico:", history.length);
-    console.log("Tamanho do contexto (chars):", messageWithContext.length);
 
     // Configurar headers para streaming
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
@@ -34,14 +23,15 @@ ${message}
 
     let fullText = "";
 
-    await chatService.sendMessageStream(
-      (history || []).slice(-5),
-      messageWithContext,
-      (chunk) => {
+    await chatService.sendMessageStream({
+      history: (history || []).slice(-5),
+      data: { transactions, totals },
+      userMessage: message,
+      onChunk: (chunk) => {
         fullText += chunk;
         res.write(chunk); // envia pedaço ao frontend
       },
-    );
+    });
 
     // Guardar no histórico
     await pool.query(
