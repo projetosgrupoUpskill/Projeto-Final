@@ -1,4 +1,5 @@
 import * as chatService from "../services/chatService.js";
+import { getAllTransactions, summarizeTransactions } from "../services/transactionsService.js";
 import pool from "../db.js";
 
 export const sendMessage = async (req, res) => {
@@ -10,20 +11,14 @@ export const sendMessage = async (req, res) => {
   }
 
   try {
-    // Buscar transações do utilizador para dar contexto à IA
-    const [transactions] = await pool.query(
-      `SELECT t.id, t.title, t.amount, t.type, t.transaction_date, c.name AS category
-       FROM transactions t
-       JOIN category c ON t.category_id = c.id
-       WHERE t.user_id = ?
-       ORDER BY t.transaction_date DESC`,
-      [userId],
-    );
+    const transactions = await getAllTransactions(userId);
 
+    const totals = summarizeTransactions(transactions);
+    
     // Injetar os dados no contexto da mensagem
     const messageWithContext = `
 USER DATA:
-${JSON.stringify({ transactions }, null, 2)}
+${JSON.stringify({ transactions, totals }, null, 2)}
 
 USER MESSAGE:
 ${message}
