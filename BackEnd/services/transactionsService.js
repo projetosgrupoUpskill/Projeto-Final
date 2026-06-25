@@ -42,3 +42,17 @@ export async function deleteTransaction(id, user_id) {
 
     return result.affectedRows;
 }
+
+export function summarizeTransactions(transactions) {
+    const totalIncome = transactions
+        .filter((t) => t.type === "income")
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const totalExpenses = transactions
+        .filter((t) => t.type === "expense")
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const balance = totalIncome - totalExpenses;
+
+    return { totalIncome, totalExpenses, balance };
+}
