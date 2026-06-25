@@ -56,7 +56,7 @@ export default function ExpenseLineChart({ transactions }) {
 
   const distinctMonths = new Set(
     transactions.map((transacao) => {
-      const date = new Date(transacao.transaction_date.split("T")[0] + "T00:00:00");
+      const date = new Date(transacao.transaction_date.slice(0, 10) + "T00:00:00");
       return `${date.getFullYear()}-${date.getMonth()}`;
     })
   );
@@ -64,7 +64,7 @@ export default function ExpenseLineChart({ transactions }) {
   const agruparPorDia = distinctMonths.size <= 1;
 
   const data = transactions.reduce((acumulador, transacao) => {
-    const date = new Date(transacao.transaction_date.split("T")[0] + "T00:00:00"); 
+    const date = new Date(transacao.transaction_date.slice(0, 10) + "T00:00:00");
 
     let key, label, labelCompleto, order;
 
