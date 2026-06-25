@@ -159,7 +159,6 @@ export default function ChatWidget() {
           </div>
           <div className={styles.chatHeaderText}>
             <span className={styles.chatHeaderTitle}>Assistente</span>
-            <span className={styles.chatHeaderStatus}>Online</span>
           </div>
         </div>
         <button
