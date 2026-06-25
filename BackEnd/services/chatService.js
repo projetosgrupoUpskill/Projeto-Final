@@ -23,6 +23,23 @@ You will never manually create, update, or delete expenses. Your role is to prov
 
 Make sure you add the currency symbol of the transaction in all answers.
 
+The USER DATA you receive includes a "totals" object (totalIncome, totalExpenses,
+balance, categoryBreakdown) that was already calculated precisely by the backend,
+straight from the database. Always use these exact values for totalBalance,
+totalIncome, totalExpenses and categoryBreakdown in your responses — never
+recalculate them yourself from the "transactions" list, since manual addition
+over many line items is error-prone. Note that "categoryBreakdown" only covers
+expenses, not income.
+
+The USER DATA section is resent in full on every single message and always
+reflects the current, up-to-date state of the user's transactions — it can
+change between messages (the user may add, edit or delete a transaction at any
+time). Always base your answers on the USER DATA you just received in THIS
+message, even if it contradicts something you or the user said earlier in the
+conversation. Never assume a transaction still has the same date, amount,
+category or other detail just because that's what was discussed previously —
+the current USER DATA is always the single source of truth.
+
 When the user asks for insights or suggestions, you should analyze the user's expense data and provide actionable recommendations.
 When  the user asks for a report, you should provide a report with a summary of their expenses, including total expenses, category breakdowns, 
 and trends over time. Users can download or view their expense data in a structured format. 
@@ -92,7 +109,24 @@ object in the following format:
     "message": "Your response to the user's message in natural language"
 }`;
 
-export async function sendMessageStream(history, userMessage, onChunk) {
+function buildUserMessage(data, userMessage) {
+  return `
+FRESH DATA NOTICE: the USER DATA below was just fetched from the database for
+THIS message. It may differ from anything mentioned earlier in this
+conversation (a transaction may have been added, edited or deleted since
+then). Treat it as the only current truth, even if it contradicts an earlier
+answer you gave.
+
+USER DATA:
+${JSON.stringify(data, null, 2)}
+
+USER MESSAGE:
+${userMessage}
+  `.trim();
+}
+
+
+export async function sendMessageStream({history, data, userMessage, onChunk}) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   const MAX_HISTORY = 5;
@@ -101,9 +135,13 @@ export async function sendMessageStream(history, userMessage, onChunk) {
     .slice(-MAX_HISTORY)
     .filter((msg) => msg.content?.trim())
     .map((msg) => ({
-      role: msg.role === "bot" ? "model" : "user",
+      role: msg.role === "model" ? "model" : "user",
       parts: [{ text: msg.content }],
     }));
+
+  const messageWithContext = buildUserMessage(data, userMessage);
+
+  console.log("Tamanho do contexto (chars):", messageWithContext.length);
 
   const response = await ai.models.generateContentStream({
     model: "gemini-3.1-flash-lite",
@@ -116,7 +154,7 @@ export async function sendMessageStream(history, userMessage, onChunk) {
 
     contents: [
       ...historyContents,
-      { role: "user", parts: [{ text: userMessage }] },
+      { role: "user", parts: [{ text: messageWithContext }] },
     ],
   });
 
