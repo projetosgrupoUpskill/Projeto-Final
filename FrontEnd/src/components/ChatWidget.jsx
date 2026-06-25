@@ -1,9 +1,9 @@
 import styles from "./styles/ChatWidget.module.css";
 import useAuth from "../context/AuthContext";
 import { useState, useEffect, useRef } from "react";
-import { FiTrash2, FiMessageCircle } from "react-icons/fi";
-import { clearChatHistory } from "../api";
+import { FiDownload, FiTrash2, FiMessageCircle} from "react-icons/fi";
 import ConfirmModal from "./ConfirmModal";
+import API_URL, { clearChatHistory } from "../api";
 
 const suggestions = [
   "Resumo do mês",
@@ -13,6 +13,23 @@ const suggestions = [
 ];
 
 const GREETING = { from: "bot", text: "Olá! Como posso ajudar? 👋" };
+
+// A IA sempre responde com um JSON ({ action, message/report/suggestion }).
+// Como cada action só preenche um desses 3 campos, o encadeamento com ??
+// já pega o que existir, sem precisar de if/else por action.
+function parseAssistantMessage(rawContent) {
+  try {
+    const parsed = JSON.parse(rawContent);
+    return {
+      text: parsed.message ?? parsed.report?.message ?? parsed.suggestion?.message ?? rawContent,
+      items: parsed.suggestion?.items,
+      report: parsed.report,
+    };
+  } catch {
+    // Não era JSON (ex: mensagem antiga, ou texto de erro já tratado).
+    return { text: rawContent };
+  }
+}
 
 export default function ChatWidget() {
   const { token } = useAuth();
@@ -31,16 +48,18 @@ export default function ChatWidget() {
   useEffect(() => {
     const loadHistory = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/chat/history", {
+        const res = await fetch(`${API_URL}/api/chat/history`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
         if (data.history?.length > 0) {
           setMessages(
-            data.history.map((msg) => ({
-              from: msg.role === "model" ? "bot" : "user",
-              text: msg.content,
-            })),
+            data.history.map((msg) => {
+              if (msg.role === "model") {
+                return { from: "bot", ...parseAssistantMessage(msg.content) };
+              }
+              return { from: "user", text: msg.content };
+            }),
           );
         }
       } catch (err) {
@@ -77,7 +96,7 @@ export default function ChatWidget() {
     }));
 
     try {
-      const res = await fetch("http://localhost:3000/api/chat", {
+      const res = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,6 +104,9 @@ export default function ChatWidget() {
         },
         body: JSON.stringify({ message: text, history }),
       });
+
+      // Adiciona bolha do bot vazia para ir preenchendo
+      setMessages((prev) => [...prev, { from: "bot", text: "" }]);
 
       // Lê o stream
       const reader = res.body.getReader();
@@ -94,39 +116,27 @@ export default function ChatWidget() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        fullText += decoder.decode(value);
+
+        const chunk = decoder.decode(value);
+        fullText += chunk;
+
+        // Atualiza a última bolha do bot com o texto acumulado
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { from: "bot", text: fullText };
+          return updated;
+        });
       }
 
-      // Quando o stream termina, processa o JSON completo
-      const parsed = JSON.parse(fullText);
-
-      if (parsed.action === "REPORT") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            from: "bot",
-            text: parsed.report.message,
-            report: parsed.report,
-          },
-        ]);
-      } else if (parsed.action === "SUGGESTION") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            from: "bot",
-            text: parsed.suggestion.message,
-            items: parsed.suggestion.items,
-          },
-        ]);
-      } else {
-        setMessages((prev) => [
-          ...prev,
-          {
-            from: "bot",
-            text: parsed.message,
-          },
-        ]);
-      }
+      // Quando o stream termina, traduz o JSON completo pro formato da bolha
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          from: "bot",
+          ...parseAssistantMessage(fullText),
+        };
+        return updated;
+      });
     } catch (err) {
       console.error("Erro ao enviar mensagem:", err);
       setMessages((prev) => [
@@ -149,6 +159,7 @@ export default function ChatWidget() {
           </div>
           <div className={styles.chatHeaderText}>
             <span className={styles.chatHeaderTitle}>Assistente</span>
+            <span className={styles.chatHeaderStatus}>Online</span>
           </div>
         </div>
         <button
@@ -182,11 +193,13 @@ export default function ChatWidget() {
 
             {/* Botão de download PDF do REPORT */}
             {msg.report && (
-              <div>
-                <button className={styles.pdfBtn} onClick={() => console.log("gerar PDF", msg.report)}>
-                  Download PDF
-                </button>
-              </div>
+              <button
+                className={styles.downloadPdfBnt}
+                onClick={() => console.log("gerar PDF", msg.report)}
+              >
+                <FiDownload size={14} />
+                Download PDF
+              </button>
             )}
           </div>
         ))}
@@ -228,15 +241,15 @@ export default function ChatWidget() {
       </div>
     </div>
 
-        <ConfirmModal
-          isOpen={isClearing}
-          title="Limpar histórico"
-          message="Tens a certeza que queres limpar todo o histórico do chat?"
-          subMessage="Esta ação não pode ser desfeita."
-          confirmLabel="Limpar"
-          onConfirm={handleClearHistory}
-          onCancel={() => setIsClearing(false)}
-        />
-        </>
+    <ConfirmModal
+      isOpen={isClearing}
+      title="Limpar histórico"
+      message="Tens a certeza que queres limpar todo o histórico do chat?"
+      subMessage="Esta ação não pode ser desfeita."
+      confirmLabel="Limpar"
+      onConfirm={handleClearHistory}
+      onCancel={() => setIsClearing(false)}
+    />
+    </>
   );
 }
