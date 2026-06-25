@@ -1,9 +1,10 @@
 import styles from "./styles/ChatWidget.module.css";
 import useAuth from "../context/AuthContext";
 import { useState, useEffect, useRef } from "react";
-import { FiDownload, FiTrash2, FiMessageCircle} from "react-icons/fi";
+import { FiDownload, FiTrash2, FiMessageCircle } from "react-icons/fi";
 import ConfirmModal from "./ConfirmModal";
 import API_URL, { clearChatHistory } from "../api";
+import { downloadReportPDF } from "./PDFCreator";
 
 const suggestions = [
   "Resumo do mês",
@@ -21,7 +22,11 @@ function parseAssistantMessage(rawContent) {
   try {
     const parsed = JSON.parse(rawContent);
     return {
-      text: parsed.message ?? parsed.report?.message ?? parsed.suggestion?.message ?? rawContent,
+      text:
+        parsed.message ??
+        parsed.report?.message ??
+        parsed.suggestion?.message ??
+        rawContent,
       items: parsed.suggestion?.items,
       report: parsed.report,
     };
@@ -150,105 +155,104 @@ export default function ChatWidget() {
 
   return (
     <>
-    <div className={styles.chatWidget}>
-
-      <div className={styles.chatHeader}>
-        <div className={styles.chatHeaderInfo}>
-          <div className={styles.chatHeaderAvatar}>
-            <FiMessageCircle size={14} />
+      <div className={styles.chatWidget}>
+        <div className={styles.chatHeader}>
+          <div className={styles.chatHeaderInfo}>
+            <div className={styles.chatHeaderAvatar}>
+              <FiMessageCircle size={14} />
+            </div>
+            <div className={styles.chatHeaderText}>
+              <span className={styles.chatHeaderTitle}>Assistente</span>
+            </div>
           </div>
-          <div className={styles.chatHeaderText}>
-            <span className={styles.chatHeaderTitle}>Assistente</span>
-          </div>
-        </div>
-        <button
-          className={styles.clearHistoryBtn}
-          onClick={() => setIsClearing(true)}
-          title="Limpar histórico"
-          aria-label="Limpar histórico"
-        >
-          <FiTrash2 size={14} />
-        </button>
-      </div>
-
-      <div className={styles.chatMessages}>
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={
-              msg.from === "bot" ? styles.chatBubble : styles.chatBubbleUser
-            }
-          >
-            {msg.text}
-
-            {/* Lista de sugestões do SUGGESTION */}
-            {msg.items && (
-              <ul>
-                {msg.items.map((item, j) => (
-                  <li key={j}>{item}</li>
-                ))}
-              </ul>
-            )}
-
-            {/* Botão de download PDF do REPORT */}
-            {msg.report && (
-              <button
-                className={styles.downloadPdfBnt}
-                onClick={() => console.log("gerar PDF", msg.report)}
-              >
-                <FiDownload size={14} />
-                Download PDF
-              </button>
-            )}
-          </div>
-        ))}
-
-        {isLoading && (
-          <div className={styles.chatBubble}>
-            <span className={styles.typingDots}>
-              <span>.</span>
-              <span>.</span>
-              <span>.</span>
-            </span>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Sugestões */}
-      <div className={styles.suggestions}>
-        {suggestions.map((s) => (
           <button
-            key={s}
-            className={styles.suggestionChip}
-            onClick={() => handleSend(s)}
+            className={styles.clearHistoryBtn}
+            onClick={() => setIsClearing(true)}
+            title="Limpar histórico"
+            aria-label="Limpar histórico"
           >
-            {s}
+            <FiTrash2 size={14} />
           </button>
-        ))}
+        </div>
+
+        <div className={styles.chatMessages}>
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={
+                msg.from === "bot" ? styles.chatBubble : styles.chatBubbleUser
+              }
+            >
+              {msg.text}
+
+              {/* Lista de sugestões do SUGGESTION */}
+              {msg.items && (
+                <ul>
+                  {msg.items.map((item, j) => (
+                    <li key={j}>{item}</li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Botão de download PDF do REPORT */}
+              {msg.report && (
+                <button
+                  className={styles.downloadPdfBnt}
+                  onClick={() => downloadReportPDF(msg.report)}
+                >
+                  <FiDownload size={14} />
+                  Download PDF
+                </button>
+              )}
+            </div>
+          ))}
+
+          {isLoading && (
+            <div className={styles.chatBubble}>
+              <span className={styles.typingDots}>
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+              </span>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Sugestões */}
+        <div className={styles.suggestions}>
+          {suggestions.map((s) => (
+            <button
+              key={s}
+              className={styles.suggestionChip}
+              onClick={() => handleSend(s)}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.chatInputArea}>
+          <input
+            type="text"
+            placeholder="Escreve uma mensagem..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
+          />
+          <button onClick={() => handleSend(input)}>➤</button>
+        </div>
       </div>
 
-      <div className={styles.chatInputArea}>
-        <input
-          type="text"
-          placeholder="Escreve uma mensagem..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
-        />
-        <button onClick={() => handleSend(input)}>➤</button>
-      </div>
-    </div>
-
-    <ConfirmModal
-      isOpen={isClearing}
-      title="Limpar histórico"
-      message="Tens a certeza que queres limpar todo o histórico do chat?"
-      subMessage="Esta ação não pode ser desfeita."
-      confirmLabel="Limpar"
-      onConfirm={handleClearHistory}
-      onCancel={() => setIsClearing(false)}
-    />
+      <ConfirmModal
+        isOpen={isClearing}
+        title="Limpar histórico"
+        message="Tens a certeza que queres limpar todo o histórico do chat?"
+        subMessage="Esta ação não pode ser desfeita."
+        confirmLabel="Limpar"
+        onConfirm={handleClearHistory}
+        onCancel={() => setIsClearing(false)}
+      />
     </>
   );
 }
