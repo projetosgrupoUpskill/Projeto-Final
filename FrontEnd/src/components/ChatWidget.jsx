@@ -1,7 +1,7 @@
 import styles from "./styles/ChatWidget.module.css";
 import useAuth from "../context/AuthContext";
 import { useState, useEffect, useRef } from "react";
-import { FiDownload, FiTrash2, FiMessageCircle } from "react-icons/fi";
+import { FiDownload, FiTrash2, FiMessageCircle, FiMaximize2, FiMinimize2 } from "react-icons/fi";
 import ConfirmModal from "./ConfirmModal";
 import API_URL, { clearChatHistory } from "../api";
 import { downloadReportPDF } from "./PDFCreator";
@@ -43,6 +43,7 @@ export default function ChatWidget() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -110,6 +111,11 @@ export default function ChatWidget() {
         body: JSON.stringify({ message: text, history }),
       });
 
+      if (!res.ok) {
+        const errorBody = await res.json().catch(() => null);
+        throw new Error(errorBody?.error || "Erro ao processar mensagem");
+      }
+
       // Adiciona bolha do bot vazia para ir preenchendo
       setMessages((prev) => [...prev, { from: "bot", text: "" }]);
 
@@ -155,7 +161,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      <div className={styles.chatWidget}>
+      <div className={`${styles.chatWidget} ${isExpanded ? styles.chatWidgetExpanded : ""}`}>
         <div className={styles.chatHeader}>
           <div className={styles.chatHeaderInfo}>
             <div className={styles.chatHeaderAvatar}>
@@ -165,14 +171,25 @@ export default function ChatWidget() {
               <span className={styles.chatHeaderTitle}>Assistente</span>
             </div>
           </div>
-          <button
-            className={styles.clearHistoryBtn}
-            onClick={() => setIsClearing(true)}
-            title="Limpar histórico"
-            aria-label="Limpar histórico"
-          >
-            <FiTrash2 size={14} />
-          </button>
+          <div className={styles.chatHeaderActions}>
+            
+            <button
+              className={styles.clearHistoryBtn}
+              onClick={() => setIsClearing(true)}
+              title="Limpar histórico"
+              aria-label="Limpar histórico"
+            >
+              <FiTrash2 size={14} />
+            </button>
+            <button
+              className={styles.expandBtn}
+              onClick={() => setIsExpanded((prev) => !prev)}
+              title={isExpanded ? "Reduzir" : "Expandir"}
+              aria-label={isExpanded ? "Reduzir janela do chat" : "Expandir janela do chat"}
+            >
+              {isExpanded ? <FiMinimize2 size={14} /> : <FiMaximize2 size={14} />}
+            </button>
+          </div>
         </div>
 
         <div className={styles.chatMessages}>
