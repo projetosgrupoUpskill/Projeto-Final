@@ -148,3 +148,380 @@
     width: 100%;
   }
 }
+
+.section {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* ── O que é o Money Hub? ── */
+.aboutBox {
+  background-color: #E9F5EF;
+  border-radius: 20px;
+  padding: 2.5rem 3rem;
+  align-items: center;
+}
+
+:global(.dark) .aboutBox {
+  background-color: #1c2e26;
+}
+
+.aboutTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #123022;
+  text-align: center;
+  margin: 0 0 1.5rem;
+}
+
+:global(.dark) .aboutTitle {
+  color: #f1f5f3;
+}
+
+.aboutText {
+  font-size: 1rem;
+  color: #2c3b35;
+  line-height: 1.7;
+  margin: 0 0 1.25rem;
+
+}
+
+:global(.dark) .aboutText {
+  color: #cbd5d1;
+}
+
+.aboutList {
+  margin: 0 0 1.25rem;
+  padding-left: 1.4rem;
+  color: #2c3b35;
+  line-height: 1.8;
+}
+
+:global(.dark) .aboutList {
+  color: #cbd5d1;
+}
+
+.aboutList li {
+  margin-bottom: 0.5rem;
+  text-align: left;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #123022;
+  text-align: center;
+  margin: 0 0 1rem;
+}
+
+:global(.dark) .sectionTitle {
+  color: #f1f5f3;
+}
+
+.sectionSubtitle {
+  text-align: center;
+  color: #6b7280;
+  margin: 0 0 2.5rem;
+}
+
+:global(.dark) .sectionSubtitle {
+  color: #9ca3af;
+}
+
+/* ── Benefícios ── */
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 1rem;
+}
+
+.benefitCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(18, 48, 34, 0.06);
+}
+
+:global(.dark) .benefitCard {
+  background: #1e1e1e;
+  border-color: #3f3f46;
+}
+
+.benefitImage {
+  width: 160px;
+  height: 130px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.benefitTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #123022;
+  margin: 0 0 0.6rem;
+}
+
+:global(.dark) .benefitTitle {
+  color: #f1f5f3;
+}
+
+.benefitText {
+  font-size: 0.92rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+:global(.dark) .benefitText {
+  color: #9ca3af;
+}
+
+/* ── Histórias Reais ── */
+.testimonialWrapper {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.testimonialCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(18, 48, 34, 0.08);
+}
+
+:global(.dark) .testimonialCard {
+  background: #1e1e1e;
+  border-color: #3f3f46;
+}
+
+.avatarCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #123022 0%, #20674C 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.testimonialName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #123022;
+  margin: 0 0 0.2rem;
+}
+
+:global(.dark) .testimonialName {
+  color: #f1f5f3;
+}
+
+.testimonialRole {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0 0 1.25rem;
+}
+
+:global(.dark) .testimonialRole {
+  color: #9ca3af;
+}
+
+.testimonialText {
+  font-size: 0.98rem;
+  color: #374151;
+  line-height: 1.6;
+  font-style: italic;
+  margin: 0 0 1.25rem;
+}
+
+:global(.dark) .testimonialText {
+  color: #d1d5db;
+}
+
+.starsRow {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.starFilled {
+  color: #f4b400;
+}
+
+.starEmpty {
+  color: #d1d5db;
+}
+
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #123022;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background 0.15s;
+}
+
+:global(.dark) .carouselArrow {
+  background: #1e1e1e;
+  border-color: #3f3f46;
+  color: #f1f5f3;
+}
+
+.carouselArrow:hover {
+  background: #E9F5EF;
+}
+
+:global(.dark) .carouselArrow:hover {
+  background: #2a2a2e;
+}
+
+.carouselArrowLeft {
+  left: -8px;
+}
+
+.carouselArrowRight {
+  right: -8px;
+}
+
+@media (max-width: 560px) {
+  .carouselArrowLeft {
+    left: -4px;
+  }
+  .carouselArrowRight {
+    right: -4px;
+  }
+}
+
+.dotsRow {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1.5rem;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #cfd8d2;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s;
+}
+
+:global(.dark) .dot {
+  background: #3f3f46;
+}
+
+.dotActive {
+  background: #20674C;
+}
+
+/* ── FAQ ── */
+.faqList {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+:global(.dark) .faqList {
+  background: #1e1e1e;
+  border-color: #3f3f46;
+}
+
+.faqItem {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:global(.dark) .faqItem {
+  border-color: #3f3f46;
+}
+
+.faqItem:last-child {
+  border-bottom: none;
+}
+
+.faqQuestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #123022;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+:global(.dark) .faqQuestion {
+  color: #f1f5f3;
+}
+
+.faqChevron {
+  color: #6b7280;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+:global(.dark) .faqChevron {
+  color: #9ca3af;
+}
+
+.faqChevronOpen {
+  transform: rotate(180deg);
+}
+
+.faqAnswer {
+  margin: 0;
+  padding: 0 1.5rem 1.25rem;
+  font-size: 0.92rem;
+  color: #6b7280;
+  line-height: 1.6;
+  text-align: left;
+}
+
+:global(.dark) .faqAnswer {
+  color: #9ca3af;
+}
+
+@media (max-width: 760px) {
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .aboutBox {
+    padding: 2rem 1.5rem;
+  }
+}
