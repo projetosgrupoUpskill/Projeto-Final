@@ -130,6 +130,8 @@ export default function ChatWidget() {
       };
       const fullText = botMessage.text;
 
+      setIsLoading(false);
+
       // Adiciona bolha vazia e simula digitação
       setMessages((prev) => [...prev, { ...botMessage, text: "" }]);
 
@@ -145,13 +147,11 @@ export default function ChatWidget() {
         });
       }
     } catch (err) {
-      console.error("Erro ao enviar mensagem:", err);
+      setIsLoading(false);
       setMessages((prev) => [
         ...prev,
         { from: "bot", text: "Ocorreu um erro. Tenta novamente." },
       ]);
-    } finally {
-      setIsLoading(false);
     }
   };
 
