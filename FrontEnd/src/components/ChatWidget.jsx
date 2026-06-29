@@ -1,7 +1,13 @@
 import styles from "./styles/ChatWidget.module.css";
 import useAuth from "../context/AuthContext";
 import { useState, useEffect, useRef } from "react";
-import { FiDownload, FiTrash2, FiMessageCircle, FiMaximize2, FiMinimize2 } from "react-icons/fi";
+import {
+  FiDownload,
+  FiTrash2,
+  FiMessageCircle,
+  FiMaximize2,
+  FiMinimize2,
+} from "react-icons/fi";
 import ConfirmModal from "./ConfirmModal";
 import API_URL, { clearChatHistory } from "../api";
 import { downloadReportPDF } from "./PDFCreator";
@@ -116,38 +122,28 @@ export default function ChatWidget() {
         throw new Error(errorBody?.error || "Erro ao processar mensagem");
       }
 
-      // Adiciona bolha do bot vazia para ir preenchendo
-      setMessages((prev) => [...prev, { from: "bot", text: "" }]);
+      // Resposta completa em vez de stream
+      const parsed = await res.json();
+      const botMessage = {
+        from: "bot",
+        ...parseAssistantMessage(JSON.stringify(parsed)),
+      };
+      const fullText = botMessage.text;
 
-      // Lê o stream
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let fullText = "";
+      // Adiciona bolha vazia e simula digitação
+      setMessages((prev) => [...prev, { ...botMessage, text: "" }]);
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        fullText += chunk;
-
-        // Atualiza a última bolha do bot com o texto acumulado
+      for (let i = 0; i < fullText.length; i++) {
+        await new Promise((r) => setTimeout(r, 15));
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = { from: "bot", text: fullText };
+          updated[updated.length - 1] = {
+            ...botMessage,
+            text: fullText.slice(0, i + 1),
+          };
           return updated;
         });
       }
-
-      // Quando o stream termina, traduz o JSON completo pro formato da bolha
-      setMessages((prev) => {
-        const updated = [...prev];
-        updated[updated.length - 1] = {
-          from: "bot",
-          ...parseAssistantMessage(fullText),
-        };
-        return updated;
-      });
     } catch (err) {
       console.error("Erro ao enviar mensagem:", err);
       setMessages((prev) => [
@@ -161,7 +157,9 @@ export default function ChatWidget() {
 
   return (
     <>
-      <div className={`${styles.chatWidget} ${isExpanded ? styles.chatWidgetExpanded : ""}`}>
+      <div
+        className={`${styles.chatWidget} ${isExpanded ? styles.chatWidgetExpanded : ""}`}
+      >
         <div className={styles.chatHeader}>
           <div className={styles.chatHeaderInfo}>
             <div className={styles.chatHeaderAvatar}>
@@ -172,7 +170,6 @@ export default function ChatWidget() {
             </div>
           </div>
           <div className={styles.chatHeaderActions}>
-            
             <button
               className={styles.clearHistoryBtn}
               onClick={() => setIsClearing(true)}
@@ -185,9 +182,17 @@ export default function ChatWidget() {
               className={styles.expandBtn}
               onClick={() => setIsExpanded((prev) => !prev)}
               title={isExpanded ? "Reduzir" : "Expandir"}
-              aria-label={isExpanded ? "Reduzir janela do chat" : "Expandir janela do chat"}
+              aria-label={
+                isExpanded
+                  ? "Reduzir janela do chat"
+                  : "Expandir janela do chat"
+              }
             >
-              {isExpanded ? <FiMinimize2 size={14} /> : <FiMaximize2 size={14} />}
+              {isExpanded ? (
+                <FiMinimize2 size={14} />
+              ) : (
+                <FiMaximize2 size={14} />
+              )}
             </button>
           </div>
         </div>
@@ -212,14 +217,29 @@ export default function ChatWidget() {
               )}
 
               {/* Botão de download PDF do REPORT */}
-              {msg.report && (
-                <button
-                  className={styles.downloadPdfBnt}
-                  onClick={() => downloadReportPDF(msg.report)}
-                >
-                  <FiDownload size={14} />
-                  Download PDF
-                </button>
+              {msg.report && msg.report.offerPdf && (
+                <div>
+                  <br />
+                  <button
+                    className={styles.downloadPdfBnt}
+                    onClick={() => {
+                      console.log(
+                        "totalBalance:",
+                        msg.report.totalBalance,
+                        typeof msg.report.totalBalance,
+                      );
+                      console.log(
+                        "totalIncome:",
+                        msg.report.totalIncome,
+                        typeof msg.report.totalIncome,
+                      );
+                      downloadReportPDF(msg.report);
+                    }}
+                  >
+                    <FiDownload size={14} />
+                    Download PDF
+                  </button>
+                </div>
               )}
             </div>
           ))}

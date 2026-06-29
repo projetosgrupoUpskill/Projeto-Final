@@ -17,20 +17,10 @@ export const sendMessage = async (req, res) => {
     console.log("Nº de transações:", transactions.length);
     console.log("Nº de mensagens no histórico:", history.length);
 
-    // Configurar headers para streaming
-    res.setHeader("Content-Type", "text/plain; charset=utf-8");
-    res.setHeader("Transfer-Encoding", "chunked");
-
-    let fullText = "";
-
-    await chatService.sendMessageStream({
+    const parsed = await chatService.sendMessage({
       history: (history || []).slice(-5),
       data: { transactions, totals },
       userMessage: message,
-      onChunk: (chunk) => {
-        fullText += chunk;
-        res.write(chunk); // envia pedaço ao frontend
-      },
     });
 
     // Guardar no histórico
@@ -40,10 +30,10 @@ export const sendMessage = async (req, res) => {
     );
     await pool.query(
       "INSERT INTO chat_history (user_id, role, content) VALUES (?, ?, ?)",
-      [userId, "model", fullText],
+      [userId, "model", JSON.stringify(parsed)]
     );
 
-    res.end();
+    res.json(parsed);
   } catch (error) {
     console.error("Erro no chat:", error);
     res.status(500).json({ error: "Erro ao processar mensagem" });
