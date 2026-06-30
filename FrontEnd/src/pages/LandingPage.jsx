@@ -14,17 +14,17 @@ import {
 
 const benefits = [
   {
-    img: "src/assets/controle_finan.png",
+    img: "src/assets/control_total.svg",
     title: "Controlo Total das Finanças",
     text: "Veja para onde vai cada euro, com categorias e gráficos atualizados automaticamente a cada transação.",
   },
   {
-    img: "src/assets/inteligent.png",
+    img: "src/assets/insights.svg",
     title: "Decisões Mais Inteligentes",
     text: "Receba insights personalizados sobre os seus hábitos de consumo e descubra onde pode poupar mais.",
   },
   {
-    img: "src/assets/everyhere.png",
+    img: "src/assets/acess_anyhere.svg",
     title: "Acesso em Qualquer Lugar",
     text: "Uma plataforma simples e acessível, pensada para acompanhar as suas finanças onde quer que esteja.",
   },
