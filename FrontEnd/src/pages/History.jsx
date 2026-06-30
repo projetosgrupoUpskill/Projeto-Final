@@ -181,7 +181,7 @@ const Details = () => {
                 }
               >
                 <option value="all">Todas as Transações</option>
-                <option value="income">Apenas Entradas</option>
+                <option value="income">Apenas Receitas</option>
                 <option value="expense">Apenas Despesas</option>
               </select>
             </div>

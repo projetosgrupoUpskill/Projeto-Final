@@ -38,7 +38,7 @@ export default function TransactionList({
       <Card title={title} >
         {sortedTransactions.length === 0 ? (
           <div className={styles.emptyState}>
-            <p className={styles.emptyText}>Ainda não há transacções.</p>
+            <p className={styles.emptyText}>Ainda não há transações.</p>
           </div>
         ) : (
           <>
@@ -128,7 +128,7 @@ export default function TransactionList({
         {viewAllLink && (
           <div className={styles.viewAll}>
             <Link to={viewAllLink} className={styles.viewAllLink}>
-              <strong>Ver e gerir todas as transações</strong> <span style={{ fontSize: 16 }}>→</span>
+              <strong>Gerir todas as transações</strong> <span style={{ fontSize: 16 }}>→</span>
             </Link>
           </div>
         )}
