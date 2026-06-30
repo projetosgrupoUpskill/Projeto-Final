@@ -118,12 +118,18 @@ const styles = StyleSheet.create({
   },
 });
 
-// Formata número como moeda — ajusta o locale/currency ao teu projeto
-function formatCurrency(value) {
+//verificação do valor - se chega como string, formata - se chega como número, mantém
+function formatCurrency(value, currencySymbol = '€') {
+    const numeric = typeof value === "string"
+    ? parseFloat(
+      value.replace(/[^0-9.,-]/g, "")//mantém ponto, vírgula e hífen para correta interpretação dos números.
+      .replace(",", ".")) //formata vírgula por ponto para garantir a leitura correta dos dados do JSON
+    : value;
+
   return new Intl.NumberFormat("pt-PT", {
     style: "currency",
-    currency: "EUR",
-  }).format(value ?? 0);
+    currency: currencySymbol === '€' ? 'EUR' : 'BRL' 
+  }).format(numeric ?? 0);
 }
 
 function ReportDocument({ report }) {
