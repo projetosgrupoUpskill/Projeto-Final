@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 3rem;
-  padding: 5rem 5vw 6rem;
-  min-height: 90vh;
+  padding: 1.5rem 5vw 1.5rem;
+  min-height: 70vh;
   background: linear-gradient(135deg, #123022 0%, #20674C 100%);
   color: #ffffff;
   overflow: hidden;
@@ -66,7 +66,7 @@
   background: #2e6f52;
   color: #ffffff;
   border: 1px solid #4a8d6f;
-  padding: 14px 28px;
+  padding: 10px 14px;
   border-radius: 9999px;
   font-size: 15px;
   font-weight: 500;
@@ -89,7 +89,7 @@
   background: #2a5d46;
   color: #e7ece9;
   border: 1px solid #4a8d6f;
-  padding: 14px 28px;
+  padding: 10px 14px;
   border-radius: 9999px;
   font-size: 15px;
   font-weight: 500;
@@ -112,7 +112,7 @@
 }
 
 .imgDevices {
-  width: 120%;
+  width: 100%;
   display: block;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.35));
 }
@@ -123,6 +123,7 @@
     text-align: center;
     padding: 3.5rem 1.5rem 3rem;
     min-height: auto;
+    gap: 0;
   }
 
   .left {
@@ -141,7 +142,7 @@
   .right {
     width: 100%;
     min-height: 280px;
-    margin-top: 2.5rem;
+    margin-top: .2rem;
   }
 
   .imgDevices {

@@ -32,25 +32,25 @@ const benefits = [
 
 const testimonials = [
   {
-    name: "Joana M.",
+    name: "Débora A.",
     role: "Estudante",
     text: "Finalmente consigo ver para onde vai o meu dinheiro todos os meses. Os gráficos ajudaram-me a perceber que gastava demasiado em compras por impulso.",
     rating: 5,
   },
   {
-    name: "Ricardo P.",
-    role: "Freelancer",
+    name: "Miguel C.",
+    role: "CEO",
     text: "Uso o Money Hub há 3 meses e já consegui poupar mais do que em todo o ano passado. O assistente é surpreendentemente útil.",
     rating: 5,
   },
   {
-    name: "Beatriz C.",
+    name: "Gabriella A.",
     role: "Recém-licenciada",
     text: "Simples e direto. Não perco tempo a preencher folhas de cálculo, e tenho sempre o saldo atualizado na palma da mão.",
     rating: 4,
   },
   {
-    name: "Tiago A.",
+    name: "Danilo Q.",
     role: "Pequeno empresário",
     text: "A categorização automática poupa-me horas todos os meses. Recomendo a quem está a começar a organizar as finanças.",
     rating: 5,
