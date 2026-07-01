@@ -83,7 +83,7 @@ export async function deleteAccount(req, res) {
     const isValid = await comparePassword(password, user.password);
  
     if (!isValid) {
-      return res.status(401).json({ message: "Password incorreta" });
+      return res.status(401).json({ message: "Senha incorreta" });
     }
  
     await deleteUserAccount(user.id);
