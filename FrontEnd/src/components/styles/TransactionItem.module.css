@@ -26,8 +26,6 @@
   gap: 0.75rem;
 }
 
-/* Quando a coluna de Ações não existe (ex: Painel), Descrição e Valor
-   se expandem para ocupar as 12 colunas do grid igual ao cabeçalho */
 .descriptionNoActions {
   grid-column: span 7;
 }
@@ -91,11 +89,11 @@
 
 .deleteButton {
   color: #ef4444;
-  background-color: transparent; 
-  border: none; 
-  cursor: pointer; 
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
   padding: 0.5rem;
-  border-radius: 0.375rem; 
+  border-radius: 0.375rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,42 +127,125 @@
   color: #3b82f6;
 }
 
-@media (max-width: 458px) {
-.row {
+/* --- Menu ⋮ --- */
+
+/* Controla quem aparece em desktop vs mobile */
+.desktopOnly { display: flex; }
+.mobileOnly  { display: none; }
+
+.moreMenu {
+  position: relative;
+}
+
+.moreButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: #6b7280;
   display: flex;
   align-items: center;
-  padding: 0.6rem 1rem;
-  gap: 8px;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
 }
 
-.description {
-  grid-column: unset;
-  flex: 1;
-  min-width: 0;
+.moreButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
 }
 
-.descriptionText {
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 130px;
+  z-index: 50;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-.date {
-  grid-column: unset;
-  font-size: 0.72rem;
-  color: #9ca3af;
-  white-space: nowrap;
+.dropdownItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #374151;
+  text-align: left;
+  transition: background 0.15s;
 }
 
-.amount {
-  grid-column: unset;
-  text-align: right;
-  white-space: nowrap;
+.dropdownItem:hover {
+  background: #f3f4f6;
 }
 
-.actions {
-  grid-column: unset;
-  justify-content: flex-end;
-  gap: 2px;
+.dropdownItemDanger {
+  color: #ef4444;
 }
+
+.dropdownItemDanger:hover {
+  background: #fef2f2;
+}
+
+.dropdownIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* --- Mobile --- */
+@media (max-width: 458px) {
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    gap: 8px;
+  }
+
+  .description {
+    grid-column: unset;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .descriptionText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .date {
+    grid-column: unset;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    width: 78px;
+    flex-shrink: 0;
+    color: #6b7280;
+  }
+
+  .amount {
+    grid-column: unset;
+    white-space: nowrap;
+    width: 90px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .actions {
+    grid-column: unset;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  /* Troca botões individuais pelo menu ⋮ */
+  .desktopOnly { display: none; }
+  .mobileOnly  { display: flex; }
 }
