@@ -41,7 +41,7 @@ CREATE TABLE transactions (
     category_id      INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES category (id),
     user_id          INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE chat_history (
@@ -50,7 +50,7 @@ CREATE TABLE chat_history (
     content    TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id    INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE expense_limit (
