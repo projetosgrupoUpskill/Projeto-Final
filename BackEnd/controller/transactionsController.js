@@ -35,7 +35,11 @@ export async function editTransaction(req, res) {
     try {
         const { title, amount, type, transaction_date, category_id, currency_id } = req.body;
 
-        if (!title || !amount || !type || !transaction_date || !category_id) {
+        // Antes estava "!amount" aqui mas "amount == null" no addTransaction.
+        // Isso fazia com que uma transação com valor 0 pudesse ser CRIADA mas
+        // não pudesse ser EDITADA (era rejeitada por engano). Agora usam a
+        // mesma verificação.
+        if (!title || amount == null || !type || !transaction_date || !category_id) {
             return res.status(400).json({ message: "Campos obrigatórios em falta" });
         }
 
