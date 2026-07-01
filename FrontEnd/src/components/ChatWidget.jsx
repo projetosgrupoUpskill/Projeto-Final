@@ -33,7 +33,7 @@ function parseAssistantMessage(rawContent) {
         parsed.report?.message ??
         parsed.suggestion?.message ??
         rawContent,
-      items: parsed.suggestion?.items,
+      items: parsed.suggestion?.items ?? parsed.report?.items,
       report: parsed.report,
     };
   } catch {
@@ -223,16 +223,6 @@ export default function ChatWidget() {
                   <button
                     className={styles.downloadPdfBnt}
                     onClick={() => {
-                      console.log(
-                        "totalBalance:",
-                        msg.report.totalBalance,
-                        typeof msg.report.totalBalance,
-                      );
-                      console.log(
-                        "totalIncome:",
-                        msg.report.totalIncome,
-                        typeof msg.report.totalIncome,
-                      );
                       downloadReportPDF(msg.report);
                     }}
                   >

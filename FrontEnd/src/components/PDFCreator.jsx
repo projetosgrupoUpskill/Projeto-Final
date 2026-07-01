@@ -134,7 +134,7 @@ function formatCurrency(value, currencySymbol = '€') {
 
 function ReportDocument({ report }) {
   const categories = Object.entries(report.categoryBreakdown ?? {});
-  const generatedAt = new Date().toLocaleDateString("pt-PT", {
+  const generatedAt = new Date().toLocaleDateString("en-CA", {
     day: "2-digit",
     month: "long",
     year: "numeric",
@@ -209,10 +209,10 @@ function ReportDocument({ report }) {
         )}
 
         {/* Análise da IA */}
-        {report.message && (
+        {report.analysis && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Análise</Text>
-            <Text style={styles.message}>{report.message}</Text>
+            <Text style={styles.sectionTitle}>Análise dos Dados</Text>
+            <Text style={styles.message}>{report.analysis}</Text>
           </View>
         )}
 

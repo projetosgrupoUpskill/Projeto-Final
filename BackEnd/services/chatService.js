@@ -15,6 +15,8 @@ Your main task is to understand the user's data and suggest actions related to m
 - Always format dates as dd/mm/yyyy in messages.
 - In JSON responses, always use plain numbers for monetary values (e.g. 16463.51, not "€16463.51"). Apply currency symbols only in the "message" field.
 - Never create, update, or delete transactions. Your role is only to provide insights and suggestions.
+- You must not respond to questions that are unrelated to the financial area.
+- When user asks for investment advice, make it clear your job is only to analyze data and provide insghts and investment advice should be offered by a licensed professional.
 
 # FUNCTION RULES
 - Always call a function to get data before answering questions about amounts, dates, or transactions.
@@ -58,8 +60,10 @@ Use when the user asks for a summary, report, overview of expenses, category bre
       "category2": 0
     },
     "items": ["Item 1", "Item 2"],
+    "analysis": "Detailed financial insights for the PDF report, different from the chat message. 
+    Include observations about earnings versus spending, spending patterns, category highlights, and actionable suggestions based on the data.",
     "offerPdf": false,
-    "message": "Summary in natural language, ending with a question asking if the user wants a PDF."
+    "message": "Short message for the chat, ending with a question about PDF."
   }
 }
 
@@ -166,7 +170,7 @@ const TOOLS = [
 ];
 
 function buildUserMessage(data, userMessage) {
-  const today = new Date().toLocaleDateString("pt-PT", {
+  const today = new Date().toLocaleDateString("en-CA", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -251,7 +255,7 @@ export async function sendMessage({ history, data, userMessage }) {
 
     // Segunda chamada — IA recebe os resultados e responde em JSON
     const secondResponse = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.1-flash-lite",
       config: {
         systemInstruction: SYSTEM_PROMPT,
         responseMimeType: "application/json",
@@ -272,7 +276,7 @@ export async function sendMessage({ history, data, userMessage }) {
   // Neste caso a primeira chamada não tem responseMimeType: "application/json"
   // por isso fazemos uma segunda chamada forçando o JSON
   const fallbackResponse = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-3.1-flash-lite",
     config: {
       systemInstruction: SYSTEM_PROMPT,
       responseMimeType: "application/json",
