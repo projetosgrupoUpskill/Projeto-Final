@@ -98,7 +98,7 @@ export default function TransactionList({
                     opacity: currentPage === 1 ? 0.4 : 1,
                   }}
                 >
-                  ← Anterior
+                    ← <span className={styles.paginationLabel}>Anterior</span>
                 </button>
 
                 <span style={{ fontSize: 14 }}>
@@ -118,7 +118,7 @@ export default function TransactionList({
                     opacity: currentPage === totalPages ? 0.4 : 1,
                   }}
                 >
-                  Próxima →
+                  <span className={styles.paginationLabel}>Próxima</span> →
                 </button>
               </div>
             )}

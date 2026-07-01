@@ -116,3 +116,9 @@
     display: none;
   }
 }
+
+@media (max-width: 458px) {
+  .paginationLabel {
+    display: none;
+  }
+}

@@ -127,7 +127,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 260px; 
+    width: 220px; 
     height: 100vh;
     background-color: #ffffff;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
@@ -143,7 +143,6 @@
 
   .navLink:hover {
     background-color: #f3f4f6;
-    width: 180px;
     color: #001f3f;
     border-radius: 8px;
 }
@@ -156,7 +155,7 @@
 
   .themeToggleBtn {
     margin-left: 1rem;
-    align-self: flex-start; 
+    align-self: center; 
   }
 
   :global(body.dark) .nav {

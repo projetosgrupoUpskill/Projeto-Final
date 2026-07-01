@@ -98,7 +98,7 @@
 /* =======================================================
    DARK MODE PARA O SUMMARY
 ======================================================= */
-:global(body.dark) .incomeCard {
+:global(body.dark) .card.incomeCard {
   background-color: rgba(74, 222, 128, 0.15) !important;
   border-color: #4ade80 !important;
 }
@@ -108,7 +108,7 @@
   color: #4ade80 !important;
 }
 
-:global(body.dark) .expenseCard {
+:global(body.dark) .card.expenseCard {
   background-color: rgba(248, 113, 113, 0.15) !important;
   border-color: #f87171 !important;
 }
@@ -118,12 +118,12 @@
   color: #f87171 !important;
 }
 
-:global(body.dark) .cardHeader,
-:global(body.dark) .cardTitle {
+:global(body.dark) .card .cardHeader,
+:global(body.dark) .card .cardTitle {
   background-color: transparent !important;
 }
 
-:global(body.dark) .balanceCard {
+:global(body.dark) .card.balanceCard {
   background-color: rgba(173, 178, 180, 0.489) !important;
   border-color: #e3dbdb !important;
 }
