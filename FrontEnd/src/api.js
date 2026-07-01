@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import categoryIcons from "./utils/categoryIcons";
 
 const API_URL = "http://localhost:3000";
@@ -11,16 +12,35 @@ function authHeaders() {
   };
 }
 
-async function handleResponse(res) {
+// "sessionExpiredOn401" diz explicitamente a esta chamada se um 401 deve
+// ser tratado como sessão expirada (token inválido/expirado) ou como um
+// erro normal do próprio endpoint (ex.: password errada).
+//
+// Antes, isto era decidido a "adivinhar" pelo TEXTO da mensagem
+// (data.message !== "Credenciais inválidas" && ...), o que é frágil:
+// qualquer endpoint novo que devolva 401 por outro motivo qualquer caía
+// sempre no mesmo balde de "sessão expirada" por engano (foi o que
+// aconteceu com "Password incorreta" no deleteAccount). Agora quem chama
+// handleResponse decide isso de forma explícita, endpoint a endpoint.
+
+async function handleResponse(res, { tokenExpired = true } = {}) {
   const data = await res.json();
+ 
   if (!res.ok) {
-    if (res.status === 401 && data.message !== "Credenciais inválidas") {
+    if (res.status === 401 && tokenExpired) {
       localStorage.removeItem("token");
-      window.location.href = "/login";
+ 
+      toast.error("Sessão expirada. Por favor, faça login novamente.");
+ 
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
       return;
     }
+ 
     throw new Error(data.message || data.error || "Erro desconhecido");
   }
+ 
   return data;
 }
 
@@ -30,14 +50,21 @@ export const login = (email, password) =>
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
-  }).then(handleResponse);
+  }).then((res) => handleResponse(res, { tokenExpired: false }));
 
 export const register = (name, email, password) =>
   fetch(`${API_URL}/api/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
-  }).then(handleResponse);
+  }).then((res) => handleResponse(res, { tokenExpired: false }));
+
+export const deleteAccount = (password) =>
+  fetch(`${API_URL}/api/auth/account`, {
+    method: "DELETE",
+    headers: authHeaders(),
+    body: JSON.stringify({ password }),
+  }).then((res) => handleResponse(res, { tokenExpired: false }));
 
 export const getTransactions = () =>
   fetch(`${API_URL}/api/transactions`, {
