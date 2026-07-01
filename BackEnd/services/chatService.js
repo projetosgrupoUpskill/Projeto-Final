@@ -1,49 +1,42 @@
 import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
-
-const MODELS = [
-  "gemini-2.5-flash",
-  "gemini-2-flash",
-  "gemini-3-flash",
-  "gemini-3.1-flash-lite",
-  "gemini-3.5-flash",
-];
+import {
+  getAllTransactions,
+  getTransactions,
+  getTotals,
+  getTrends,
+} from "./transactionsService.js";
 
 const SYSTEM_PROMPT = `You are a financial assistant in an expense tracker app.
 Your main task is to understand the user's data and suggest actions related to managing their expenses.
 
-RULES:
-- Always respond with a structured JSON object — no plain text, no markdown, no extra keys.
+# GENERAL RULES
 - Always respond in the same language the user writes in.
-- Always format dates as dd/mm/yyyy.
-- Always include the currency symbol in all monetary values.
-- Never create, update, or delete transactions. Your role is only to provide insights and suggestions.
+- Always format dates as dd/mm/yyyy in messages.
 - In JSON responses, always use plain numbers for monetary values (e.g. 16463.51, not "€16463.51"). Apply currency symbols only in the "message" field.
+- Never create, update, or delete transactions. Your role is only to provide insights and suggestions.
 
+# FUNCTION RULES
+- Always call a function to get data before answering questions about amounts, dates, or transactions.
+- Never calculate totals, averages, or trends yourself — always use the provided functions.
+- When function results include "months_available", always mention it to the user if the data is incomplete relative to what was requested.
 
-DATA RULES:
-- The USER DATA includes a "totals" object (totalIncome, totalExpenses, balance, categoryBreakdown)
-  calculated precisely by the backend. Always use these exact values — never recalculate them yourself
-  from the transactions list.
-- "categoryBreakdown" only covers expenses, not income.
-- USER DATA is resent on every message and always reflects the current state. Always base your answer
-  on the USER DATA in THIS message, even if it contradicts something said earlier.
+# DATA RULES
 - Each transaction has two date fields:
-    - "transaction_date": when the expense/income actually happened. Use this for all questions about
-      recency ("last", "most recent", "this month", etc.)
+    - "transaction_date": when the expense/income actually happened. Use this for all questions about recency ("last", "most recent", "this month", etc.)
     - "created_at": only when the row was saved in the system. Never use this for recency questions.
 - The transactions list is sorted by "transaction_date" descending — the first item is the most recent.
 
-PDF RULES:
+# PDF RULES
 - Never show the PDF download button unless the user explicitly confirms they want a PDF.
-- When responding to a REPORT request, always end with a question asking if the user wants
-  a downloadable PDF version. Only include "offerPdf: true" in the JSON after the user confirms.
-- When the PDF download button is available, make the shortest message possible just indicating the successful generation of the report.
+- When responding to a REPORT request, always end the "message" field with a question asking if the user wants a downloadable PDF version.
+- Only include "offerPdf: true" in the JSON after the user explicitly confirms they want it.
+- When offerPdf is true, make the "message" as short as possible, only indicating the report was generated successfully.
 
-AVAILABLE ACTIONS:
+# AVAILABLE ACTIONS
 
-1. REPORT
-Use when the user asks for a summary, report, or overview of their expenses.
+## 1. REPORT
+Use when the user asks for a summary, report, overview of expenses, category breakdowns, totals, or lists of transactions.
 {
   "action": "REPORT",
   "report": {
@@ -64,61 +57,134 @@ Use when the user asks for a summary, report, or overview of their expenses.
       "category1": 0,
       "category2": 0
     },
+    "items": ["Item 1", "Item 2"],
     "offerPdf": false,
-    "message": "Summary in natural language, ending with: 'Would you like to download a PDF version of this report?'"
+    "message": "Summary in natural language, ending with a question asking if the user wants a PDF."
   }
 }
 
-Use REPORT when the user asks for:
-- a summary or overview of expenses
-- category breakdowns
-- totals (income, expenses, balance)
-- lists of transactions ("últimas X transações", "transações deste mês", etc.)
-- any request that involves presenting structured financial data
+Use "items" when the user asks for a list of transactions or any enumerable data that is better presented as a list.
+Leave "items" as an empty array [] when not applicable.
 
-2. SUGGESTION
+## 2. SUGGESTION
 Use when the user asks for tips, insights, or ways to save money.
 {
   "action": "SUGGESTION",
   "suggestion": {
-    "items": [
-      "Tip 1",
-      "Tip 2",
-      "Tip 3"
-    ],
+    "items": ["Tip 1", "Tip 2", "Tip 3"],
     "message": "Summary of suggestions in natural language"
   }
 }
 
-3. CHAT
-
-Use for all other finance-related questions and conversation. 
-Use CHAT only for general questions, advice, or conversation that does NOT
-involve presenting the user's transaction data directly.
+## 3. CHAT
+Use for general finance-related questions and conversation that does NOT involve presenting transaction data directly.
 If the topic is unrelated to finance, politely explain you can only help with financial topics.
 {
   "action": "CHAT",
   "message": "Response in natural language"
 }`;
 
-function buildUserMessage(data, userMessage) {
-  return `
-FRESH DATA NOTICE: the USER DATA below was just fetched from the database for
-THIS message. It may differ from anything mentioned earlier in this
-conversation (a transaction may have been added, edited or deleted since
-then). Treat it as the only current truth, even if it contradicts an earlier
-answer you gave.
+const TOOLS = [
+  {
+    name: "get_totals",
+    description:
+      "Get income, expense totals, balance and category breakdown. Optionally filter by date range.",
+    parameters: {
+      type: "object",
+      properties: {
+        start_date: {
+          type: "string",
+          description: "Start date in YYYY-MM-DD format (optional)",
+        },
+        end_date: {
+          type: "string",
+          description: "End date in YYYY-MM-DD format (optional)",
+        },
+      },
+    },
+  },
+  {
+    name: "get_transactions",
+    description: "Get a filtered list of transactions.",
+    parameters: {
+      type: "object",
+      properties: {
+        start_date: {
+          type: "string",
+          description: "Start date in YYYY-MM-DD format (optional)",
+        },
+        end_date: {
+          type: "string",
+          description: "End date in YYYY-MM-DD format (optional)",
+        },
+        type: {
+          type: "string",
+          enum: ["income", "expense"],
+          description: "Filter by type (optional)",
+        },
+        category: {
+          type: "string",
+          description: "Filter by category name (optional)",
+        },
+        limit: {
+          type: "number",
+          description: "Max number of transactions to return (optional)",
+        },
+      },
+    },
+  },
+  {
+    name: "get_trends",
+    description: "Get spending trends and optionally forecast future expenses.",
+    parameters: {
+      type: "object",
+      properties: {
+        start_date: {
+          type: "string",
+          description: "Start date in YYYY-MM-DD format (optional)",
+        },
+        end_date: {
+          type: "string",
+          description: "End date in YYYY-MM-DD format (optional)",
+        },
+        category: {
+          type: "string",
+          description: "Filter by category name (optional)",
+        },
+        months_back: {
+          type: "number",
+          description:
+            "Number of past months to analyze (optional, alternative to start_date)",
+        },
+        months_ahead: {
+          type: "number",
+          description: "Number of future months to forecast (optional)",
+        },
+      },
+    },
+  },
+];
 
-USER DATA:
-${JSON.stringify(data, null, 2)}
+function buildUserMessage(data, userMessage) {
+  const today = new Date().toLocaleDateString("pt-PT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+  return `
+TODAY'S DATE: ${today}
+
+USER DATA CONTEXT:
+- Currency: ${data.currency}
+- Total transactions available: ${data.transactions.length}
 
 USER MESSAGE:
 ${userMessage}
   `.trim();
 }
 
-
-export async function sendMessage({history, data, userMessage}) {
+export async function sendMessage({ history, data, userMessage }) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   const MAX_HISTORY = 5;
@@ -133,23 +199,88 @@ export async function sendMessage({history, data, userMessage}) {
 
   const messageWithContext = buildUserMessage(data, userMessage);
 
-  console.log("Tamanho do contexto (chars):", messageWithContext.length);
+  const contents = [
+    ...historyContents,
+    { role: "user", parts: [{ text: messageWithContext }] },
+  ];
 
   const response = await ai.models.generateContent({
     model: "gemini-3.1-flash-lite",
     config: {
       systemInstruction: SYSTEM_PROMPT,
-      responseMimeType: "application/json",
       temperature: 0.2,
-      maxOutputTokens: 1500,
+      maxOutputTokens: 2000,
+      tools: [{ functionDeclarations: TOOLS }],
     },
 
-    contents: [
-      ...historyContents,
-      { role: "user", parts: [{ text: messageWithContext }] },
-    ],
+    contents,
   });
 
-return JSON.parse(response.text);
+  // Verifica se a IA quer chamar alguma função
+  const functionCalls = response.candidates?.[0]?.content?.parts?.filter(
+    (p) => p.functionCall,
+  );
 
+  if (functionCalls?.length) {
+    const functionResults = [];
+
+    for (const part of functionCalls) {
+      const { name, args } = part.functionCall;
+      let result;
+
+      if (name === "get_totals") {
+        result = getTotals(data.transactions, args.start_date, args.end_date);
+      } else if (name === "get_transactions") {
+        result = getTransactions(data.transactions, args);
+      } else if (name === "get_trends") {
+        result = getTrends(data.transactions, args);
+      }
+
+      functionResults.push({
+        role: "user",
+        parts: [
+          {
+            functionResponse: {
+              name,
+              response: { output: result },
+            },
+          },
+        ],
+      });
+    }
+
+    // Segunda chamada — IA recebe os resultados e responde em JSON
+    const secondResponse = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        responseMimeType: "application/json",
+        temperature: 0.2,
+        maxOutputTokens: 2000,
+      },
+      contents: [
+        ...contents,
+        response.candidates[0].content,
+        ...functionResults,
+      ],
+    });
+
+    return JSON.parse(secondResponse.text);
+  }
+
+  // Se a IA não chamou nenhuma função (ex: CHAT geral)
+  // Neste caso a primeira chamada não tem responseMimeType: "application/json"
+  // por isso fazemos uma segunda chamada forçando o JSON
+  const fallbackResponse = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    config: {
+      systemInstruction: SYSTEM_PROMPT,
+      responseMimeType: "application/json",
+      temperature: 0.2,
+      maxOutputTokens: 2000,
+    },
+    contents,
+  });
+
+  return JSON.parse(fallbackResponse.text);
 }

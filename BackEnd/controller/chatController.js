@@ -1,7 +1,6 @@
 import * as chatService from "../services/chatService.js";
 import {
-  getAllTransactions,
-  summarizeTransactions,
+  getAllTransactions
 } from "../services/transactionsService.js";
 import pool from "../db.js";
 
@@ -15,15 +14,11 @@ export const sendMessage = async (req, res) => {
 
   try {
     const transactions = await getAllTransactions(userId);
-    const totals = summarizeTransactions(transactions);
     const currency = transactions[0]?.currency_symbol ?? "€";
     
-    console.log("Nº de transações:", transactions.length);
-    console.log("Nº de mensagens no histórico:", history.length);
-
     const parsed = await chatService.sendMessage({
       history: (history || []).slice(-5),
-      data: { transactions, totals, currency },
+      data: { transactions, currency },
       userMessage: message,
     });
 
