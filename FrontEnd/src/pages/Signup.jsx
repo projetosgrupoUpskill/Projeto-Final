@@ -5,7 +5,7 @@ import  useAuth  from "../context/AuthContext";
 import { createPortal } from "react-dom";
 import PasswordInput from "../components/PasswordInput";
 
-import styles from "../components/styles/authForm.module.css";
+import styles from "../components/styles/AuthForm.module.css";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -77,7 +77,12 @@ export function Signup() {
       }
     >
       <form className={styles.form} onSubmit={handleSubmit}>
-        {success && <p style={{ color: "green", marginBottom: "1rem" }}>{success}</p>}
+        {success && (
+          <p className={styles.successMessage}>
+            <MdOutlineCheckCircle size={20} />
+            {success}
+          </p>
+        )}
         <div className={styles.formGroup}>
           <label htmlFor="name" className={styles.label}>
             Nome Completo
@@ -125,6 +130,9 @@ export function Signup() {
             minLength={6}
             required
           />
+          <small className={styles.hint}>
+            Mínimo de 6 caracteres, com pelo menos 1 letra maiúscula e 1 número.
+          </small>
         </div>
 
         <div className={styles.formGroup}>
@@ -172,7 +180,12 @@ export function Signup() {
           </label>
         </div>
 
-        {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
+        {error && (
+          <p className={styles.errorMessage}>
+            <MdErrorOutline size={20} />
+            {error}
+          </p>
+        )}
 
         <button type="submit" className={styles.button} disabled={isLoading}>
           {isLoading ? "Criando conta..." : "Criar Conta"}

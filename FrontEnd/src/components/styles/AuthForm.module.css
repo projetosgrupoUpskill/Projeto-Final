@@ -250,3 +250,50 @@
 .forgotPassword button:hover {
   text-decoration: underline;
 }
+
+.hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: -0.25rem;
+  text-align: left;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.successMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  border-left: 4px solid #16a34a;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+:global(.dark) .errorMessage {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #fecaca;
+  border-color: rgba(220, 38, 38, 0.4);
+}
+
+:global(.dark) .successMessage {
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #86efac;
+  border-color: rgba(22, 163, 74, 0.4);
+}

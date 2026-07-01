@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import  useAuth  from "../context/AuthContext";
-import styles from "../components/styles/authForm.module.css";
+import styles from "../components/styles/AuthForm.module.css";
 import { AuthLayout } from "../components/AuthLayout";
 import { createPortal } from "react-dom";
 import PasswordInput from "../components/PasswordInput";
+import { MdErrorOutline, MdOutlineCheckCircle } from "react-icons/md";
 
 export function Login() {
   const navigate = useNavigate();
@@ -67,7 +68,12 @@ export function Login() {
       }
     >
       <form className={styles.form} onSubmit={handleSubmit}>
-        {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
+        {error && (
+          <p className={styles.errorMessage} style={{ display: "flex", alignItems: "center", gap: "0.5rem"}}>
+          <MdErrorOutline size={20} />
+          {error}
+        </p>
+        )}
         <div className={styles.formGroup}>
           <label htmlFor="email" className={styles.label}>
             Email
