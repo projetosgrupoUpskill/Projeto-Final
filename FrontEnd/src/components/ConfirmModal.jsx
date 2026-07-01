@@ -10,6 +10,7 @@ export default function ConfirmModal({
     cancelLabel = "Cancelar",
     onConfirm,
     onCancel,
+    children, // <- conteúdo extra opcional (ex: um campo de password de confirmação)
 }) {
     if (!isOpen) return null;
 
@@ -24,6 +25,7 @@ export default function ConfirmModal({
                 <h3 className={styles.confirmTitle}>{title}</h3>
                 <p className={styles.confirmText}>{message}</p>
                 {subMessage && <p className={styles.confirmText}>{subMessage}</p>}
+                {children}
                 <div className={styles.confirmActions}>
                     <button className={styles.cancelConfirmBtn} onClick={onCancel}>
                         {cancelLabel}
