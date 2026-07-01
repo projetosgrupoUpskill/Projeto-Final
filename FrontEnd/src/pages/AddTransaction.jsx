@@ -21,8 +21,8 @@ export default function AddTransaction() {
       toast.success("Transação criada com sucesso!");
       setIsOpen(false);
     },
-    onError: () => {
-      toast.error("Erro ao adicionar transação. Tente novamente.");
+    onError: (error) => {
+      toast.error(error.message || "Erro ao adicionar transação. Tente novamente.");
     },
   });
 

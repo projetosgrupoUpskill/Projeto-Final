@@ -16,8 +16,8 @@ export default function EditTransactionModal({ transaction, onClose }) {
       toast.success ("Transação editada com sucesso!")
       onClose();
     },
-    onError: () => {
-      toast.error("Erro ao editar transação. Tente novamente.");
+    onError: (error) => {
+      toast.error(error.message || "Erro ao editar transação. Tente novamente.");
     },
   });
 

@@ -26,6 +26,13 @@ app.get("/", (req, res) => {
   res.json({ message: "API a funcionar!" });
 });
 
+// Se nenhuma rota acima correspondeu ao pedido, cai aqui (faltava isto:
+// sem isto, um caminho errado tipo /api/transacoes ficava sem resposta
+// nenhuma em vez de dar um 404 claro).
+app.use((req, res) => {
+  res.status(404).json({ message: "Rota não encontrada" });
+});
+
 // Erro global
 app.use((err, req, res, next) => {
   console.error(err.stack);
